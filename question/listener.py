@@ -1,8 +1,11 @@
 import http.server
 import json
 import os
+import subprocess
 
-PORT = 8080  # use the port you set in Competitive Companion
+PORT = 8080  # must match Competitive Companion extension
+
+BASE_DIR = os.path.abspath(".")
 
 class Handler(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
@@ -17,15 +20,23 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
         if "codeforces" in url:
             folder = "codeforces"
+            suffix = "_codeforces"
         elif "codechef" in url:
             folder = "codechef"
+            suffix = "_codechef"
         elif "cses.fi" in url:
             folder = "cses"
+            suffix = "_cses"
         else:
             folder = "others"
+            suffix = "_others"
 
-        os.makedirs(folder, exist_ok=True)
-        filename = f"{folder}/{problem}.cpp"
+        # Folder where file should be saved
+        save_dir = os.path.join(BASE_DIR, folder)
+        os.makedirs(save_dir, exist_ok=True)
+
+        # Add suffix to filename
+        filename = os.path.join(save_dir, f"{problem}{suffix}.cpp")
 
         template = f"""#include <bits/stdc++.h>
 using namespace std;
@@ -39,12 +50,19 @@ int main() {{
     return 0;
 }}
 """
-        with open(filename, "w") as f:
+        with open(filename, "w", encoding="utf-8") as f:
             f.write(template)
 
-        print(f"✅ Saved: {filename}")
+        print(f"✅ Saved directly to: {filename}")
 
-        # respond OK
+        # Open in VS Code
+        try:
+            subprocess.Popen(["code", "-r", filename])
+            print(f"📂 Opened in VS Code: {filename}")
+        except Exception as e:
+            print("⚠️ Could not open file in VS Code:", e)
+
+        # Respond OK
         self.send_response(200)
         self.end_headers()
         self.wfile.write(b"OK")
