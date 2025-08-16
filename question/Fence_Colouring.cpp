@@ -25,7 +25,7 @@ From : IIITL
 void vulture(){
 int n;
 // implement move in ps1
-
+fsdf
 }
 signed main(){
 input_tej_le;
