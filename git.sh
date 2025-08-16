@@ -18,4 +18,4 @@ fi
 git commit -m "$commit_message"
 
 # Push to the current branch
-git push origin $(git rev-parse --abbrev-ref HEAD)
+git push 
