@@ -19,4 +19,4 @@ git commit -m "$commitMessage"
 
 # Push changes
 git push
-cd ./questions
+cd .\question\
