@@ -24,6 +24,7 @@ From : IIITL
 */
 void vulture(){
 int n;
+// implement move in ps1
 
 }
 signed main(){
