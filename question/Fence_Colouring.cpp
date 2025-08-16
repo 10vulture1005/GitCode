@@ -23,10 +23,7 @@ From : IIITL
 ==========================================================
 */
 void vulture(){
-int n;
-cin>>n;
-cout<<n<<endl;
-//hello
+
 }
 signed main(){
 input_tej_le;
