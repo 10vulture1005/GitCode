@@ -23,7 +23,9 @@ From : IIITL
 ==========================================================
 */
 void vulture(){
-
+int n;
+cin>>n;
+cout<<n<<endl;
 }
 signed main(){
 input_tej_le;
