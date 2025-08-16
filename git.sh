@@ -15,7 +15,7 @@ if [ -z "$commit_message" ]; then
 fi
 
 # Commit with the message
-git commit -m "$commit_message"
+git commit -m "$commit_message" || echo "Nothing to commit."
 
 # Push to the current branch
 git push origin $(git rev-parse --abbrev-ref HEAD)
