@@ -24,7 +24,7 @@ From : IIITL
 */
 void vulture(){
 int n;
-cin>>n;dsf
+cin>>n;
 cout<<n<<endl;
 }
 signed main(){
