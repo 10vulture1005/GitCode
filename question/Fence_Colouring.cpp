@@ -24,8 +24,33 @@ From : IIITL
 */
 void vulture(){
 int n;
-// implement move in ps1
-fsdf
+cin>>n;
+vector<int> a(n);
+vin(a,a.size());
+vector<int> f(n+1);
+for(int i = 0; i < n; i++) {
+    f[a[i]]++;
+}
+auto max = max_element(f.begin(),f.end());
+if(*max==f[1]){
+int ans = 0;
+for(int i = 0; i < n; i++) {
+    if(a[i]!=1){
+        ans++;
+    }
+}
+cout<<ans<<endl;
+}else{
+    int index = distance(f.begin(), max);
+    int ans = 1;
+    for(int i = 0; i < n; i++) {
+        if(a[i]!=index){
+            ans++;
+        }
+    }
+    cout<<ans<<endl;
+}
+
 }
 signed main(){
 input_tej_le;
