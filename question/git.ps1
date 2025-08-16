@@ -1,6 +1,8 @@
 # commit.ps1
 
 # Stage all changes
+
+cd ..
 git add .
 
 # Get list of staged C++ files
