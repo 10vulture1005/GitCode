@@ -52,7 +52,8 @@ else if(a[e]==ma){
     ma--;
     e--;
 }else{
-
+    // cout<<(a[s]==mi)<<endl;
+    // cout<<mi<<' '<<ma<<'f'<<endl;
     break;
 }
 }
