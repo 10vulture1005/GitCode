@@ -96,14 +96,14 @@ if(j>=idx.size())break;
 
 
     if(f){
-        if(((pa[i]+pbs[i]==i+1) and pa[i]>=pbs[i]) or ((pa[i]-pbs[i]==0) and pa[i]==pbs[i])){
+        if(((pa[i]+pbs[i]==i+1) and pa[i]>=pbs[i]) or ((pa[i]-pbs[i]==0))){
             continue;
         }else{
             no 
             return;
         }
     }else{
-        if(((pa[i]+pbs[i]==i+1) and pa[i]<=pbs[i]) or (((pa[i]-pbs[i]==0) and pa[i]==pbs[i]))){
+        if(((pa[i]+pbs[i]==i+1) and pa[i]<=pbs[i]) or (((pa[i]-pbs[i]==0)))){
             continue;
         }else{
             no 
