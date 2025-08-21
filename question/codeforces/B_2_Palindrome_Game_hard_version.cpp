@@ -22,44 +22,41 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-
-
 void vulture(){
-int n,k;
-cin>>n>>k;
-vector<int> a(n);
-vin(a,a.size());
-int ans = 1e9;
-map<int,vector<int>> m;
+int n;
+cin>>n;
+string s;
+cin>>s;
+int ct = count(s.begin(),s.end(),'0');
+int np0 = 0;
+bool p=1;
 for(int i = 0; i < n; i++) {
-    m[a[i]].pb(i);
-}
-
-
-int mi = 1e9;
-for(auto it:m){
-    int midx = 0;
-    int ma=max(it.second[0]+1,n-it.second[it.second.size()-1]);
-for(int i = 0; i < it.second.size()-1; i++) {
-    if(ma<it.second[i+1]-it.second[i]){
-        midx = i;
+    if(s[i]!=s[n-i-1]){
+        p=0;
     }
-    ma=max(ma,it.second[i+1]-it.second[i]);
-    
 }
-int maf= ma/2;
-for(int i = 0; i < it.second.size()-1; i++) {
-    if(i==midx)continue;
-    maf=max(maf,it.second[i+1]-it.second[i]);
+if(p){
+    if(ct%2==0){
+cout<<"BOB"<<endl;
+}else{
+if(ct==1){
+    cout<<"BOB"<<endl;
+}else{
+    cout<<"ALICE"<<endl;
 }
-
-
-
-mi = min(mi,maf);
 }
-cout<<mi<<endl;
+return;
+}
+for(int i = 0; i < n/2; i++) {
+    if((s[i]=='0' and s[n-i-1]=='1') or ((s[i]=='1' and s[n-i-1]=='0')))
+    np0++;
+}
+if(ct==2 and np0==1){
+    cout<<"DRAW"<<endl;
+}else{
+        cout<<"ALICE"<<endl;
 
-
+}
 }
 signed main(){
 input_tej_le;
