@@ -21,12 +21,53 @@ using namespace  std;
 Author: Vaidik Saxena
 From : IIITL
 ==========================================================
+
+
 */
+
+
 void vulture(){
 int n;
 cin>>n;
-string s;
-cin>>s;
+string a;
+cin>>a;
+
+map<char,int> m;
+int ans = 1e9;
+for(int i = 0; i < n; i++) {
+    m[a[i]]++;
+}
+for(auto it:m){
+    int ct = 0;
+    int s = 0;
+int e = n-1;
+while(s<e){
+    if(a[s]==a[e]){
+        s++;
+        e--;
+    }else if(a[e]==it.first){
+        e--;
+        ct++;
+    }else if(a[s]==it.first){
+
+        s++;
+        ct++;
+    }else{
+        ct = 1e9;
+        break;
+    }
+}   
+// cout<<it.first<<' '<<ct<<endl;
+
+ans = min(ans,ct);
+}
+
+
+if(ans==1e9){
+    cout<<-1<<endl;
+    return;
+}
+cout<<ans<<endl;
 
 }
 signed main(){
