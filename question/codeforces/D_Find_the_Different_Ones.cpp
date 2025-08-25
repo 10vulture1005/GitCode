@@ -23,7 +23,17 @@ From : IIITL
 ==========================================================
 */
 void vulture(){
-
+int n;
+cin>>n;
+vector<int> a(n);
+vin(a,a.size());
+int q;
+cin>>q;
+while(q--){
+    int a,b;
+    cin>>a>>b;
+    
+}
 }
 signed main(){
 input_tej_le;
