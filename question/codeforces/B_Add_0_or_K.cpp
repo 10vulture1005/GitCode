@@ -23,6 +23,43 @@ From : IIITL
 ==========================================================
 */
 void vulture(){
+int n,k;
+cin>>n>>k;
+vector<int> a(n);
+vin(a,a.size());
+if(k%2==0){
+    if(k==2){
+        for(int i = 0;i<n;i++){
+        for(int j = 1;j<100;j++){
+        if(a[i]%3==0){
+            break;
+        }
+        a[i]+=k;
+        }
+        }for(int i = 0; i <n;i++){
+        cout<<a[i]<<" ";
+        }
+        cout<<endl;
+        return;
+    }
+for(int i = 0;i<n;i++){
+a[i]+=(k-1-a[i]%(k-1))*k;
+}
+for(int i = 0; i <n;i++){
+cout<<a[i]<<" ";
+}
+cout<<endl;
+}else{
+    for(int i = 0; i < n; i++) {
+        if(a[i]%2){
+            a[i]+=k;
+        }
+    }
+    for(int i = 0; i <n;i++){
+    cout<<a[i]<<" ";
+    }
+    cout<<endl;
+}
 
 }
 signed main(){
