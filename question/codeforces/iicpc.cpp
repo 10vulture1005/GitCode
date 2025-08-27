@@ -22,26 +22,14 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-
-
-const long long MOD = 1e9 + 7;
-long long modpow(long long a, long long b) {
-    long long res = 1;
-    a=a%MOD;
-    while (b > 0) {
-        if (b & 1) res = (res * a) %MOD;
-        a = (a * a) %MOD;
-        b >>= 1;
-    }
-    return res;
-}
-
-long long modinv(long long q) {
-    return modpow(q, MOD - 2);
-}
 void vulture(){
-cout<<modinv(2);
-
+string s;
+cin>>s;
+int mini = 1e9;
+for(int i = 0; i < s.size(); i++) {
+    mini = min(mini,(int)(s[i]-'0'));
+}
+cout<<mini<<endl;
 }
 signed main(){
 input_tej_le;
