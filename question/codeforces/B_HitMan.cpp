@@ -22,43 +22,7 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-
-bool findMinIndex(vector<int>& arr ,int x) {
-  int s = 0;
-  int e = arr.size()-1;
-  int n = arr.size();
-  while(s<=e){
-    int m1 = s+(e-s)/3;
-    int m2 = e-(e-s)/3;
-    if(arr[m1]==x){
-        return true;
-    }if(arr[m2]==x){
-        return true;
-    }if(x<arr[m1]){
-        e  = m1-1;
-    }else if(arr[m2]<x){
-        s = m2+1;
-    }else{
-        e = m2-1;
-        s = m1+1;
-    }
-  }
-  return false;
-}
 void vulture(){
-int n;
-cin>>n;
-int x;
-cin>>x;
-vector<int> a(n);
-vin(a,a.size());
-bool ans = findMinIndex(a,x);
-
-if(ans){
-    cout<<0<<endl;
-}else{
-    cout<<1<<endl;
-}
 
 }
 signed main(){
