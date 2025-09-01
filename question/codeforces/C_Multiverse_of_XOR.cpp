@@ -102,7 +102,7 @@ bits2[i] =  (m*bits2[i-1])*sum+b*(b+1)/2;
 
 
 for(int i = 0; i <n;i++){
-cout<<bits2[i]x<<" ";
+cout<<bits2[i]<<" ";
 }
 cout<<endl;
 

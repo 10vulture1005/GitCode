@@ -23,6 +23,9 @@ From : IIITL
 ==========================================================
 */
 void vulture(){
+int n;
+cin>>n;
+vector<int> a(n);
 
 }
 signed main(){
