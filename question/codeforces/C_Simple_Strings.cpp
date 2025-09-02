@@ -2,76 +2,80 @@
 #include <unordered_set>
 #define int long long
 #define gcd(a, b) (__gcd(a, b))
-#define vin(a,n) for(int i=0;i<n;++i) cin>>a[i];
-#define vout(a,n) for(int i=0;i<n;++i) cout<<a[i]<<' ';
-#define all(a) (a.rbegin(), a.rend()); 
+#define vin(a, n)               \
+    for (int i = 0; i < n; ++i) \
+        cin >> a[i];
+#define vout(a, n)              \
+    for (int i = 0; i < n; ++i) \
+        cout << a[i] << ' ';
+#define all(a) (a.begin(), a.end());
 #define pb push_back
-#define no cout<<"NO"<<endl;
-#define yes cout<<"YES"<<endl;
+#define no cout << "NO" << endl;
+#define yes cout << "YES" << endl;
 #define vi vector<int>
-#define input_tej_le ios::sync_with_stdio(false); cin.tie(NULL);
-using namespace  std;
+#define input_tej_le             \
+    ios::sync_with_stdio(false); \
+    cin.tie(NULL);
+using namespace std;
 /*
- ██████     ██████     ██████  
-██         ██     ██   ██    ██ 
-██   ███   ██     ██   ██    ██ 
-██    ██   ██     ██   ██    ██ 
- ██████     ██████     ██████  
+ ██████     ██████     ██████
+██         ██     ██   ██    ██
+██   ███   ██     ██   ██    ██
+██    ██   ██     ██   ██    ██
+ ██████     ██████     ██████
 ==========================================================
 Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-void vulture(){
+void vulture()
+{
     string s;
-    cin>>s;
-map<char,int> m;
-
-for(int i = 0; i < s.size(); i++) {
-    m[s[i]]++;
-}
-
-int n = m.size();
-vector<pair<int,char>> fr(n);
-
-int i = 0;
-for(auto it:m){
-fr[i].first = it.second;
-fr[i++].second = it.first;
-}
-sort all(fr);
-int l = 0;
-for(int i = 0; i <n;i++){
-cout<<fr[i].first<<' '<<fr[i].second<<endl;
-}
-cout<<endl;
-int r = 1;
-string ans = "";
-while(l<n and r<n){
-if(fr[l].first==0){
-    l++;
-    if(l==r){
-        r++;
+    cin >> s;
+    int n = s.size();
+    if(n==1){
+        cout<<s<<endl;return;
+    }if(n==2){
+        if(s[0]==s[1]){
+            s[0]='a';
+            while(s[0]==s[1]){
+                s[0]++;
+            }
+        }
+        cout<<s<<endl; return;
     }
-}if(fr[r].first==0){
-    r++;
-}
-while(min(fr[l].first,fr[r].first) and l<n and r<n){
-    ans+=(fr[l].second+fr[r].second);
-    fr[l].first--;
-    fr[r].first--;
+    for (int i = 0; i < n - 1; i++)
+    {
+        if (s[i] == s[i + 1])
+        {
+            s[i + 1] = 'a';
+            if (i + 2 < n)
+            {
+                while (s[i + 2] == s[i + 1] or s[i] == s[i + 1])
+                {
+                    s[i + 1]++;
+                }
+            }
+        }
+    }
 
+    if(s[n - 1] == s[n - 2] or s[n - 2] == s[n - 3]){
+        s[n-2]='a';
+    }
+    
+    while (s[n - 1] == s[n - 2] or s[n - 2] == s[n - 3])
+    {
+        s[n-2]++;
+    }
+    cout << s << endl;
 }
-}
-cout<<ans<<endl;
-
-
-}
-signed main(){
-input_tej_le;
-int t=1;
-// cin>>t;
-while(t--){
-vulture();
-}
+signed main()
+{
+    input_tej_le;
+    int t = 1;
+    // cin>>t;
+    while (t--)
+    {
+        vulture();
+    }
 }
