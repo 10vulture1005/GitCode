@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 #include <unordered_set>
+<<<<<<< HEAD
 #define int long long
 #define gcd(a, b) (__gcd(a, b))
 #define vin(a,n) for(int i=0;i<n;++i) cin>>a[i];
@@ -68,4 +69,162 @@ cin>>t;
 while(t--){
 vulture();
 }
+=======
+
+using namespace std;
+struct InputData {
+    vector<pair<int,int>> connections;
+    map<int,int> costs;
+    map<int,int> values;
+    int budget;
+    int depth;
+    vector<int> seed_order;
+};
+InputData readInput() {
+    InputData d;
+    int n;
+    cin >> n;
+    int m;
+    cin >> m;
+    for (int i = 0; i < m; ++i) {
+        int u,v;
+        cin >> u >> v;
+        d.connections.push_back({u,v});
+    }
+    int ns;
+    cin >> ns;
+    for (int i = 0; i < ns; ++i) {
+        int id,c;
+        cin >> id >> c;
+        d.costs[id] = c;
+        d.seed_order.push_back(id);
+    }
+    for (int i = 1; i <= n; ++i) {
+        int val;
+        cin >> val;
+        d.values[i] = val;
+    }
+    cin >> d.budget;
+    cin >> d.depth;
+    return d;
+}
+
+
+
+
+
+
+tuple<vector<int>, int, int> solveCampaign(const vector<pair<int,int>>& connections,
+                                           const map<int,int>& costs,
+                                           const map<int,int>& values,
+                                           const vector<int>& seed_order,
+                                           int budget, int dd) {
+{
+    unordered_map<int, vector<int>> g;
+    for (auto &e : connections) {
+        g[e.first].push_back(e.second);
+        g[e.second].push_back(e.first);
+    }
+
+    unordered_map<int,int> ord;
+    for (int i = 0; i < (int)seed_order.size(); i++) ord[seed_order[i]] = i;
+
+    unordered_set<int> reached, chosen_set;
+    vector<int> chosen;
+    int total_val = 0, total_cost = 0, rem = budget;
+
+    while (1) {
+        double best_eff = -1;
+        int best_id = -1;
+        int gain_here = 0;
+        vector<int> new_nodes;
+
+        for (auto &kv : costs) {
+            int id = kv.first;
+            if (chosen_set.count(id)) continue;
+            int c = kv.second;
+            if (c > rem) continue;
+
+            queue<pair<int,int>> q;
+            unordered_set<int> seen;
+            q.push({id,0});
+            seen.insert(id);
+
+            int gval = 0;
+            vector<int> tmp;
+            while (!q.empty()) {
+                auto [u,d] = q.front(); q.pop();
+                if (!reached.count(u)) {
+                    auto it = values.find(u);
+                    if (it != values.end()) {
+                        gval += it->second;
+                        tmp.push_back(u);
+                    }
+                }
+                if (d == dd) continue;
+                for (int v : g[u]) if (!seen.count(v)) {
+                    seen.insert(v);
+                    q.push({v,d+1});
+                }
+            }
+
+            double eff = (c==0 ? (gval>0?1e18:0) : (double)gval/c);
+            if (eff > best_eff+1e-12) {
+                best_eff = eff;
+                best_id = id;
+                gain_here = gval;
+                new_nodes = tmp;
+            } else if (fabs(eff-best_eff) <= 1e-12) {
+                int a = ord.count(id)?ord[id]:INT_MAX;
+                int b = ord.count(best_id)?ord[best_id]:INT_MAX;
+                if (a < b) {
+                    best_id = id;
+                    gain_here = gval;
+                    new_nodes = tmp;
+                }
+            }
+        }
+
+        if (best_id==-1 || gain_here<=0) break;
+
+        chosen.push_back(best_id);
+        chosen_set.insert(best_id);
+        total_cost += costs.at(best_id);
+        rem -= costs.at(best_id);
+        for (int x : new_nodes) {
+            if (!reached.count(x)) {
+                reached.insert(x);
+                total_val += values.at(x);
+            }
+        }
+    }
+
+    return {chosen, total_val, total_cost};
+}
+
+}
+
+
+
+
+
+
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    InputData data = readInput();
+    auto res = solveCampaign(data.connections, data.costs, data.values, data.seed_order, data.budget, data.depth);
+    vector<int> sel = get<0>(res);
+    int tv = get<1>(res);
+    int tc = get<2>(res);
+    for (int i = 0; i < (int)sel.size(); ++i) {
+        if (i) cout << " ";
+        cout << sel[i];
+    }
+    cout << "\n";
+    cout << tv << "\n";
+    cout << tc << "\n";
+    return 0;
+>>>>>>> e5c83b18691e8b6fff897323c33832a4aeedc75a
 }
