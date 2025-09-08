@@ -59,6 +59,11 @@ From : IIITL
 ==========================================================
 */
 void vulture(){
+int n;
+int k;
+cin>>n>>k;
+vector<int> a(n);
+vin(a,a.size());
 
 }
 signed main(){
