@@ -102,7 +102,7 @@ void vulture()
     {
         if (bit[i] != 0)
         {
-            l = i + 1;
+            l = i + 1;  
             break;
         }
     }

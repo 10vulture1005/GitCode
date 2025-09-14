@@ -2,15 +2,21 @@
 #include <unordered_set>
 #define int long long
 #define gcd(a, b) (__gcd(a, b))
-#define vin(a,n) for(int i=0;i<n;++i) cin>>a[i];
-#define vout(a,n) for(int i=0;i<n;++i) cout<<a[i]<<' ';
-#define all(a) (a.begin(), a.end()); 
+#define vin(a, n)               \
+    for (int i = 0; i < n; ++i) \
+        cin >> a[i];
+#define vout(a, n)              \
+    for (int i = 0; i < n; ++i) \
+        cout << a[i] << ' ';
+#define all(a) (a.begin(), a.end());
 #define pb push_back
-#define no cout<<"NO"<<endl;
-#define yes cout<<"YES"<<endl;
+#define no cout << "NO" << endl;
+#define yes cout << "YES" << endl;
 #define vi vector<int>
-#define input_tej_le ios::sync_with_stdio(false); cin.tie(NULL);
-using namespace  std;
+#define input_tej_le             \
+    ios::sync_with_stdio(false); \
+    cin.tie(NULL);
+using namespace std;
 /*
 ⣿⣿⣿⣿⣿⣿⣿⣿⡿⡫⣁⡴⣈⡼⣟⣭⣷⣿⡿⠿⡽⡟⠍⡙⢕⣢⣿⡟⣱⣿⣿⣿⣿⣿⠟⠋⡕⢼⣣⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⢿⣩⣾⣿⡿⣿⣿⢿⣿⣿⣿⣿⡿⠛⣙⢄⣽⣿⣿⣿⡃⢹⣿⣿⣾⢫⢿⢇⣿⡟⣼⣿⡇⠯⠈⠰⣶⣾⣶⡄⢻⣿⣿⢎⣮⡹⠗⣠⣵⣶⣿⣿⣷⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣿⡿⡫⣪⡾⣫⣾⣯⠾⠛⣋⣥⣶⡿⠟⣩⢔⣼⣾⣿⣿⠏⣼⣿⣿⢟⣿⡟⣡⢊⣼⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⣿⡿⣫⣷⣿⣿⣿⣫⢏⡼⣫⣾⣿⣿⣿⣃⢔⠟⣱⣿⣿⡿⣛⣿⣿⣿⣿⣿⣿⣏⡾⣼⡿⣸⣿⣿⠃⣴⠠⢹⣸⡿⣿⣇⡱⡊⣿⣎⣎⢷⡘⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
@@ -58,36 +64,40 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-void vulture(){
-int n;
-cin>>n;
-vector<int> a(n+1);
-vin(a,a.size()-1);
-bool o = a[0]<a[1];// 1 for inc and 0 for dec
- vector<int> ans;
-    ans.push_back(a[0]);  
+void vulture()
+{
+    int n;
+    cin >> n;
+    vector<int> a(n + 1);
+    vin(a, a.size() - 1);
+    bool o = a[0] < a[1]; // 1 for inc and 0 for dec
+    vector<int> ans;
+    ans.push_back(a[0]);
 
-    for (int i = 1; i < n - 1; i++) {
+    for (int i = 1; i < n - 1; i++)
+    {
         if ((a[i] > a[i - 1] && a[i] > a[i + 1]) ||
-            (a[i] < a[i - 1] && a[i] < a[i + 1])) {
+            (a[i] < a[i - 1] && a[i] < a[i + 1]))
+        {
             ans.push_back(a[i]);
         }
     }
 
-    
-
-ans.pb(a[n-1]);
-cout<<ans.size()<<endl;
-for(int i = 0; i <ans.size();i++){
-cout<<ans[i]<<" ";
+    ans.pb(a[n - 1]);
+    cout << ans.size() << endl;
+    for (int i = 0; i < ans.size(); i++)
+    {
+        cout << ans[i] << " ";
+    }
+    cout << endl;
 }
-cout<<endl;
-}
-signed main(){
-input_tej_le;
-int t;
-cin>>t;
-while(t--){
-vulture();
-}
+signed main()
+{
+    input_tej_le;
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        vulture();
+    }
 }
