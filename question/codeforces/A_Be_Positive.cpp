@@ -63,7 +63,13 @@ int n;
 cin>>n;
 vector<int> a(n);
 vin(a,a.size());
-
+int ct = count(a.begin(),a.end(),0);
+int ct1 = count(a.begin(),a.end(),-1);
+if(ct1%2){
+    cout<<ct+2<<endl;
+}else{
+    cout<<ct<<endl;
+}
 }
 signed main(){
 input_tej_le;

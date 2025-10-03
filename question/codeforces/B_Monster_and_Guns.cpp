@@ -59,10 +59,28 @@ From : IIITL
 ==========================================================
 */
 void vulture(){
-int n;
-cin>>n;
+int n,k;
+cin>>n>>k;
 vector<int> a(n);
 vin(a,a.size());
+sort all(a);
+int sum = accumulate(a.begin(),a.end(),0LL);
+if(sum<k){
+    cout<<-1<<endl;
+return;
+}
+int ans = 0;
+for(int i = n-1; i >=0; i--) {
+    if(k>0){
+        ans+=1;
+        k-=min(a[i],k);
+        ans+=2;
+    }else{
+        break;
+    }
+}
+ans-=2;
+cout<<ans<<endl;
 
 }
 signed main(){

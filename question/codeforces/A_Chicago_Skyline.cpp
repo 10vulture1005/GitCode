@@ -63,12 +63,13 @@ int n;
 cin>>n;
 vector<int> a(n);
 vin(a,a.size());
-
+int max = *max_element(a.begin(),a.end());
+cout<<max+1<<endl;
 }
 signed main(){
 input_tej_le;
-int t;
-cin>>t;
+int t=1;
+// cin>>t;
 while(t--){
 vulture();
 }

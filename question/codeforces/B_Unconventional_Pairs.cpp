@@ -63,7 +63,12 @@ int n;
 cin>>n;
 vector<int> a(n);
 vin(a,a.size());
-
+sort all(a);
+int min = -1;
+for(int i = 0; i < n-1; i+=2) {
+  min = max(min,a[i+1]-a[i]);  
+}
+cout<<min<<endl;
 }
 signed main(){
 input_tej_le;
