@@ -59,32 +59,11 @@ From : IIITL
 ==========================================================
 */
 void vulture(){
-int n,k;
-cin>>n>>k;
-vector<int> a(n);
-vin(a,a.size());
-map<int,int> m;
-for(int i = 0; i < n; i++) {
-    m[a[i]]++;
-}
-int op = 0;
-int mex = 0;
-// for(auto it:m){
-// cout<<it.first<<' '<<it.second<<endl;
-// }
-for(auto it:m){
-if(it.first>=k)break;
-op++;
-}
-op = k-op;
-// cout<<op<<endl;
-auto it = m.find(k);
-if(it!=m.end()){
-op=max(op,it->second);
-}
-
-
-cout<<op<<endl;
+int n;
+cin>>n;
+if(n%3==0)cout<<0<<endl;
+else
+cout<<3-n%3<<endl;
 }
 signed main(){
 input_tej_le;

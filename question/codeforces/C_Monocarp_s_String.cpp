@@ -59,32 +59,44 @@ From : IIITL
 ==========================================================
 */
 void vulture(){
-int n,k;
-cin>>n>>k;
-vector<int> a(n);
-vin(a,a.size());
+int n;
+cin>>n;
+string s;
+cin>>s;
+int ran = n+1;
+int ct = count(s.begin(),s.end(),'a');
+int ctb = n-ct;
+if(ct==ctb){
+    cout<<0<<endl;return;
+}
 map<int,int> m;
+vector<int> a(n);
 for(int i = 0; i < n; i++) {
-    m[a[i]]++;
+    if(s[i]=='a'){
+        a[i] = 1;
+    }else{
+        a[i] = -1;
+    }
 }
-int op = 0;
-int mex = 0;
-// for(auto it:m){
-// cout<<it.first<<' '<<it.second<<endl;
-// }
-for(auto it:m){
-if(it.first>=k)break;
-op++;
-}
-op = k-op;
-// cout<<op<<endl;
-auto it = m.find(k);
-if(it!=m.end()){
-op=max(op,it->second);
-}
+int c = 0;
+m[0];
+for(int i = 1; i <= n; i++) {
+    c+= a[i-1];
+    if(m.find(c-(ct-ctb))!=m.end()){
+        auto it = m.find(c-(ct-ctb));
+        if(ran>i-it->second){
+            // cout<<i<<" "<<it->second<<endl;
+            ran = min(ran,i-it->second);
+        }
+    }m[c]=i;
 
 
-cout<<op<<endl;
+}
+if(ran==n){
+    cout<<-1<<endl;return;
+}
+cout<<ran<<endl;
+
 }
 signed main(){
 input_tej_le;

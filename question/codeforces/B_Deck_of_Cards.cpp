@@ -61,30 +61,39 @@ From : IIITL
 void vulture(){
 int n,k;
 cin>>n>>k;
-vector<int> a(n);
-vin(a,a.size());
-map<int,int> m;
+string s;
+cin>>s;
+if(n==1 and k==1){
+    cout<<'-'<<endl;return;
+}
+int ct = count(s.begin(),s.end(),'0');
+int ct1 = count(s.begin(),s.end(),'1');
+int ct2 = count(s.begin(),s.end(),'2');
+string ans = "";
 for(int i = 0; i < n; i++) {
-    m[a[i]]++;
+    ans+="-";
 }
-int op = 0;
-int mex = 0;
-// for(auto it:m){
-// cout<<it.first<<' '<<it.second<<endl;
-// }
-for(auto it:m){
-if(it.first>=k)break;
-op++;
-}
-op = k-op;
-// cout<<op<<endl;
-auto it = m.find(k);
-if(it!=m.end()){
-op=max(op,it->second);
-}
+int lt = max(ct,k-ct1-ct2);
+int rt = min(ct+ct2,k-ct1);
 
+for(int i = 1; i <= n; i++) {
+    int l = i-n+k;
+    int r = i-1;
+    if(max(lt,l)<=min(rt,r)){
 
-cout<<op<<endl;
+        if(rt+1<=n-k+lt and i>=rt+1 and i<=n-k+lt){
+            ans[i-1]='+';
+        }else{
+            ans[i-1]='?';
+        }
+    }else{
+        ans[i-1]='-';
+    }
+    
+    
+}
+cout<<ans<<endl;
+
 }
 signed main(){
 input_tej_le;
