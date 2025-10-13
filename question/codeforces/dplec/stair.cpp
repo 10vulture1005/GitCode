@@ -69,17 +69,18 @@ void vulture(){
 int n;
 cin>>n;
 vector<int> a(n+1);
-a[1]=1;
-a[2]=2;
-a[3]=3;
+a[1]=0;
+a[2]=1;
+a[3]=2;
+a[4]=4;
 // for 4 1-1 2-3 3-2 ha to 6
 for(int i = 1; i <=n; i++) {
-    if(i>=3)
+    if(i>4)
     a[i]=a[i-1]+a[i-2]+a[i-3];
 
 }
 int ans = rec(4);
-cout<<ans<<endl;
+cout<<a[n]<<endl;
 
 }
 signed main(){

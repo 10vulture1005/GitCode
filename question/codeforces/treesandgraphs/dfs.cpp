@@ -59,27 +59,40 @@ From : IIITL
 ==========================================================
 */
 
-int rec(int n){
-    if(n<=3) return n;
-    return rec(n-1)+rec(n-2)+rec(n-3);
+
+vector<bool> visited(1e5);
+vector<vector<int>> graph(1e5);
+
+void dfs(int vertex){
+
+if(visited[vertex]){
+    return;
 }
+visited[vertex]=1;
+cout<<vertex<<endl;
+    for(auto it:graph[vertex]){
+    dfs(it);
+    }
+
+
+}
+
 
 
 void vulture(){
 int n;
 cin>>n;
-vector<int> a(n+1);
-a[1]=1;
-a[2]=2;
-a[3]=3;
-// for 4 1-1 2-3 3-2 ha to 6
-for(int i = 1; i <=n; i++) {
-    if(i>=3)
-    a[i]=a[i-1]+a[i-2]+a[i-3];
+
+for(int i = 0; i < n; i++) {
+    int s,e;
+    cin>>s>>e;
+    graph[s].pb(e);
+    graph[e].pb(s);
 
 }
-int ans = rec(4);
-cout<<ans<<endl;
+
+dfs(5);
+
 
 }
 signed main(){

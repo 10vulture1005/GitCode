@@ -58,34 +58,39 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-
-int rec(int n){
-    if(n<=3) return n;
-    return rec(n-1)+rec(n-2)+rec(n-3);
-}
-
-
 void vulture(){
-int n;
-cin>>n;
-vector<int> a(n+1);
-a[1]=1;
-a[2]=2;
-a[3]=3;
-// for 4 1-1 2-3 3-2 ha to 6
-for(int i = 1; i <=n; i++) {
-    if(i>=3)
-    a[i]=a[i-1]+a[i-2]+a[i-3];
-
+int a,b;
+cin>>a>>b;
+vector<int> ans;
+ans.pb(b);
+while(b>0){
+    if(a==b){
+        yes
+        reverse all(ans)
+        cout<<ans.size()<<endl;
+        for(int i = 0; i <ans.size();i++){
+        cout<<ans[i]<<" ";
+        }
+        cout<<endl;
+        return;
+    }
+if(b%10==1){
+    
+b/=10;
+ans.pb(b);
+}else if((b%10)%2==0){
+    b/=2;
+    ans.pb(b);
+}else{
+    break;
 }
-int ans = rec(4);
-cout<<ans<<endl;
-
+}
+no
 }
 signed main(){
 input_tej_le;
-int t;
-cin>>t;
+int t=1;
+// cin>>t;
 while(t--){
 vulture();
 }

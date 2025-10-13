@@ -59,33 +59,70 @@ From : IIITL
 ==========================================================
 */
 
-int rec(int n){
-    if(n<=3) return n;
-    return rec(n-1)+rec(n-2)+rec(n-3);
+vector<vector<int>> g(1e5);
+vector<bool> visited(1e5);
+
+int ans = 0;
+
+void dfs(int vertex,int parent, int ct,vector<int>&cat,int m){
+if(cat[vertex-1]){
+    ct++;
+    // cout<<ct<<endl;
+}else{
+    ct=0;
 }
+if(ct>m){
+    return;
+}
+// if(g[vertex].size()==0){
+//     ans++;
+//     cout<<ans<<endl;
+// }
+
+
+bool isleaf=1;
+// cout<<vertex<<endl;
+    for(auto it:g[vertex]){
+        if(it==parent)continue;
+        isleaf = 0;
+    dfs(it,vertex,ct,cat,m);
+    }
+
+    if(isleaf){
+        if(vertex==1){
+            if(g[vertex].empty()) ans++;
+        }else{
+            ans++;
+        }
+    }
+
+
+}
+
 
 
 void vulture(){
-int n;
-cin>>n;
-vector<int> a(n+1);
-a[1]=1;
-a[2]=2;
-a[3]=3;
-// for 4 1-1 2-3 3-2 ha to 6
-for(int i = 1; i <=n; i++) {
-    if(i>=3)
-    a[i]=a[i-1]+a[i-2]+a[i-3];
-
+int n,m;
+cin>>n>>m;
+vector<int> a(n);
+vin(a,a.size());
+for(int i = 0; i < n-1; i++) {
+    int s,e;
+    cin>>s>>e;
+    g[s].pb(e);
+    g[e].pb(s);
 }
-int ans = rec(4);
+
+
+dfs(1,0,0,a,m);
 cout<<ans<<endl;
+
 
 }
 signed main(){
 input_tej_le;
-int t;
-cin>>t;
+int t=1;
+// cin>>t;
 while(t--){
 vulture();
 }
