@@ -58,46 +58,39 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-
-vector<vector<int>> g(1000);
-vector<vector<int>> wt(1000);
-int dfs(int x,int p){
-
-    if(x==1){
-        return 0;
-    }
-    int re = 0;
-    if(g[x][re]==p) re=1;
-    // cout<<x<<"->"<<g[x][re]<<endl;
-
-    return dfs(g[x][re],x)+wt[x][re];
-
-}
-
-
 void vulture(){
-
 int n;
 cin>>n;
+vector<int> a(n);
+vin(a,a.size());
+vector<int> e;
+vector<int> o;
 for(int i = 0; i < n; i++) {
-    int s,e,w;
-    cin>>s>>e>>w;
-    g[s].pb(e);
-    g[e].pb(s);
-    wt[s].pb(0);
-    wt[e].pb(w);
+    if(a[i]%2){
+        o.pb(a[i]);
+    }else{
+        e.pb(a[i]);
+    }
 }
-
-int conf1 = dfs(g[1][0],1)+wt[1][0];
-int conf2 = dfs(g[1][1],1)+wt[1][1];
-
-cout<<min(conf1,conf2)<<endl;
+sort all(o);
+if(o.size()==0){
+    cout<<0<<endl;
+    return;
+}
+int sum = accumulate(e.begin(),e.end(),0LL);
+sum+=o[o.size()-1];
+o.pop_back();
+reverse all(o)
+for(int i = 0; i < o.size()/2; i++) {
+    sum+=o[i];
+}
+cout<<sum<<endl;
 
 }
 signed main(){
 input_tej_le;
-int t=1;
-// cin>>t;
+int t;
+cin>>t;
 while(t--){
 vulture();
 }

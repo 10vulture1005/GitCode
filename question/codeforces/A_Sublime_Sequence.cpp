@@ -58,46 +58,19 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-
-vector<vector<int>> g(1000);
-vector<vector<int>> wt(1000);
-int dfs(int x,int p){
-
-    if(x==1){
-        return 0;
-    }
-    int re = 0;
-    if(g[x][re]==p) re=1;
-    // cout<<x<<"->"<<g[x][re]<<endl;
-
-    return dfs(g[x][re],x)+wt[x][re];
-
-}
-
-
 void vulture(){
-
-int n;
-cin>>n;
-for(int i = 0; i < n; i++) {
-    int s,e,w;
-    cin>>s>>e>>w;
-    g[s].pb(e);
-    g[e].pb(s);
-    wt[s].pb(0);
-    wt[e].pb(w);
+int x,n;
+cin>>x>>n;
+if(n%2){
+cout<<x<<endl;
+}else{
+    cout<<0<<endl;
 }
-
-int conf1 = dfs(g[1][0],1)+wt[1][0];
-int conf2 = dfs(g[1][1],1)+wt[1][1];
-
-cout<<min(conf1,conf2)<<endl;
-
 }
 signed main(){
 input_tej_le;
-int t=1;
-// cin>>t;
+int t;
+cin>>t;
 while(t--){
 vulture();
 }
