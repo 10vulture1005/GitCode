@@ -58,42 +58,99 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
+
+
+vector<int> build_spf(int N) {
+    vector<int> spf(N + 1, 0);
+    vector<int> primes;
+    for (int i = 2; i <= N; ++i) {
+        if (spf[i] == 0) {
+            spf[i] = i;
+            primes.push_back(i);
+        }
+        for (int p : primes) {
+            int v = 1LL * p * i;
+            if (v > N) break;
+            spf[v] = p;
+            if (p == spf[i]) break;
+        }
+    }
+    return spf;
+}
+
+// return distinct prime factors of x using spf (works for x >= 2)
+vector<int> sieve(int x, const vector<int> &spf) {
+    vector<int> res;
+    while (x > 1) {
+        int p = (x < (int)spf.size() ? spf[(int)x] : 0);
+        if (p == 0) {
+            // if x >= spf.size() (shouldn't happen if we built spf large enough)
+            // fall back to trial division (rare)
+            int f = 2;
+            while ((int)f * f <= x) {
+                if (x % f == 0) { p = f; break; }
+                ++f;
+            }
+            if (p == 0) p = (int)x; // x is prime
+        }
+        res.push_back(p);
+        while (x % p == 0) x /= p;
+    }
+    return res;
+}
+
 void vulture(){
 int n;
 cin>>n;
 vector<int> a(n);
 vin(a,a.size());
+vector<int> b(n);vin(b,a.size());
+vector<int> fac(2e5+5);
 
-vector<int> p(n+1);
+int max = *max_element(a.begin(),a.end());
 
-for(int i = 1; i <= n; i++) {
-    p[i] = max(p[i-1],a[i-1]);
-}
+    vector<int> spf = build_spf(max);
 
 for(int i = 0; i < n; i++) {
-    if(i%2){
-        a[i] = max(p[i+1],a[i]);
-    }
-}
-// for(int i = 0; i <n;i++){
-// cout<<a[i]<<" ";
-// }
-// cout<<endl;
-int ans = 0;
-for(int i = 0; i <n; i++) {
-    if(i%2==0)continue;
-    if(i>0){
-    ans+=max(a[i-1]-a[i]+1,0LL);
-    a[i-1]-=max(a[i-1]-a[i]+1,0LL);
-    }if(i<n-1){
-    ans+=max(a[i+1]-a[i]+1,0LL);
-    a[i+1]-=max(a[i+1]-a[i]+1,0LL);
-    }
+    vector<int> tmp=sieve(a[i],spf);
 
-
+    for(auto it:tmp){
+        if(it==1 )continue;
+        fac[it]++;
+        if(fac[it]>1){
+            cout<<0<<endl;
+            return;
+           
+        }
+    }
     
 }
-cout<<ans<<endl;
+
+
+
+
+for(int i = 0; i < n; i++) {
+    vector<int> tmp=sieve(a[i]+1,spf);
+
+    for(auto it:tmp){
+                if(it==1 )continue;
+
+        fac[it]++;
+        if(fac[it]>1){
+            cout<<1<<endl;
+            return;
+           
+        }else 
+        fac[it]--;
+     
+    }
+    
+}
+cout<<2<<endl;
+
+
+
+
 
 }
 signed main(){

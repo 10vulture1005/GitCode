@@ -61,45 +61,57 @@ From : IIITL
 void vulture(){
 int n;
 cin>>n;
-vector<int> a(n);
-vin(a,a.size());
+vector<int> c(n);
 
-vector<int> p(n+1);
-
-for(int i = 1; i <= n; i++) {
-    p[i] = max(p[i-1],a[i-1]);
-}
+vector<pair<vector<int>,bool>> g(n+1);
 
 for(int i = 0; i < n; i++) {
-    if(i%2){
-        a[i] = max(p[i+1],a[i]);
+    int node;
+    cin>>node;
+    if(node!=-1){
+    g[node].first.pb(i+1);
+    cin>>g[i+1].second;}else{
+        cin>>node;
     }
 }
-// for(int i = 0; i <n;i++){
-// cout<<a[i]<<" ";
+
+vector<int> ans;
+for(int i = 1; i <= n; i++) {
+    if(g[i].second==0)continue;
+    bool f = 1;
+    for(auto it:g[i].first){
+        if(g[it].second==0){
+            f =0;
+            break;
+        }
+    }
+    if(f)ans.pb(i);
+}
+
+// for(int i = 1; i <=n; i++) {
+// cout<<i<<"->";
+//     for(auto it:g[i].first){
+//         cout<<it<<' ';
+//     }cout<<endl;
 // }
-// cout<<endl;
-int ans = 0;
-for(int i = 0; i <n; i++) {
-    if(i%2==0)continue;
-    if(i>0){
-    ans+=max(a[i-1]-a[i]+1,0LL);
-    a[i-1]-=max(a[i-1]-a[i]+1,0LL);
-    }if(i<n-1){
-    ans+=max(a[i+1]-a[i]+1,0LL);
-    a[i+1]-=max(a[i+1]-a[i]+1,0LL);
-    }
 
-
-    
+if(ans.size()==0){
+    cout<<-1<<endl;
+    return;
 }
-cout<<ans<<endl;
+sort all(ans)
+for(int i = 0; i <ans.size();i++){
+cout<<ans[i]<<" ";
+}
+cout<<endl;
+
+
 
 }
 signed main(){
 input_tej_le;
-int t;
-cin>>t;
+int t=1;
+// cin>>t;
 while(t--){
 vulture();
 }

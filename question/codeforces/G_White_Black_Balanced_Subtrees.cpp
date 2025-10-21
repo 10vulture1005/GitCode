@@ -61,40 +61,60 @@ From : IIITL
 void vulture(){
 int n;
 cin>>n;
-vector<int> a(n);
-vin(a,a.size());
+vector<int> a(n+1);
 
-vector<int> p(n+1);
+for(int i = 2; i <=n; i++) {
+    cin>>a[i];
+}
+string s;
+cin>>s;
 
-for(int i = 1; i <= n; i++) {
-    p[i] = max(p[i-1],a[i-1]);
+vector<pair<int,int>> pre(n+1);
+vector<bool> v(n+1);
+
+for(int i = 1; i <=n; i++) {
+    if(s[i-1]=='W')
+    pre[i].first=1;
+    else
+    pre[i].second=-1;
 }
 
-for(int i = 0; i < n; i++) {
-    if(i%2){
-        a[i] = max(p[i+1],a[i]);
-    }
-}
-// for(int i = 0; i <n;i++){
-// cout<<a[i]<<" ";
-// }
-// cout<<endl;
-int ans = 0;
-for(int i = 0; i <n; i++) {
-    if(i%2==0)continue;
-    if(i>0){
-    ans+=max(a[i-1]-a[i]+1,0LL);
-    a[i-1]-=max(a[i-1]-a[i]+1,0LL);
-    }if(i<n-1){
-    ans+=max(a[i+1]-a[i]+1,0LL);
-    a[i+1]-=max(a[i+1]-a[i]+1,0LL);
-    }
 
-
+for(int i = n; i >=1; i--) {
     
+    if(v[i])continue;
+    int j = i;
+    v[i]=1;
+    pair<int,int> p=pre[i];
+
+    while(j!=0){
+        int tm = j;
+        j=a[j];
+        
+    // cout<<tm<<'>'<<j<<endl;
+    if(v[j]){
+        pre[j].first+=p.first;
+        pre[j].second+=p.second;
+    }else{
+        pre[j].first+=pre[tm].first;
+        pre[j].second+=pre[tm].second;
+        p = pre[j];
+    }
+        
+        
+        v[j]=1;
+        
+
+    }
+    // cout<<endl;
+
+}
+int ans = 0;
+for(int i = 1; i <= n; i++) {
+    // cout<<i<<' '<<pre[i].first<< ' '<<pre[i].second<<endl;
+    if(pre[i].first+pre[i].second==0)ans++;
 }
 cout<<ans<<endl;
-
 }
 signed main(){
 input_tej_le;

@@ -61,39 +61,54 @@ From : IIITL
 void vulture(){
 int n;
 cin>>n;
-vector<int> a(n);
-vin(a,a.size());
+vector<int> k(n);
+vector<vector<int>> c(n);
 
-vector<int> p(n+1);
+vector<pair<int,int>> ans(n);
+for(int i = 0; i < n; i++) {
+    cin>>k[i];
 
-for(int i = 1; i <= n; i++) {
-    p[i] = max(p[i-1],a[i-1]);
+    for(int j = 0; j < k[i]; j++) {
+        int x;
+        cin>>x;
+        
+        ans[i].first = max(ans[i].first,x-j+1);
+        
+        
+        c[i].pb(x);
+    }
 }
 
 for(int i = 0; i < n; i++) {
-    if(i%2){
-        a[i] = max(p[i+1],a[i]);
-    }
+    ans[i].second = k[i];
 }
-// for(int i = 0; i <n;i++){
-// cout<<a[i]<<" ";
+
+// for(int i = 0; i < n; i++) {
+//     ans[i] = idx[i].first-idx[i].second+1;
+// }
+
+// for(int i = 0; i < n; i++) {
+//     cout<<idx[i].first<<' '<<idx[i].second<<endl;
 // }
 // cout<<endl;
-int ans = 0;
-for(int i = 0; i <n; i++) {
-    if(i%2==0)continue;
-    if(i>0){
-    ans+=max(a[i-1]-a[i]+1,0LL);
-    a[i-1]-=max(a[i-1]-a[i]+1,0LL);
-    }if(i<n-1){
-    ans+=max(a[i+1]-a[i]+1,0LL);
-    a[i+1]-=max(a[i+1]-a[i]+1,0LL);
-    }
 
-
-    
+sort all(ans);
+for(int i = 0; i <n;i++){
+cout<<ans[i].first<<" "<<ans[i].second<<endl;
 }
-cout<<ans<<endl;
+cout<<endl;
+
+int fans = 0;
+int a = 0;
+for(int i = 0; i < n; i++) {
+    if(fans<ans[i].first){
+                a += ans[i].first-fans;
+
+        fans+=ans[i].first-fans;
+    }
+    fans+=ans[i].second;
+}
+cout<<a<<endl;
 
 }
 signed main(){
