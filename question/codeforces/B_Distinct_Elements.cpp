@@ -61,24 +61,23 @@ From : IIITL
 void vulture(){
 int n;
 cin>>n;
+vector<int> ac(n);
+vin(ac,ac.size());
 vector<int> a(n);
-vin(a,a.size());
 
-vector<int> ans;
-for(int i = 1; i <= n; i++) {
-int s = 1; int e = i;
-while(s<=e){
-    int m = s+(e-s)/2;
-    if(a[i-m]>=m){
-        s=m+1;
-    }else{
-        e=m-1;
-    }
-}
-ans.pb(e);
+a[0]=1;
+int num = 1;
+for(int i = 1; i < n; i++) {
+   if(i-ac[i]+ac[i-1]<0){
+    num++;
+    a[i] = num;
+   }else{
+    a[i] = a[i-ac[i]+ac[i-1]];
+   }
+
 }
 for(int i = 0; i <n;i++){
-cout<<ans[i]<<" ";
+cout<<a[i]<<" ";
 }
 cout<<endl;
 }

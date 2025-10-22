@@ -58,29 +58,35 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-void vulture(){
-int n;
-cin>>n;
-vector<int> a(n);
-vin(a,a.size());
 
-vector<int> ans;
-for(int i = 1; i <= n; i++) {
-int s = 1; int e = i;
-while(s<=e){
+int sum(int n,int k){
+
+    if(n>k){
+        int l = n-k;
+        int ans = l*(2*(k-1)-(l-1))/2;
+        return (k*(k+1)/2)+ans;
+    }else{
+        return n*(n+1)/2;
+    }
+    
+}
+void vulture() {
+int k,x;
+cin>>k>>x;
+
+int s = 1,e = 2*k-1;
+
+
+while(s<e){
     int m = s+(e-s)/2;
-    if(a[i-m]>=m){
+    if(sum(m,k)<x){
         s=m+1;
     }else{
-        e=m-1;
+        e = m;
     }
 }
-ans.pb(e);
-}
-for(int i = 0; i <n;i++){
-cout<<ans[i]<<" ";
-}
-cout<<endl;
+cout<<s<<endl;
+
 }
 signed main(){
 input_tej_le;

@@ -2,15 +2,21 @@
 #include <unordered_set>
 #define int long long
 #define gcd(a, b) (__gcd(a, b))
-#define vin(a,n) for(int i=0;i<n;++i) cin>>a[i];
-#define vout(a,n) for(int i=0;i<n;++i) cout<<a[i]<<' ';
-#define all(a) (a.begin(), a.end()); 
+#define vin(a, n)               \
+    for (int i = 0; i < n; ++i) \
+        cin >> a[i];
+#define vout(a, n)              \
+    for (int i = 0; i < n; ++i) \
+        cout << a[i] << ' ';
+#define all(a) (a.begin(), a.end());
 #define pb push_back
-#define no cout<<"NO"<<endl;
-#define yes cout<<"YES"<<endl;
+#define no cout << "NO" << endl;
+#define yes cout << "YES" << endl;
 #define vi vector<int>
-#define input_tej_le ios::sync_with_stdio(false); cin.tie(NULL);
-using namespace  std;
+#define input_tej_le             \
+    ios::sync_with_stdio(false); \
+    cin.tie(NULL);
+using namespace std;
 /*
 ⣿⣿⣿⣿⣿⣿⣿⣿⡿⡫⣁⡴⣈⡼⣟⣭⣷⣿⡿⠿⡽⡟⠍⡙⢕⣢⣿⡟⣱⣿⣿⣿⣿⣿⠟⠋⡕⢼⣣⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⢿⣩⣾⣿⡿⣿⣿⢿⣿⣿⣿⣿⡿⠛⣙⢄⣽⣿⣿⣿⡃⢹⣿⣿⣾⢫⢿⢇⣿⡟⣼⣿⡇⠯⠈⠰⣶⣾⣶⡄⢻⣿⣿⢎⣮⡹⠗⣠⣵⣶⣿⣿⣷⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣿⡿⡫⣪⡾⣫⣾⣯⠾⠛⣋⣥⣶⡿⠟⣩⢔⣼⣾⣿⣿⠏⣼⣿⣿⢟⣿⡟⣡⢊⣼⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⣿⡿⣫⣷⣿⣿⣿⣫⢏⡼⣫⣾⣿⣿⣿⣃⢔⠟⣱⣿⣿⡿⣛⣿⣿⣿⣿⣿⣿⣏⡾⣼⡿⣸⣿⣿⠃⣴⠠⢹⣸⡿⣿⣇⡱⡊⣿⣎⣎⢷⡘⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
@@ -58,35 +64,73 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-void vulture(){
-int n;
-cin>>n;
-vector<int> a(n);
-vin(a,a.size());
 
-vector<int> ans;
-for(int i = 1; i <= n; i++) {
-int s = 1; int e = i;
-while(s<=e){
-    int m = s+(e-s)/2;
-    if(a[i-m]>=m){
-        s=m+1;
-    }else{
-        e=m-1;
+string decToBinary(int n)
+{
+
+    string bin = "";
+    while (n > 0)
+    {
+        // checking the mod
+        int bit = n % 2;
+        bin.push_back('0' + bit);
+        n /= 2;
     }
+
+    // reverse the string
+    reverse(bin.begin(), bin.end());
+    return bin;
 }
-ans.pb(e);
+
+void vulture()
+{
+    int n;
+    cin >> n;
+    if (n == 0)
+    {
+        yes return;
+    }
+    string s = decToBinary(n);
+    if (s[s.size() - 1] == '0')
+    {
+        string tmp = "";
+        for(int i = s.size()-1;i>=0;i--){
+            if(s[i]=='0'){
+                tmp = '0' + tmp;
+            }else{
+                break;
+            }
+        }    
+        s = tmp+s;
+        
+    }
+
+    string ts = s;
+    reverse all(s);
+
+    if (ts == s)
+    {
+        if (s.size() % 2)
+        {
+            if (s[s.size() / 2] == '1')
+            {
+                no return;
+            }
+        }yes
+    }
+    else
+    {
+        no
+    }
+
 }
-for(int i = 0; i <n;i++){
-cout<<ans[i]<<" ";
-}
-cout<<endl;
-}
-signed main(){
-input_tej_le;
-int t;
-cin>>t;
-while(t--){
-vulture();
-}
+signed main()
+{
+    input_tej_le;
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        vulture();
+    }
 }

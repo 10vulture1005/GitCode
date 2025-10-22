@@ -58,29 +58,36 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
+
+int mex(vector<int> &arr, int N)
+{
+
+  // sort the array
+  sort(arr.begin(), arr.end());
+
+  int mex = 0;
+  for (int idx = 0; idx < N; idx++)
+  {
+    if (arr[idx] == mex)
+    {
+      // Increment mex
+      mex += 1;
+    }
+  }
+
+  // Return mex as answer
+  return mex;
+}
+
+
 void vulture(){
 int n;
 cin>>n;
 vector<int> a(n);
 vin(a,a.size());
+int ans = mex(a,n);
+cout<<ans<<endl;
 
-vector<int> ans;
-for(int i = 1; i <= n; i++) {
-int s = 1; int e = i;
-while(s<=e){
-    int m = s+(e-s)/2;
-    if(a[i-m]>=m){
-        s=m+1;
-    }else{
-        e=m-1;
-    }
-}
-ans.pb(e);
-}
-for(int i = 0; i <n;i++){
-cout<<ans[i]<<" ";
-}
-cout<<endl;
 }
 signed main(){
 input_tej_le;
