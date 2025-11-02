@@ -2,21 +2,15 @@
 #include <unordered_set>
 #define int long long
 #define gcd(a, b) (__gcd(a, b))
-#define vin(a, n)               \
-    for (int i = 0; i < n; ++i) \
-        cin >> a[i];
-#define vout(a, n)              \
-    for (int i = 0; i < n; ++i) \
-        cout << a[i] << ' ';
-#define all(a) (a.begin(), a.end());
+#define vin(a,n) for(int i=0;i<n;++i) cin>>a[i];
+#define vout(a,n) for(int i=0;i<n;++i) cout<<a[i]<<' ';
+#define all(a) (a.begin(), a.end()); 
 #define pb push_back
-#define no cout << "NO" << endl;
-#define yes cout << "YES" << endl;
+#define no cout<<"NO"<<endl;
+#define yes cout<<"YES"<<endl;
 #define vi vector<int>
-#define input_tej_le             \
-    ios::sync_with_stdio(false); \
-    cin.tie(NULL);
-using namespace std;
+#define input_tej_le ios::sync_with_stdio(false); cin.tie(NULL);
+using namespace  std;
 /*
 ⣿⣿⣿⣿⣿⣿⣿⣿⡿⡫⣁⡴⣈⡼⣟⣭⣷⣿⡿⠿⡽⡟⠍⡙⢕⣢⣿⡟⣱⣿⣿⣿⣿⣿⠟⠋⡕⢼⣣⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⢿⣩⣾⣿⡿⣿⣿⢿⣿⣿⣿⣿⡿⠛⣙⢄⣽⣿⣿⣿⡃⢹⣿⣿⣾⢫⢿⢇⣿⡟⣼⣿⡇⠯⠈⠰⣶⣾⣶⡄⢻⣿⣿⢎⣮⡹⠗⣠⣵⣶⣿⣿⣷⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣿⡿⡫⣪⡾⣫⣾⣯⠾⠛⣋⣥⣶⡿⠟⣩⢔⣼⣾⣿⣿⠏⣼⣿⣿⢟⣿⡟⣡⢊⣼⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⣿⡿⣫⣷⣿⣿⣿⣫⢏⡼⣫⣾⣿⣿⣿⣃⢔⠟⣱⣿⣿⡿⣛⣿⣿⣿⣿⣿⣿⣏⡾⣼⡿⣸⣿⣿⠃⣴⠠⢹⣸⡿⣿⣇⡱⡊⣿⣎⣎⢷⡘⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
@@ -64,42 +58,110 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-void vulture()
-{
-    int n, m, x;
-    cin >> n >> x >> m;
-    int s = x;
-    int e = x;
-    vector<pair<int, int>> a;
-    while (m--)
-    {
-        int l, r;
-        cin >> l >> r;
-        if ((l<=s and s<=r) or (l<=e and e<=r))
-        {
-            // cout << l << ' ' << r << ' ' << s << ' ' << e << endl;
-            e = max(e, r);
-            s = min(s, l);
-        }
-    }
-    // cout << s << ' ' << e << endl;
+void vulture(){
+int n,k,x;
+cin>>n>>k>>x;
 
-    if (x <= e and x >= s)
-    {
-        cout << e - s + 1 << endl;
-    }
-    else
-    {
-        cout << 0 << endl;
-    }
+
+vector<int> a(n);
+vin(a,a.size());
+
+
+vector<int> ans;
+
+sort all(a);
+vector<int> pos;
+
+bool f=0,l=0;
+
+if(a[0]==0){
+
+f = 1;
+}if(a[n-1]==x){
+l = 1;
 }
-signed main()
-{
-    input_tej_le;
-    int t;
-    cin >> t;
-    while (t--)
-    {
-        vulture();
+
+vector<pair<int,int>> diffnavg;
+
+for(int i = -1; i <n; i++) {
+    if(i==-1){
+        if(f)continue;
+            diffnavg.pb({a[0],0});continue;
     }
+    if(i==n-1){
+        if(l)continue;
+         diffnavg.pb({x-a[n-1],x});continue;
+    }
+if((a[i]-a[i+1])!=-1){
+    diffnavg.pb({a[i+1]-a[i],(a[i]+a[i+1])/2});
+}
+}
+
+
+sort all(diffnavg);
+
+if(diffnavg.size()==0){
+    for(int i = 0; i <n;i++){
+    cout<<a[i]<<" ";
+    }
+    cout<<endl;
+}
+
+
+if(diffnavg.size()<k){
+// cout<<"wait"<<endl;
+    for(int i = diffnavg.size(); i>=0; i--) {
+    cout<<diffnavg[i].second<<' ';
+    k--;
+    diffnavg[i].first--;
+    }
+    vector<int> tm(n,1);
+    vector<int> anss;
+    int i = 0;
+    while(k--) {
+        if(k==0)break;
+        if(diffnavg[i].second==0 or diffnavg[i].second==x)continue;
+        if(diffnavg[i].first==0)continue;
+        if(diffnavg[i].first%2==0){
+            
+           
+            if(tm[i]%2)
+            anss.pb(diffnavg[i].second+tm[i]++);
+            else
+            anss.pb(diffnavg[i].second-tm[i]++);
+
+        }else{
+            
+            if(tm[i]%2)
+            anss.pb(diffnavg[i].second+tm[i]++);
+            else
+            anss.pb(diffnavg[i].second-tm[i]++);
+        }
+        i++;
+        i%=n;
+    }
+
+}else{
+    for(int i = diffnavg.size(); i>=0; i--) {
+    cout<<diffnavg[i].second<<' ';
+}
+
+}
+// for(int i = 0; i < diffnavg.size(); i++) {
+//     cout<<diffnavg[i].first<<' '<<diffnavg[i].second<<endl;
+// }
+
+
+
+
+
+
+}
+signed main(){
+input_tej_le;
+int t;
+cin>>t;
+while(t--){
+vulture();
+}
 }

@@ -2,21 +2,15 @@
 #include <unordered_set>
 #define int long long
 #define gcd(a, b) (__gcd(a, b))
-#define vin(a, n)               \
-    for (int i = 0; i < n; ++i) \
-        cin >> a[i];
-#define vout(a, n)              \
-    for (int i = 0; i < n; ++i) \
-        cout << a[i] << ' ';
-#define all(a) (a.begin(), a.end());
+#define vin(a,n) for(int i=0;i<n;++i) cin>>a[i];
+#define vout(a,n) for(int i=0;i<n;++i) cout<<a[i]<<' ';
+#define all(a) (a.begin(), a.end()); 
 #define pb push_back
-#define no cout << "NO" << endl;
-#define yes cout << "YES" << endl;
+#define no cout<<"NO"<<endl;
+#define yes cout<<"YES"<<endl;
 #define vi vector<int>
-#define input_tej_le             \
-    ios::sync_with_stdio(false); \
-    cin.tie(NULL);
-using namespace std;
+#define input_tej_le ios::sync_with_stdio(false); cin.tie(NULL);
+using namespace  std;
 /*
 ⣿⣿⣿⣿⣿⣿⣿⣿⡿⡫⣁⡴⣈⡼⣟⣭⣷⣿⡿⠿⡽⡟⠍⡙⢕⣢⣿⡟⣱⣿⣿⣿⣿⣿⠟⠋⡕⢼⣣⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⢿⣩⣾⣿⡿⣿⣿⢿⣿⣿⣿⣿⡿⠛⣙⢄⣽⣿⣿⣿⡃⢹⣿⣿⣾⢫⢿⢇⣿⡟⣼⣿⡇⠯⠈⠰⣶⣾⣶⡄⢻⣿⣿⢎⣮⡹⠗⣠⣵⣶⣿⣿⣷⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣿⡿⡫⣪⡾⣫⣾⣯⠾⠛⣋⣥⣶⡿⠟⣩⢔⣼⣾⣿⣿⠏⣼⣿⣿⢟⣿⡟⣡⢊⣼⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⣿⡿⣫⣷⣿⣿⣿⣫⢏⡼⣫⣾⣿⣿⣿⣃⢔⠟⣱⣿⣿⡿⣛⣿⣿⣿⣿⣿⣿⣏⡾⣼⡿⣸⣿⣿⠃⣴⠠⢹⣸⡿⣿⣇⡱⡊⣿⣎⣎⢷⡘⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
@@ -64,42 +58,57 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-void vulture()
-{
-    int n, m, x;
-    cin >> n >> x >> m;
-    int s = x;
-    int e = x;
-    vector<pair<int, int>> a;
-    while (m--)
-    {
-        int l, r;
-        cin >> l >> r;
-        if ((l<=s and s<=r) or (l<=e and e<=r))
-        {
-            // cout << l << ' ' << r << ' ' << s << ' ' << e << endl;
-            e = max(e, r);
-            s = min(s, l);
+
+
+vector<int> sieve(int n) {
+    
+    // creation of boolean array
+    vector<bool> prime(n + 1, true);
+    for (int p = 2; p * p <= n; p++) {
+        if (prime[p] == true) {
+            
+            // marking as false
+            for (int i = p * p; i <= n; i += p)
+                prime[i] = false;
         }
     }
-    // cout << s << ' ' << e << endl;
-
-    if (x <= e and x >= s)
-    {
-        cout << e - s + 1 << endl;
+    
+    vector<int> res;
+    for (int p = 2; p <= n; p++){
+        if (prime[p]){ 
+            res.push_back(p);
+        }
     }
-    else
-    {
-        cout << 0 << endl;
+    return res;
+}
+
+void vulture(){
+int n;
+cin>>n;
+vector<int> a(n);
+vin(a,a.size());
+int ans = 1e18;
+vector<int> prime = sieve(100);
+
+
+for(int i = 0; i < n; i++) {
+    for(auto it:prime){
+        if(a[i]%it!=0){
+            ans = min(ans,it);
+            break;
+        }
     }
 }
-signed main()
-{
-    input_tej_le;
-    int t;
-    cin >> t;
-    while (t--)
-    {
-        vulture();
-    }
+cout<<ans<<endl;
+
+
+
+}
+signed main(){
+input_tej_le;
+int t;
+cin>>t;
+while(t--){
+vulture();
+}
 }

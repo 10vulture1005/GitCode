@@ -2,21 +2,15 @@
 #include <unordered_set>
 #define int long long
 #define gcd(a, b) (__gcd(a, b))
-#define vin(a, n)               \
-    for (int i = 0; i < n; ++i) \
-        cin >> a[i];
-#define vout(a, n)              \
-    for (int i = 0; i < n; ++i) \
-        cout << a[i] << ' ';
-#define all(a) (a.begin(), a.end());
+#define vin(a,n) for(int i=0;i<n;++i) cin>>a[i];
+#define vout(a,n) for(int i=0;i<n;++i) cout<<a[i]<<' ';
+#define all(a) (a.begin(), a.end()); 
 #define pb push_back
-#define no cout << "NO" << endl;
-#define yes cout << "YES" << endl;
+#define no cout<<"NO"<<endl;
+#define yes cout<<"YES"<<endl;
 #define vi vector<int>
-#define input_tej_le             \
-    ios::sync_with_stdio(false); \
-    cin.tie(NULL);
-using namespace std;
+#define input_tej_le ios::sync_with_stdio(false); cin.tie(NULL);
+using namespace  std;
 /*
 ⣿⣿⣿⣿⣿⣿⣿⣿⡿⡫⣁⡴⣈⡼⣟⣭⣷⣿⡿⠿⡽⡟⠍⡙⢕⣢⣿⡟⣱⣿⣿⣿⣿⣿⠟⠋⡕⢼⣣⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⢿⣩⣾⣿⡿⣿⣿⢿⣿⣿⣿⣿⡿⠛⣙⢄⣽⣿⣿⣿⡃⢹⣿⣿⣾⢫⢿⢇⣿⡟⣼⣿⡇⠯⠈⠰⣶⣾⣶⡄⢻⣿⣿⢎⣮⡹⠗⣠⣵⣶⣿⣿⣷⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣿⡿⡫⣪⡾⣫⣾⣯⠾⠛⣋⣥⣶⡿⠟⣩⢔⣼⣾⣿⣿⠏⣼⣿⣿⢟⣿⡟⣡⢊⣼⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⣿⡿⣫⣷⣿⣿⣿⣫⢏⡼⣫⣾⣿⣿⣿⣃⢔⠟⣱⣿⣿⡿⣛⣿⣿⣿⣿⣿⣿⣏⡾⣼⡿⣸⣿⣿⠃⣴⠠⢹⣸⡿⣿⣇⡱⡊⣿⣎⣎⢷⡘⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
@@ -64,42 +58,46 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-void vulture()
-{
-    int n, m, x;
-    cin >> n >> x >> m;
-    int s = x;
-    int e = x;
-    vector<pair<int, int>> a;
-    while (m--)
-    {
-        int l, r;
-        cin >> l >> r;
-        if ((l<=s and s<=r) or (l<=e and e<=r))
-        {
-            // cout << l << ' ' << r << ' ' << s << ' ' << e << endl;
-            e = max(e, r);
-            s = min(s, l);
-        }
-    }
-    // cout << s << ' ' << e << endl;
+void vulture(){
+int n;
+cin>>n;
+string s;
+cin>>s;
+map<int,int> m;
 
-    if (x <= e and x >= s)
-    {
-        cout << e - s + 1 << endl;
-    }
-    else
-    {
-        cout << 0 << endl;
-    }
+vector<int> p(n);
+p[0] = s[0]-'0';
+for(int i = 1; i < n; i++) {
+    p[i] = p[i-1]+(s[i]-'0');
 }
-signed main()
-{
-    input_tej_le;
-    int t;
-    cin >> t;
-    while (t--)
-    {
-        vulture();
+// for(int i = 0; i <n;i++){
+// cout<<p[i]<<" ";
+// }
+// cout<<endl;
+
+int ans = 0;
+for(int i = 0; i < n; i++) {
+    if(p[i]==i+1){
+        ans++;
     }
+    m[p[i]-(i+1)]++;
+}
+
+// for(auto it:m){
+// cout<<it.first<<' '<<it.second<<endl;
+// }
+
+for(auto it:m){
+ans+=(it.second*(it.second-1))/2;
+}
+cout<<ans<<endl;
+
+}
+signed main(){
+input_tej_le;
+int t;
+cin>>t;
+while(t--){
+vulture();
+}
 }

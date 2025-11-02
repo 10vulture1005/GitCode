@@ -2,21 +2,15 @@
 #include <unordered_set>
 #define int long long
 #define gcd(a, b) (__gcd(a, b))
-#define vin(a, n)               \
-    for (int i = 0; i < n; ++i) \
-        cin >> a[i];
-#define vout(a, n)              \
-    for (int i = 0; i < n; ++i) \
-        cout << a[i] << ' ';
-#define all(a) (a.begin(), a.end());
+#define vin(a,n) for(int i=0;i<n;++i) cin>>a[i];
+#define vout(a,n) for(int i=0;i<n;++i) cout<<a[i]<<' ';
+#define all(a) (a.begin(), a.end()); 
 #define pb push_back
-#define no cout << "NO" << endl;
-#define yes cout << "YES" << endl;
+#define no cout<<"NO"<<endl;
+#define yes cout<<"YES"<<endl;
 #define vi vector<int>
-#define input_tej_le             \
-    ios::sync_with_stdio(false); \
-    cin.tie(NULL);
-using namespace std;
+#define input_tej_le ios::sync_with_stdio(false); cin.tie(NULL);
+using namespace  std;
 /*
 ⣿⣿⣿⣿⣿⣿⣿⣿⡿⡫⣁⡴⣈⡼⣟⣭⣷⣿⡿⠿⡽⡟⠍⡙⢕⣢⣿⡟⣱⣿⣿⣿⣿⣿⠟⠋⡕⢼⣣⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⢿⣩⣾⣿⡿⣿⣿⢿⣿⣿⣿⣿⡿⠛⣙⢄⣽⣿⣿⣿⡃⢹⣿⣿⣾⢫⢿⢇⣿⡟⣼⣿⡇⠯⠈⠰⣶⣾⣶⡄⢻⣿⣿⢎⣮⡹⠗⣠⣵⣶⣿⣿⣷⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣿⡿⡫⣪⡾⣫⣾⣯⠾⠛⣋⣥⣶⡿⠟⣩⢔⣼⣾⣿⣿⠏⣼⣿⣿⢟⣿⡟⣡⢊⣼⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⣿⡿⣫⣷⣿⣿⣿⣫⢏⡼⣫⣾⣿⣿⣿⣃⢔⠟⣱⣿⣿⡿⣛⣿⣿⣿⣿⣿⣿⣏⡾⣼⡿⣸⣿⣿⠃⣴⠠⢹⣸⡿⣿⣇⡱⡊⣿⣎⣎⢷⡘⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
@@ -64,42 +58,50 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-void vulture()
-{
-    int n, m, x;
-    cin >> n >> x >> m;
-    int s = x;
-    int e = x;
-    vector<pair<int, int>> a;
-    while (m--)
-    {
-        int l, r;
-        cin >> l >> r;
-        if ((l<=s and s<=r) or (l<=e and e<=r))
-        {
-            // cout << l << ' ' << r << ' ' << s << ' ' << e << endl;
-            e = max(e, r);
-            s = min(s, l);
-        }
-    }
-    // cout << s << ' ' << e << endl;
-
-    if (x <= e and x >= s)
-    {
-        cout << e - s + 1 << endl;
-    }
-    else
-    {
-        cout << 0 << endl;
-    }
+void vulture(){
+int n;
+cin>>n;
+vector<int> a(n);
+vin(a,a.size());
+vector<int> ans;
+int ct1 = count(a.begin(),a.end(),1);
+if(ct1==0){
+    cout<<0<<endl;return;
 }
-signed main()
-{
-    input_tej_le;
-    int t;
-    cin >> t;
-    while (t--)
-    {
-        vulture();
-    }
+int ct = 1;
+bool e = 0;
+for(int i = 0; i < n; i++) {
+if(a[i]==1){
+    e = 1;
+}
+if(!e)continue;
+    if(a[i]==0){
+    ct++;
+}else{
+    ans.pb(ct);
+    ct = 1;
+}    
+}
+if(ans.size()==0){
+    cout<<1<<endl;
+    return;
+}
+
+// for(int i = 0; i <ans.size();i++){
+// cout<<ans[i]<<" ";
+// }
+// cout<<endl;
+int x =1;
+for(int i = 0; i <ans.size();i++){
+x*=ans[i];
+}
+cout<<x<<endl;
+}
+signed main(){
+input_tej_le;
+int t=1;
+// cin>>t;
+while(t--){
+vulture();
+}
 }

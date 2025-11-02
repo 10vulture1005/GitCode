@@ -98,7 +98,9 @@
     "xlocnum": "cpp",
     "xloctime": "cpp",
     "xmemory": "cpp",
-    "xtr1common": "cpp"
+    "xtr1common": "cpp",
+    "flat_map": "cpp",
+    "flat_set": "cpp"
   },
 
   // Auto-run Python listener when terminal opens

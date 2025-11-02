@@ -2,21 +2,15 @@
 #include <unordered_set>
 #define int long long
 #define gcd(a, b) (__gcd(a, b))
-#define vin(a, n)               \
-    for (int i = 0; i < n; ++i) \
-        cin >> a[i];
-#define vout(a, n)              \
-    for (int i = 0; i < n; ++i) \
-        cout << a[i] << ' ';
-#define all(a) (a.begin(), a.end());
+#define vin(a,n) for(int i=0;i<n;++i) cin>>a[i];
+#define vout(a,n) for(int i=0;i<n;++i) cout<<a[i]<<' ';
+#define all(a) (a.begin(), a.end()); 
 #define pb push_back
-#define no cout << "NO" << endl;
-#define yes cout << "YES" << endl;
+#define no cout<<"NO"<<endl;
+#define yes cout<<"YES"<<endl;
 #define vi vector<int>
-#define input_tej_le             \
-    ios::sync_with_stdio(false); \
-    cin.tie(NULL);
-using namespace std;
+#define input_tej_le ios::sync_with_stdio(false); cin.tie(NULL);
+using namespace  std;
 /*
 ⣿⣿⣿⣿⣿⣿⣿⣿⡿⡫⣁⡴⣈⡼⣟⣭⣷⣿⡿⠿⡽⡟⠍⡙⢕⣢⣿⡟⣱⣿⣿⣿⣿⣿⠟⠋⡕⢼⣣⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⢿⣩⣾⣿⡿⣿⣿⢿⣿⣿⣿⣿⡿⠛⣙⢄⣽⣿⣿⣿⡃⢹⣿⣿⣾⢫⢿⢇⣿⡟⣼⣿⡇⠯⠈⠰⣶⣾⣶⡄⢻⣿⣿⢎⣮⡹⠗⣠⣵⣶⣿⣿⣷⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣿⡿⡫⣪⡾⣫⣾⣯⠾⠛⣋⣥⣶⡿⠟⣩⢔⣼⣾⣿⣿⠏⣼⣿⣿⢟⣿⡟⣡⢊⣼⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⣿⡿⣫⣷⣿⣿⣿⣫⢏⡼⣫⣾⣿⣿⣿⣃⢔⠟⣱⣿⣿⡿⣛⣿⣿⣿⣿⣿⣿⣏⡾⣼⡿⣸⣿⣿⠃⣴⠠⢹⣸⡿⣿⣇⡱⡊⣿⣎⣎⢷⡘⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
@@ -64,42 +58,117 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-void vulture()
-{
-    int n, m, x;
-    cin >> n >> x >> m;
-    int s = x;
-    int e = x;
-    vector<pair<int, int>> a;
-    while (m--)
-    {
-        int l, r;
-        cin >> l >> r;
-        if ((l<=s and s<=r) or (l<=e and e<=r))
-        {
-            // cout << l << ' ' << r << ' ' << s << ' ' << e << endl;
-            e = max(e, r);
-            s = min(s, l);
-        }
-    }
-    // cout << s << ' ' << e << endl;
-
-    if (x <= e and x >= s)
-    {
-        cout << e - s + 1 << endl;
-    }
-    else
-    {
-        cout << 0 << endl;
-    }
+void vulture(){
+int n;
+cin>>n;
+vector<string> a(n);
+for(int i = 0; i < n; i++) {
+    cin>>a[i];
 }
-signed main()
-{
-    input_tej_le;
-    int t;
-    cin >> t;
-    while (t--)
-    {
-        vulture();
-    }
+
+
+for(int i = 0;i<n;i++){
+    int ct = 0;
+for(int j = 0;j<n;j++){
+
+if(a[i][j]=='#'){
+    ct++;
+    if(ct>2){
+    no
+    return;
+}
+}else{
+
+    ct=0;
+}
+}
+}
+
+for(int i = 0;i<n;i++){
+    int ct = 0;
+for(int j = 0;j<n;j++){
+if(a[j][i]=='#'){
+    ct++;
+    if(ct>2){
+    no
+    return;
+}
+}else{
+
+    ct=0;
+}
+}
+}
+
+
+for(int i = 0;i<n;i++){
+    bool ap=0;
+    bool w = 0;
+for(int j = 0;j<n;j++){
+if(a[i][j]=='#'){
+    ap=1;
+}if(ap and a[i][j]=='.'){
+    w =1;
+}
+if(a[i][j]=='#' and ap and w){
+    no
+    return;
+}
+}
+}
+
+
+for(int i = 0;i<n;i++){
+    bool ap=0;
+    bool w = 0;
+for(int j = 0;j<n;j++){
+if(a[j][i]=='#'){
+    ap=1;
+}if(ap and a[j][i]=='.'){
+    w =1;
+}
+if(a[j][i]=='#' and ap and w){
+    no
+    return;
+}
+}
+}
+// yes
+int ct = 0;
+for(int i = 0;i<n;i++){
+for(int j = 0;j<n;j++){
+if(a[i][j]=='#')ct++;
+}
+}
+
+for(int i = 0;i<n-1;i++){
+for(int j = 0;j<n-1;j++){
+if(a[i][j]=='#' and a[i+1][j+1]=='#' and a[i+1][j]=='#' and a[i][j+1]=='#'){
+if(ct>4){
+    no
+    return;
+}
+}
+}
+}
+
+
+for(int i = 0;i<n;i++){
+for(int j = 0;j<n;j++){
+for(int k = 0; k < n; k++) {
+    
+}
+}
+}
+yes
+
+
+}
+signed main(){
+input_tej_le;
+int t;
+cin>>t;
+while(t--){
+vulture();
+}
 }

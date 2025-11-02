@@ -2,21 +2,15 @@
 #include <unordered_set>
 #define int long long
 #define gcd(a, b) (__gcd(a, b))
-#define vin(a, n)               \
-    for (int i = 0; i < n; ++i) \
-        cin >> a[i];
-#define vout(a, n)              \
-    for (int i = 0; i < n; ++i) \
-        cout << a[i] << ' ';
-#define all(a) (a.begin(), a.end());
+#define vin(a,n) for(int i=0;i<n;++i) cin>>a[i];
+#define vout(a,n) for(int i=0;i<n;++i) cout<<a[i]<<' ';
+#define all(a) (a.begin(), a.end()); 
 #define pb push_back
-#define no cout << "NO" << endl;
-#define yes cout << "YES" << endl;
+#define no cout<<"NO"<<endl;
+#define yes cout<<"YES"<<endl;
 #define vi vector<int>
-#define input_tej_le             \
-    ios::sync_with_stdio(false); \
-    cin.tie(NULL);
-using namespace std;
+#define input_tej_le ios::sync_with_stdio(false); cin.tie(NULL);
+using namespace  std;
 /*
 ⣿⣿⣿⣿⣿⣿⣿⣿⡿⡫⣁⡴⣈⡼⣟⣭⣷⣿⡿⠿⡽⡟⠍⡙⢕⣢⣿⡟⣱⣿⣿⣿⣿⣿⠟⠋⡕⢼⣣⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⢿⣩⣾⣿⡿⣿⣿⢿⣿⣿⣿⣿⡿⠛⣙⢄⣽⣿⣿⣿⡃⢹⣿⣿⣾⢫⢿⢇⣿⡟⣼⣿⡇⠯⠈⠰⣶⣾⣶⡄⢻⣿⣿⢎⣮⡹⠗⣠⣵⣶⣿⣿⣷⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣿⡿⡫⣪⡾⣫⣾⣯⠾⠛⣋⣥⣶⡿⠟⣩⢔⣼⣾⣿⣿⠏⣼⣿⣿⢟⣿⡟⣡⢊⣼⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⣿⡿⣫⣷⣿⣿⣿⣫⢏⡼⣫⣾⣿⣿⣿⣃⢔⠟⣱⣿⣿⡿⣛⣿⣿⣿⣿⣿⣿⣏⡾⣼⡿⣸⣿⣿⠃⣴⠠⢹⣸⡿⣿⣇⡱⡊⣿⣎⣎⢷⡘⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
@@ -64,42 +58,112 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-void vulture()
-{
-    int n, m, x;
-    cin >> n >> x >> m;
-    int s = x;
-    int e = x;
-    vector<pair<int, int>> a;
-    while (m--)
-    {
-        int l, r;
-        cin >> l >> r;
-        if ((l<=s and s<=r) or (l<=e and e<=r))
-        {
-            // cout << l << ' ' << r << ' ' << s << ' ' << e << endl;
-            e = max(e, r);
-            s = min(s, l);
+
+
+
+vector<int> findMaxSubarray(const std::vector<int>& nums) {
+    vector<int> result(3);
+    result[0] = -1e9; 
+    result[1] = -1;
+    result[2] = -1;
+
+    long long currentSum = 0;
+    int currentStart = 0;
+
+    for (int i = 0; i < nums.size(); ++i) {
+        currentSum += nums[i];
+
+        if (currentSum > result[0]) {
+            result[0]= currentSum;
+            result[1] = currentStart;
+            result[2] = i;
+        }
+
+        if (currentSum < 0) {
+            currentSum = 0;
+            currentStart = i + 1; 
         }
     }
-    // cout << s << ' ' << e << endl;
 
-    if (x <= e and x >= s)
-    {
-        cout << e - s + 1 << endl;
+    if (result[0] == -1e9) {
+        long long maxNegative = -1e9;
+        int maxNegativeIndex = -1;
+        for (int i = 0; i < nums.size(); ++i) {
+            if (nums[i] > maxNegative) {
+                maxNegative = nums[i];
+                maxNegativeIndex = i;
+            }
+        }
+        result[0] = maxNegative;
+        result[1] = maxNegativeIndex;
+        result[2] = maxNegativeIndex;
     }
-    else
-    {
-        cout << 0 << endl;
-    }
+
+    return result;
 }
-signed main()
-{
-    input_tej_le;
-    int t;
-    cin >> t;
-    while (t--)
-    {
-        vulture();
-    }
+
+void vulture(){
+int n;
+cin>>n;
+vector<int> a(n);
+vin(a,a.size());
+vector<int> tmp1(n-1);
+
+for(int i = 0; i < n-1; i++) {
+    tmp1[i]=a[i];
+}
+
+vector<int> tmp2(n-1);
+for(int i = 0; i < n-1; i++) {
+    tmp2[i]=a[i+1];
+}
+vector<int> msum1 = findMaxSubarray(tmp1);
+vector<int> msum2 = findMaxSubarray(tmp2);
+
+int sum = accumulate(a.begin(),a.end(),0LL);
+
+if(msum1[0]>msum2[0]){
+if(sum>msum1[0]){
+    yes
+}else{
+    // cout<<msum[1]<<' '<<msum[2]<<endl;
+    no
+}
+}else{
+if(sum>msum2[0]){
+    yes
+}else{
+    // cout<<msum[1]<<' '<<msum[2]<<endl;
+    no
+}
+}
+
+// vector<int> pre(n+1);
+// for(int i = 1; i <= n; i++) {
+//     pre[i]=pre[i-1]+a[i-1];
+// }
+// vector<int> suf(n+1);
+
+// for(int i = n-1; i >=0; i--) {
+//     suf[i] = suf[i+1]+a[i];
+// }
+
+// for(int i = 0; i <n;i++){
+//     if(pre[i+1]<=0 or suf[i]<=0){
+//         no
+//         return;
+//     }
+
+// }
+// yes
+
+
+}
+signed main(){
+input_tej_le;
+int t;
+cin>>t;
+while(t--){
+vulture();
+}
 }

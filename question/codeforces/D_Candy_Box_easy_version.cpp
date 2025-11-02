@@ -66,32 +66,49 @@ From : IIITL
 */
 void vulture()
 {
-    int n, m, x;
-    cin >> n >> x >> m;
-    int s = x;
-    int e = x;
-    vector<pair<int, int>> a;
-    while (m--)
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    vin(a, a.size());
+    vector<int> cnt(n + 1);
+    for (int i = 0; i < n; i++)
     {
-        int l, r;
-        cin >> l >> r;
-        if ((l<=s and s<=r) or (l<=e and e<=r))
+        cnt[a[i]]++;
+    }
+
+    sort all(cnt);
+
+    
+    vector<int> ffre(n + 1);
+    int ans = cnt[n];
+    int prev = cnt[n];
+    for (int i = n-1; i >=0; i--)
+    {
+        
+        if (cnt[i] >= prev)
         {
-            // cout << l << ' ' << r << ' ' << s << ' ' << e << endl;
-            e = max(e, r);
-            s = min(s, l);
+            
+            ans += prev - 1;
+            prev -= 1;
+            if (prev == 0)
+            break;
+            
+        }
+        else
+        {
+            ans += cnt[i];
+            prev = cnt[i];
+            if (prev == 0)
+            break;
         }
     }
-    // cout << s << ' ' << e << endl;
+    cout << ans << endl;
 
-    if (x <= e and x >= s)
-    {
-        cout << e - s + 1 << endl;
-    }
-    else
-    {
-        cout << 0 << endl;
-    }
+    // for (int i = 0; i < n; i++)
+    // {
+    //     cout << cnt[i + 1] << " ";
+    // }
+    // cout << endl;
 }
 signed main()
 {
