@@ -4,7 +4,7 @@
 #define gcd(a, b) (__gcd(a, b))
 #define vin(a,n) for(int i=0;i<n;++i) cin>>a[i];
 #define vout(a,n) for(int i=0;i<n;++i) cout<<a[i]<<' ';
-#define all(a) (a.begin(), a.end()); 
+#define all(a) (a.begin(), a.end());
 #define pb push_back
 #define no cout<<"NO"<<endl;
 #define yes cout<<"YES"<<endl;
@@ -18,28 +18,31 @@ From : IIITL
 ==========================================================
 */
 void vulture(){
-    int n;
-        cin >> n;
-        vector<int> a(n);
-        for (int i = 0; i < n; i++)
-            cin >> a[i];
+   int n;
+       cin >> n;
+       vector<int> a(n);
+       for (int i = 0; i < n; i++)
+           cin >> a[i];
 
-        sort(a.begin(), a.end());
 
-        bool isPossible = true;
-        for (int i = 0; i < n - 1; i++)
-        {
-            if (i % 2)
-            {
-                if (a[i + 1] > a[i])
-                {
-                    no 
-                    return;
-                }
-            }
-        }
+       sort(a.begin(), a.end());
 
-       yes
+
+       bool isPossible = true;
+       for (int i = 0; i < n - 1; i++)
+       {
+           if (i % 2)
+           {
+               if (a[i + 1] > a[i])
+               {
+                   no
+                   return;
+               }
+           }
+       }
+
+
+      yes
 }
 signed main(){
 input_tej_le;

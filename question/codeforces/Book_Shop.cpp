@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 #include <unordered_set>
-#define int long long
+// #define int long long
 #define gcd(a, b) (__gcd(a, b))
 #define vin(a,n) for(int i=0;i<n;++i) cin>>a[i];
 #define vout(a,n) for(int i=0;i<n;++i) cout<<a[i]<<' ';
@@ -13,38 +13,34 @@
 using namespace  std;
 /*
 ==========================================================
-Author: Vaidik Saxena
+Author: Vaidik Saxena 
 From : IIITL
 ==========================================================
 */
 void vulture(){
-    int n;
-        cin >> n;
-        vector<int> a(n);
-        for (int i = 0; i < n; i++)
-            cin >> a[i];
-
-        sort(a.begin(), a.end());
-
-        bool isPossible = true;
-        for (int i = 0; i < n - 1; i++)
-        {
-            if (i % 2)
-            {
-                if (a[i + 1] > a[i])
-                {
-                    no 
-                    return;
-                }
-            }
-        }
-
-       yes
+    int n,x;
+    cin>>n>>x;
+    vector<int> p(n);
+    vector<int> c(n);
+    vin(c,n);
+    vin(p,n);
+    vector<vector<int>> dp(n+1,vector<int>(x+1,0));
+    for(int i = 1;i<=n;i++){
+        for(int j = 1;j<=x;j++){
+            dp[i][j] = dp[i-1][j];
+            if(c[i-1]<=j){
+                dp[i][j] = max(dp[i-1][j],dp[i-1][j-c[i-1]]+p[i-1]);
+            } 
+        }   
+    }
+    cout<<dp[n][x]<<endl;
+    
+    
 }
 signed main(){
 input_tej_le;
-int t;
-cin>>t;
+int t=1;
+// cin>>t;
 while(t--){
 vulture();
 }
