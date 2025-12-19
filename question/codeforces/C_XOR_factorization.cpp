@@ -2,15 +2,21 @@
 #include <unordered_set>
 #define int long long
 #define gcd(a, b) (__gcd(a, b))
-#define vin(a,n) for(int i=0;i<n;++i) cin>>a[i];
-#define vout(a,n) for(int i=0;i<n;++i) cout<<a[i]<<' ';
-#define all(a) (a.begin(), a.end()); 
+#define vin(a, n)               \
+    for (int i = 0; i < n; ++i) \
+        cin >> a[i];
+#define vout(a, n)              \
+    for (int i = 0; i < n; ++i) \
+        cout << a[i] << ' ';
+#define all(a) (a.begin(), a.end());
 #define pb push_back
-#define no cout<<"NO"<<endl;
-#define yes cout<<"YES"<<endl;
+#define no cout << "NO" << endl;
+#define yes cout << "YES" << endl;
 #define vi vector<int>
-#define input_tej_le ios::sync_with_stdio(false); cin.tie(NULL);
-using namespace  std;
+#define input_tej_le             \
+    ios::sync_with_stdio(false); \
+    cin.tie(NULL);
+using namespace std;
 /*
 ⣿⣿⣿⣿⣿⣿⣿⣿⡿⡫⣁⡴⣈⡼⣟⣭⣷⣿⡿⠿⡽⡟⠍⡙⢕⣢⣿⡟⣱⣿⣿⣿⣿⣿⠟⠋⡕⢼⣣⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⢿⣩⣾⣿⡿⣿⣿⢿⣿⣿⣿⣿⡿⠛⣙⢄⣽⣿⣿⣿⡃⢹⣿⣿⣾⢫⢿⢇⣿⡟⣼⣿⡇⠯⠈⠰⣶⣾⣶⡄⢻⣿⣿⢎⣮⡹⠗⣠⣵⣶⣿⣿⣷⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣿⡿⡫⣪⡾⣫⣾⣯⠾⠛⣋⣥⣶⡿⠟⣩⢔⣼⣾⣿⣿⠏⣼⣿⣿⢟⣿⡟⣡⢊⣼⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⣿⡿⣫⣷⣿⣿⣿⣫⢏⡼⣫⣾⣿⣿⣿⣃⢔⠟⣱⣿⣿⡿⣛⣿⣿⣿⣿⣿⣿⣏⡾⣼⡿⣸⣿⣿⠃⣴⠠⢹⣸⡿⣿⣇⡱⡊⣿⣎⣎⢷⡘⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
@@ -58,52 +64,70 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-void vulture(){
-    int n;
-    cin>>n;
-    vector<int> a(n);
-    vin(a,a.size());
-    vector<int> b(n);
-    vin(b,a.size());
-    int idx = -1;
-    for(int i = 0; i < n; i++) {
-        if(a[i]!=b[i]){idx=i;break;}
-    }
-    int ans=1;
-    int e = n;
-    for(int i = idx; i < n-1; i++) {
-        if(b[i]<=b[i+1]){
-            ans++;
-            if(i==n-2){
-                e=n;
-            }
-        }else{
-            e=i;
-            break;
+void vulture()
+{
+    int n, k;
+    cin >> n >> k;
+    if (k % 2 == 1)
+    {
+        for (int i = 0; i < k; i++)
+        {
+            cout << n << " ";
         }
+        cout << endl;
     }
-    int s = idx+1;
-    for(int i = idx; i >=1; i--) {
-        if(b[i]>=b[i-1]){
-            if(i==1){
-                s=1;
+    else
+    {
+
+        int msb = -1, secmsb = -1;
+        for (int i = 0; i < 31; i++)
+        {
+            if ((n >> i) & 1LL)
+            {
+                secmsb = msb;
+                msb = i;
             }
-            ans++;
-        }else{
-            s=i+1;
-            break;
         }
-        
+
+        for (int i = 0; i < k - 2; i++)
+        {
+            cout << n << " ";
+        }
+
+        int x = 0, y = 0;
+
+        if (secmsb == -1)
+        {
+            x = n;
+            y = 0;
+        }
+        else
+        {
+            y = (1LL << secmsb);
+            x = n ^ y;
+
+            for (int i = 0; i < 31; i++)
+            {
+                if (!((n >> i) & 1))
+                {
+                    if ((y | (1 << i)) <= n && (x | (1 << i)) <= n)
+                    {
+                        y |= (1 << i);
+                        x |= (1 << i);
+                    }
+                }
+            }
+        }
+        cout << x << ' ' << y << endl;
     }
-    cout<<s<<' '<<s+ans-1<<endl;
-
-
 }
-signed main(){
-input_tej_le;
-int t;
-cin>>t;
-while(t--){
-vulture();
-}
+signed main()
+{
+    input_tej_le;
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        vulture();
+    }
 }

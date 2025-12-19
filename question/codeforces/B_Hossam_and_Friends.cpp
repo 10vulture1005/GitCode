@@ -59,45 +59,18 @@ From : IIITL
 ==========================================================
 */
 void vulture(){
-    int n;
-    cin>>n;
-    vector<int> a(n);
-    vin(a,a.size());
-    vector<int> b(n);
-    vin(b,a.size());
-    int idx = -1;
-    for(int i = 0; i < n; i++) {
-        if(a[i]!=b[i]){idx=i;break;}
-    }
-    int ans=1;
-    int e = n;
-    for(int i = idx; i < n-1; i++) {
-        if(b[i]<=b[i+1]){
-            ans++;
-            if(i==n-2){
-                e=n;
-            }
-        }else{
-            e=i;
-            break;
-        }
-    }
-    int s = idx+1;
-    for(int i = idx; i >=1; i--) {
-        if(b[i]>=b[i-1]){
-            if(i==1){
-                s=1;
-            }
-            ans++;
-        }else{
-            s=i+1;
-            break;
-        }
+    int n,m;
+    cin>>n>>m;
+    vector<int> a(n+1);
+    
+
+
+    while(m--){
+        int a,b;
+        cin>>a>>b;
         
+
     }
-    cout<<s<<' '<<s+ans-1<<endl;
-
-
 }
 signed main(){
 input_tej_le;
