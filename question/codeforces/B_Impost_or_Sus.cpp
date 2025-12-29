@@ -59,12 +59,23 @@ From : IIITL
 ==========================================================
 */
 void vulture(){
-    int n;
-    cin>>n;
-    vector<int> a(n);
-    vin(a,a.size());
-    sort all(a);
-    int ans = max(a[0],a[1]-a[0]);
+    string s;
+    cin>>s;
+    int ans = 0;
+    int n=s.size();
+    for(int i = 0; i < n; i++) {
+        if((i==0 or i==n-1) and s[i]=='u'){
+            ans++;
+            s[i]='s';
+            continue;
+        }
+        if(s[i]=='u'){
+            if(s[i+1]=='u'){
+                ans++;
+                s[i+1]='s';
+            }
+        }
+    }
     cout<<ans<<endl;
 }
 signed main(){

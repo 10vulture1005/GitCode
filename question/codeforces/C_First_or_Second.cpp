@@ -63,8 +63,20 @@ void vulture(){
     cin>>n;
     vector<int> a(n);
     vin(a,a.size());
-    sort all(a);
-    int ans = max(a[0],a[1]-a[0]);
+    int sum = -accumulate(a.begin(),a.end(),0LL);
+    int ans = -1e9;
+
+
+    for(int i = 0; i < n; i++) {
+
+        sum+=a[i];
+        ans=max(ans,sum);
+                if(i!=0){
+            sum+=abs(a[i]);
+        }else{
+            sum+=a[i];
+        }
+    }
     cout<<ans<<endl;
 }
 signed main(){
