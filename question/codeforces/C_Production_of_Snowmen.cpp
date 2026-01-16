@@ -65,60 +65,70 @@ From : IIITL
 ==========================================================
 */
 
-vector<int> getFactors(int n)
-{
-    vector<int> factors;
-    for (int i = 1; i * i <= n; i++)
-    {
-        if (n % i == 0)
-        {
-            factors.push_back(i);         // i is a factor
-            if (i != n / i)               // avoid duplicate when i*i == n
-                factors.push_back(n / i); // n/i is also a factor
-        }
-    }
-    sort(factors.begin(), factors.end()); // optional: sort in ascending order
-    return factors;
-}
-
 void vulture()
 {
     int n;
     cin >> n;
 
-    vector<int> fac = getFactors(n);
+    vector<int> a(n), b(n), c(n);
+    vin(a, n);
+    vin(b, n);
+    vin(c, n);
+    vector<int> tb = b;
 
-    if (fac.size() <= 3)
+    sort(tb.begin(), tb.end());
+    vector<int> tm;
+
+    for (int x : tb)
     {
-        no return;
+        if (tm.empty() || tm.back() != x)
+        {
+            tm.push_back(x);
+        }
+    }
+    tb = tm;
+
+    map<int, vector<bool>> lo;
+    map<int, vector<bool>> hi;
+
+    for (int v : tb)
+    {
+        vector<bool> s(n), e(n);
+        for (int i = 0; i < n; i++)
+        {
+            s[i] = (a[i] < v);
+            e[i] = (c[i] > v);
+        }
+        lo[v] = s;
+        hi[v] = e;
     }
 
-    int a = fac[1];
+    vector<bool> cklo(n, 1);
+    vector<bool> ckhi(n, 1);
 
-    fac = getFactors(n / a);
-    int c;
-    int b = 0;
-    for (int i = 0; i < fac.size(); i++)
+    for (int i = 0; i < n; i++)
     {
-        if (fac[i] > 1 and fac[i] != a)
+        auto l = lo[b[i]];
+        auto h = hi[b[i]];
+        for (int j = 0; j < n; j++)
         {
-            auto it = lower_bound(fac.begin(), fac.end(), n / fac[i]);
-            if (it != fac.end() and *it != a and *it > 1)
-            {
-                b = *it;
-                c = n / a;
-                c /= b;
-            }
+            if (cklo[j])
+                cklo[j] = l[(j + i) % n];
+            if (ckhi[j])
+                ckhi[j] = h[(j + i) % n];
         }
     }
 
-    if (a == b or b == c or a == c or a <= 1 or b <= 1 or c <= 1)
+    int ctl = 0, cth = 0;
+    for (int i = 0; i < n; i++)
     {
-        no return;
+        ctl += cklo[i];
+        cth += ckhi[i];
     }
-    yes
-    cout<< a << ' ' << b << ' ' << c << endl;
+
+    cout << n * cth * ctl << endl;
 }
+
 signed main()
 {
     input_tej_le;

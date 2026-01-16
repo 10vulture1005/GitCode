@@ -64,60 +64,44 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
+int cost(vector<int> &v){
 
-vector<int> getFactors(int n)
-{
-    vector<int> factors;
-    for (int i = 1; i * i <= n; i++)
-    {
-        if (n % i == 0)
-        {
-            factors.push_back(i);         // i is a factor
-            if (i != n / i)               // avoid duplicate when i*i == n
-                factors.push_back(n / i); // n/i is also a factor
-        }
+    int m = v.size();
+    if (m == 0) return 0;   
+
+    int mid;
+
+    mid = v[m / 2]-m/2;
+
+
+    int ans = 0;
+    for (int i = 0; i < m; i++) {
+        ans += abs((v[i] - (i)) - mid);
     }
-    sort(factors.begin(), factors.end()); // optional: sort in ascending order
-    return factors;
+    return ans;
 }
-
 void vulture()
 {
     int n;
-    cin >> n;
-
-    vector<int> fac = getFactors(n);
-
-    if (fac.size() <= 3)
+    string s;
+    cin >> n >> s;
+    vector<int> a;
+    // a.pb(0);
+    vector<int> b;
+    // b.pb(0);
+    for (int i = 0; i < n; i++)
     {
-        no return;
+        if (s[i] == 'a')
+            a.pb(i + 1);
+        else
+            b.pb(i + 1);
     }
 
-    int a = fac[1];
-
-    fac = getFactors(n / a);
-    int c;
-    int b = 0;
-    for (int i = 0; i < fac.size(); i++)
-    {
-        if (fac[i] > 1 and fac[i] != a)
-        {
-            auto it = lower_bound(fac.begin(), fac.end(), n / fac[i]);
-            if (it != fac.end() and *it != a and *it > 1)
-            {
-                b = *it;
-                c = n / a;
-                c /= b;
-            }
-        }
-    }
-
-    if (a == b or b == c or a == c or a <= 1 or b <= 1 or c <= 1)
-    {
-        no return;
-    }
-    yes
-    cout<< a << ' ' << b << ' ' << c << endl;
+ 
+    int c1 = cost(a);
+    int ans = cost(b);
+    ans = min(ans, c1);
+    cout << ans << endl;
 }
 signed main()
 {
