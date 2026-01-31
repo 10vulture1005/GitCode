@@ -60,49 +60,46 @@ From : IIITL
 */
 
 
-bool checker(int n,int m,int t,vector<int> &a){
-vector<int> f(n+1,0);
-for(int i = 0; i < m; i++) {
-    
-f[a[i]]++;
 
-}
-
-int to = 0;
-
-for(int i = 1; i < n+1; i++) {
-    if(t>=f[i]){
-        to+=(t-f[i])/2;
-    }else{
-        to-=f[i]-t;
-    }
-
-}
-
-if(to>=0){
-    return 0;
-}else return 1;
-
-}
 void vulture(){
     int n,m;
     cin>>n>>m;
     vector<int> a(m);
     vin(a,a.size());
 
-    int e=2*m;
-    int s = 1;
-    while(s<=e){
-        int mid = (s+e)/2;
-        if(checker(n,m,mid,a)){
-            s=mid+1;
-        }else{
-            e = mid-1;
+    long long lo = 0, hi = 2*m;
+    
+    auto check = [&](long long t) -> bool {
+        vector<int> fre(n+1);
+        for(int i = 0; i < m; i++) {
+            fre[a[i]]++;
+
+        }
+        int tm = 0;
+        for(int i = 1; i < n+1; i++) {
+            if(t>=fre[i]){
+                tm+=(t-fre[i])/2;
+            }else{
+                tm-=fre[i]-t;
+            }
+        }
+        return tm>=0;
+    };
+    
+    long long ans = 1;
+    while (lo <= hi) {
+        long long mid = lo + (hi - lo) / 2;
+    
+        if (!check(mid)) {
+            lo = mid + 1;   
+        } else {
+            ans = mid;
+
+            hi = mid - 1;
         }
     }
-    cout<<s<<endl;
-
-
+    
+    cout << ans << "\n";
 
 
 }

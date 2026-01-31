@@ -1,51 +1,12 @@
 #include <bits/stdc++.h>
-#include <unordered_set>
-#define int long long
-#define gcd(a, b) (__gcd(a, b))
-#define vin(a,n) for(int i=0;i<n;++i) cin>>a[i];
-#define vout(a,n) for(int i=0;i<n;++i) cout<<a[i]<<' ';
-#define all(a) (a.begin(), a.end()); 
-#define pb push_back
-#define no cout<<"NO"<<endl;
-#define yes cout<<"YES"<<endl;
-#define vi vector<int>
-#define input_tej_le ios::sync_with_stdio(false); cin.tie(NULL);
 using namespace  std;
-/*
-==========================================================
-Author: Vaidik Saxena
-From : IIITL
-==========================================================
-*/
-void vulture(){
-    int n;
-        cin >> n;
-        vector<int> a(n);
-        for (int i = 0; i < n; i++)
-            cin >> a[i];
-
-        sort(a.begin(), a.end());
-
-        bool isPossible = true;
-        for (int i = 0; i < n - 1; i++)
-        {
-            if (i % 2)
-            {
-                if (a[i + 1] > a[i])
-                {
-                    no 
-                    return;
-                }
-            }
-        }
-
-       yes
+int main() {
+string a;
+cin>>a;
+int ct = count(a.begin(),a.end()-1,'1');
+if(ct%2==a.back()-'0'){
+    cout<<"vaild"<<endl;
+}else{
+    cout<<"invaild"<<endl;
 }
-signed main(){
-input_tej_le;
-int t;
-cin>>t;
-while(t--){
-vulture();
-}
-}
+}z

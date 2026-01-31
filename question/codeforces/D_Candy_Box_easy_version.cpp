@@ -1,22 +1,178 @@
 #include <bits/stdc++.h>
-#include <unordered_set>
-#define int long long
-#define gcd(a, b) (__gcd(a, b))
-#define vin(a, n)               \
-    for (int i = 0; i < n; ++i) \
-        cin >> a[i];
-#define vout(a, n)              \
-    for (int i = 0; i < n; ++i) \
-        cout << a[i] << ' ';
-#define all(a) (a.begin(), a.end());
-#define pb push_back
-#define no cout << "NO" << endl;
-#define yes cout << "YES" << endl;
-#define vi vector<int>
-#define input_tej_le             \
-    ios::sync_with_stdio(false); \
-    cin.tie(NULL);
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
+using namespace __gnu_pbds;
+
+/* ================= FAST IO ================= */
+#define fastio ios::sync_with_stdio(false); cin.tie(nullptr);
+
+/* ================= TYPES ================= */
+#define int long long
+using pii = pair<int,int>;
+using vi = vector<int>;
+using vll = vector<long long>;
+
+/* ================= CONSTANTS ================= */
+const int MOD = 1000000007;
+const int MAXN = 300000 + 5;
+
+/* ================= MACROS ================= */
+#define pb push_back
+#define all(x) ((x).begin(), (x).end());
+#define yes cout << "YES\n";
+#define no cout << "NO\n";
+
+/* ================= ORDERED SET ================= */
+template <typename T>
+using ordered_set = tree<
+    T,
+    null_type,
+    less<T>,
+    rb_tree_tag,
+    tree_order_statistics_node_update
+>;
+
+/* ================= MODULAR ARITHMETIC ================= */
+// Time: O(1)
+int addmod(int a, int b) { return (a + b) % MOD; }
+int submod(int a, int b) { return (a - b + MOD) % MOD; }
+int mulmod(int a, int b) { return (a * b) % MOD; }
+
+/* ================= BINARY EXPONENTIATION ================= */
+// Time: O(log b)
+int binexp(int a, int b) {
+    int res = 1;
+    while (b) {
+        if (b & 1) res = mulmod(res, a);
+        a = mulmod(a, a);
+        b >>= 1;
+    }
+    return res;
+}
+
+// Time: O(log MOD)
+int modinv(int a) {
+    return binexp(a, MOD - 2);
+}
+
+/* ================= FACTORIAL & NCR ================= */
+// Precompute: O(N), nCr: O(1)
+int fact[MAXN], invfact[MAXN];
+
+void precompute_factorials() {
+    fact[0] = 1;
+    for (int i = 1; i < MAXN; i++)
+        fact[i] = mulmod(fact[i - 1], i);
+
+    invfact[MAXN - 1] = modinv(fact[MAXN - 1]);
+    for (int i = MAXN - 2; i >= 0; i--)
+        invfact[i] = mulmod(invfact[i + 1], i + 1);
+}
+
+int nCr(int n, int r) {
+    if (r < 0 || r > n) return 0;
+    return mulmod(fact[n], mulmod(invfact[r], invfact[n - r]));
+}
+
+/* ================= SIEVE ================= */
+// Time: O(N log log N)
+vector<int> primes;
+bool isprime[MAXN];
+
+void sieve() {
+    fill(isprime, isprime + MAXN, true);
+    isprime[0] = isprime[1] = false;
+    for (int i = 2; i < MAXN; i++) {
+        if (isprime[i]) {
+            primes.pb(i);
+            if (i * i < MAXN)
+                for (int j = i * i; j < MAXN; j += i)
+                    isprime[j] = false;
+        }
+    }
+}
+
+/* ================= SPF ================= */
+// Precompute: O(N log log N), Factorize: O(log N)
+int spf[MAXN];
+
+void compute_spf() {
+    for (int i = 1; i < MAXN; i++) spf[i] = i;
+    for (int i = 2; i * i < MAXN; i++)
+        if (spf[i] == i)
+            for (int j = i * i; j < MAXN; j += i)
+                if (spf[j] == j) spf[j] = i;
+}
+
+vector<int> factorize(int x) {
+    vector<int> f;
+    while (x > 1) {
+        f.pb(spf[x]);
+        x /= spf[x];
+    }
+    return f;
+}
+
+/* ================= GCD / LCM ================= */
+// Time: O(log min(a,b))
+int lcm(int a, int b) { return (a / __gcd(a, b)) * b; }
+
+/* ================= DSU ================= */
+// Amortized: O(alpha(N))
+struct DSU {
+    vector<int> parent, sz;
+    DSU(int n) {
+        parent.resize(n + 1);
+        sz.assign(n + 1, 1);
+        iota(parent.begin(), parent.end(), 0);
+    }
+    int find(int x) {
+        if (x == parent[x]) return x;
+        return parent[x] = find(parent[x]);
+    }
+    void unite(int a, int b) {
+        a = find(a); b = find(b);
+        if (a != b) {
+            if (sz[a] < sz[b]) swap(a, b);
+            parent[b] = a;
+            sz[a] += sz[b];
+        }
+    }
+};
+
+/* ================= GRAPH ================= */
+vector<int> adj[MAXN];
+bool vis[MAXN];
+
+// DFS: O(N + M)
+void dfs(int u) {
+    vis[u] = true;
+    for (int v : adj[u])
+        if (!vis[v]) dfs(v);
+}
+
+// DFS with parent (tree)
+void dfs_tree(int u, int p) {
+    for (int v : adj[u])
+        if (v != p) dfs_tree(v, u);
+}
+
+// BFS: O(N + M)
+void bfs(int src) {
+    queue<int> q;
+    q.push(src);
+    vis[src] = true;
+    while (!q.empty()) {
+        int u = q.front(); q.pop();
+        for (int v : adj[u])
+            if (!vis[v]) {
+                vis[v] = true;
+                q.push(v);
+            }
+    }
+}
+
 /*
 ⣿⣿⣿⣿⣿⣿⣿⣿⡿⡫⣁⡴⣈⡼⣟⣭⣷⣿⡿⠿⡽⡟⠍⡙⢕⣢⣿⡟⣱⣿⣿⣿⣿⣿⠟⠋⡕⢼⣣⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⢿⣩⣾⣿⡿⣿⣿⢿⣿⣿⣿⣿⡿⠛⣙⢄⣽⣿⣿⣿⡃⢹⣿⣿⣾⢫⢿⢇⣿⡟⣼⣿⡇⠯⠈⠰⣶⣾⣶⡄⢻⣿⣿⢎⣮⡹⠗⣠⣵⣶⣿⣿⣷⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣿⡿⡫⣪⡾⣫⣾⣯⠾⠛⣋⣥⣶⡿⠟⣩⢔⣼⣾⣿⣿⠏⣼⣿⣿⢟⣿⡟⣡⢊⣼⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⣿⡿⣫⣷⣿⣿⣿⣫⢏⡼⣫⣾⣿⣿⣿⣃⢔⠟⣱⣿⣿⡿⣛⣿⣿⣿⣿⣿⣿⣏⡾⣼⡿⣸⣿⣿⠃⣴⠠⢹⣸⡿⣿⣇⡱⡊⣿⣎⣎⢷⡘⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
@@ -64,59 +220,64 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-void vulture()
-{
+
+
+
+/* ================= SOLVE ================= */
+void vulture() {
     int n;
-    cin >> n;
+    cin>>n;
     vector<int> a(n);
-    vin(a, a.size());
-    vector<int> cnt(n + 1);
-    for (int i = 0; i < n; i++)
-    {
-        cnt[a[i]]++;
+
+    for(int i = 0; i < n; i++) {
+        cin>>a[i];
+    }
+    vector<int> fre(n+1);
+    for(int i = 0; i < n; i++) {
+        fre[a[i]]++;
     }
 
-    sort all(cnt);
+    sort all(fre);
+    int pre = fre[n];
+    int ans = fre[n];
+
+    for(int i = n-1; i >=0; i--) {
+        if(fre[i]==0){
+            break;
+        }
+        if(pre<=fre[i]){
+            pre--;
+            
+            if(pre==0)break;
+
+            ans+=pre;
+
+        }else{
+            ans+=fre[i];
+            if(pre<=0)break;
+
+            pre = fre[i];
+        }
+    }
+    cout<<ans<<endl;
+
 
     
-    vector<int> ffre(n + 1);
-    int ans = cnt[n];
-    int prev = cnt[n];
-    for (int i = n-1; i >=0; i--)
-    {
-        
-        if (cnt[i] >= prev)
-        {
-            
-            ans += prev - 1;
-            prev -= 1;
-            if (prev == 0)
-            break;
-            
-        }
-        else
-        {
-            ans += cnt[i];
-            prev = cnt[i];
-            if (prev == 0)
-            break;
-        }
+    for(int i = 0; i <n;i++){
+    cout<<fre[1+i]<<" ";
     }
-    cout << ans << endl;
+    cout<<endl;
 
-    // for (int i = 0; i < n; i++)
-    // {
-    //     cout << cnt[i + 1] << " ";
-    // }
-    // cout << endl;
+    
 }
-signed main()
-{
-    input_tej_le;
-    int t;
+
+
+
+/* ================= MAIN ================= */
+signed main() {
+    fastio;
+
+    int t = 1;
     cin >> t;
-    while (t--)
-    {
-        vulture();
-    }
+    while (t--) vulture();
 }

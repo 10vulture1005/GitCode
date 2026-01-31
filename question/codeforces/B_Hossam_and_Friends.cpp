@@ -58,20 +58,30 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-void vulture(){
-    int n,m;
-    cin>>n>>m;
-    vector<int> a(n+1);
-    
+void vulture() {
+    int n, m;
+    cin >> n >> m;
 
+    vector<int> limit(n + 2, 0);
 
-    while(m--){
-        int a,b;
-        cin>>a>>b;
-        
-
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        if (u > v) swap(u, v);
+        limit[v] = max(limit[v], u);
     }
+
+    int ans = 0;
+    int l = 1;
+
+    for (int r = 1; r <= n; r++) {
+        l = max(l, limit[r] + 1);
+        ans += (r - l + 1);
+    }
+
+    cout << ans << endl;
 }
+
 signed main(){
 input_tej_le;
 int t;

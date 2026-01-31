@@ -69,11 +69,11 @@ void vulture(){
     vector<int> dp(n+1);
     dp[n]=1;
     for(int i = n-1; i >=1; i--) {
-        if(a[i]+i+1>n+1){
+        if(a[i]+i>n){
             dp[i]=dp[i+1]+1;
             continue;
         }else{
-            if(a[i]+i+1==n+1){
+            if(a[i]+i==n){
                 dp[i] = 0;
                 continue;
             }
