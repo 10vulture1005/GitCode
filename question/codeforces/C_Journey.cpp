@@ -146,19 +146,6 @@ struct DSU {
 vector<int> adj[MAXN];
 bool vis[MAXN];
 
-// DFS: O(N + M)
-void dfs(int u) {
-    vis[u] = true;
-    for (int v : adj[u])
-        if (!vis[v]) dfs(v);
-}
-
-// DFS with parent (tree)
-void dfs_tree(int u, int p) {
-    for (int v : adj[u])
-        if (v != p) dfs_tree(v, u);
-}
-
 // BFS: O(N + M)
 void bfs(int src) {
     queue<int> q;
@@ -224,33 +211,63 @@ From : IIITL
 
 
 
+long double ans = 0;
+int ct = 0;
+// DFS: O(N + M)
+void dfs(int u) {
+    vis[u] = true;
+    for (int v : adj[u])
+        if (!vis[v]) dfs(v);
+}
+
+// DFS with parent (tree)
+
+void dfs_tree(int u, int parent, long double prob, int d) {
+    int c = 0;
+
+    for (int v : adj[u]) {
+        if (v != parent) c++;
+    }
+
+    if (c == 0) {
+        ans += prob * d;
+        return;
+    }
+
+    for (int v : adj[u]) {
+        if (v == parent) continue;
+        dfs_tree(v, u, prob / c, d + 1);
+    }
+}
+
 /* ================= SOLVE ================= */
 void vulture() {
-    int n,q;
-    cin>>n>>q;
-    vector<int> a(n);
-    vin(a,a.size());
-    vector<int> diffar(n);
-    while(q--){
-        int l,r;
-        cin>>l>>r;
-        l--;
-        
-        diffar[l]++;
-        if(r<n)
-        diffar[r]--;
+    int n;
+    cin >> n;
+
+    for (int i = 1; i <= n; i++)
+        adj[i].clear();
+
+    for (int i = 0; i < n - 1; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].pb(v);
+        adj[v].pb(u);
     }
-    sort all(a);
-    for(int i = 1; i < n; i++) {
-        diffar[i]+=diffar[i-1];
-    }
+
+    dfs_tree(1, 0, 1.0L, 0);
+
+    cout << fixed << setprecision(15) << ans << "\n";
+
+    ans=0;
+    ct=0;
+
     
-    sort(diffar.begin(),diffar.end());
-    int ans = 0;
-    for(int i = n-1; i >=0; i--) {
-        ans+=(diffar[i]*a[i]);
-    }
-    cout<<ans<<endl;
+
+
+
+
+
 }
 
 

@@ -226,31 +226,44 @@ From : IIITL
 
 /* ================= SOLVE ================= */
 void vulture() {
-    int n,q;
-    cin>>n>>q;
-    vector<int> a(n);
-    vin(a,a.size());
-    vector<int> diffar(n);
-    while(q--){
-        int l,r;
-        cin>>l>>r;
-        l--;
-        
-        diffar[l]++;
-        if(r<n)
-        diffar[r]--;
+    int n,k,d;
+    cin>>n>>k>>d;
+
+    vector<vector<int>> dp(n+1,vector<int>(2));
+    dp[0][0]=1;
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= min(d-1,n); j++) {
+            //sum till 1 to d-1 for [0]
+            if(i<j){
+                continue;
+            }
+            dp[i][0] = (dp[i][0]+dp[i-j][0])%MOD;
+        }
+
+
+        for(int j = 1; j <= min(d-1,n); j++) {
+            if(i<j){
+                continue;
+            }
+            //sum till 1 to d-1 for [1]
+            dp[i][1] = (dp[i][1]+dp[i-j][1])%MOD;
+
+        }
+
+
+        for(int j = d; j <= min(k,n); j++) {
+            if(i<j){
+                continue;
+            }
+            //sum till 1 to d-1 for [0]
+            dp[i][1] = (dp[i][1]+dp[i-j][0]+dp[i-j][1])%MOD;
+            
+        }
     }
-    sort all(a);
-    for(int i = 1; i < n; i++) {
-        diffar[i]+=diffar[i-1];
-    }
-    
-    sort(diffar.begin(),diffar.end());
-    int ans = 0;
-    for(int i = n-1; i >=0; i--) {
-        ans+=(diffar[i]*a[i]);
-    }
-    cout<<ans<<endl;
+
+
+
+    cout<<dp[n][1]<<endl;
 }
 
 

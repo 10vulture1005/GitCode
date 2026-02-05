@@ -20,7 +20,7 @@ const int MAXN = 300000 + 5;
 
 /* ================= MACROS ================= */
 #define pb push_back
-#define all(x) ((x).begin(), (x).end());
+#define all(x) ((x).rbegin(), (x).rend());
 #define yes cout << "YES\n";
 #define no cout << "NO\n";
 
@@ -226,31 +226,55 @@ From : IIITL
 
 /* ================= SOLVE ================= */
 void vulture() {
-    int n,q;
-    cin>>n>>q;
-    vector<int> a(n);
-    vin(a,a.size());
-    vector<int> diffar(n);
-    while(q--){
-        int l,r;
-        cin>>l>>r;
-        l--;
-        
-        diffar[l]++;
-        if(r<n)
-        diffar[r]--;
+    int n;
+    cin>>n;
+    vector<int> u(n);
+    vector<int> s(n);
+    vin(u,u.size());
+    vin(s,s.size());
+
+    map<int,vector<int>> m;
+    for(int i = 0; i < n; i++) {
+        m[u[i]].pb(s[i]);
     }
-    sort all(a);
-    for(int i = 1; i < n; i++) {
-        diffar[i]+=diffar[i-1];
+
+    for(auto &it:m){
+        sort all(it.second);
     }
+
+    for(auto &it:m){
+        for(int i = 1; i < it.second.size(); i++) {
+            it.second[i]+=it.second[i-1];
+        }
+
+    }
+
+
     
-    sort(diffar.begin(),diffar.end());
-    int ans = 0;
-    for(int i = n-1; i >=0; i--) {
-        ans+=(diffar[i]*a[i]);
+    vector<int> ans(n);
+    
+
+        for(auto it:m){
+
+            for(int i = 1; i <= it.second.size(); i++) {
+            int len = (it.second.size()/i)*i;
+            if(len==0)break;
+            ans[i-1]+=it.second[len-1];
+            }
+            
+
+        }
+        
+        
+
+    
+
+
+    for(int i = 0; i <n;i++){
+    cout<<ans[i]<<" ";
     }
-    cout<<ans<<endl;
+    cout<<endl;
+
 }
 
 
@@ -260,6 +284,6 @@ signed main() {
     fastio;
 
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--) vulture();
 }

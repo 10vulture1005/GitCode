@@ -226,31 +226,60 @@ From : IIITL
 
 /* ================= SOLVE ================= */
 void vulture() {
-    int n,q;
-    cin>>n>>q;
+    int n;
+    cin>>n;
     vector<int> a(n);
     vin(a,a.size());
-    vector<int> diffar(n);
-    while(q--){
-        int l,r;
-        cin>>l>>r;
-        l--;
-        
-        diffar[l]++;
-        if(r<n)
-        diffar[r]--;
-    }
-    sort all(a);
-    for(int i = 1; i < n; i++) {
-        diffar[i]+=diffar[i-1];
-    }
     
-    sort(diffar.begin(),diffar.end());
-    int ans = 0;
-    for(int i = n-1; i >=0; i--) {
-        ans+=(diffar[i]*a[i]);
+    vector<int> prex(n+1);
+    for(int i = 1; i <=n; i++) {
+        prex[i] = prex[i-1]^a[i-1];
     }
-    cout<<ans<<endl;
+
+
+    if(prex[n]==0){
+        yes;
+        return;
+    }
+   int ct = 2;
+   int pe = 0;
+   int po = 0;
+   for(int i = 0; i < n; i++) {
+       if(prex[i+1]==0){
+        if(i==0){
+            continue;
+        }
+        pe = i+1;
+        break;
+       }
+   }
+//    cout<<prex[pe-1]<<endl;
+//    for(int i = 1; i <=n;i++){
+//    cout<<prex[i]<<" ";
+//    }
+//    cout<<endl;
+//    pe = prex[pe];
+//    po = prex[pe-1];
+   ct = 1;
+   for(int i = 1; i <= n; i++) {
+       if(ct%2==0){
+            if(prex[i]==0){
+                yes
+                return;
+            }
+       }else{
+            if(prex[i]==prex[n]){
+                
+                ct++;
+
+            }
+       }
+   }
+   no
+   ct--;
+ 
+
+
 }
 
 
@@ -260,6 +289,6 @@ signed main() {
     fastio;
 
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--) vulture();
 }

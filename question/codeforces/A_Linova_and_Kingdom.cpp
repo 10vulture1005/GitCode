@@ -20,7 +20,7 @@ const int MAXN = 300000 + 5;
 
 /* ================= MACROS ================= */
 #define pb push_back
-#define all(x) ((x).begin(), (x).end());
+#define all(x) ((x).rbegin(), (x).rend());
 #define yes cout << "YES\n";
 #define no cout << "NO\n";
 
@@ -143,21 +143,18 @@ struct DSU {
 };
 
 /* ================= GRAPH ================= */
-vector<int> adj[MAXN];
+vector<vector<int>> adj;
 bool vis[MAXN];
 
 // DFS: O(N + M)
-void dfs(int u) {
-    vis[u] = true;
-    for (int v : adj[u])
-        if (!vis[v]) dfs(v);
-}
+// void dfs(int u) {
+//     vis[u] = true;
+//     for (int v : adj[u])
+//         if (!vis[v]) dfs(v);
+// }
 
 // DFS with parent (tree)
-void dfs_tree(int u, int p) {
-    for (int v : adj[u])
-        if (v != p) dfs_tree(v, u);
-}
+
 
 // BFS: O(N + M)
 void bfs(int src) {
@@ -221,36 +218,50 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
+vector<int> d;
+vector<int> s;
+vector<int> v;
+
+void dfs_tree(int u, int p) {
+    for (int v : adj[u]){
+
+        if (v != p) 
+        {
+            d[v]=d[u]+1;
+            dfs_tree(v, u);
+            s[u]+=s[v]+1;
+        }
+    }
 
 
+
+    v[u] = d[u]-s[u];
+}
 
 /* ================= SOLVE ================= */
 void vulture() {
-    int n,q;
-    cin>>n>>q;
-    vector<int> a(n);
-    vin(a,a.size());
-    vector<int> diffar(n);
-    while(q--){
-        int l,r;
-        cin>>l>>r;
-        l--;
-        
-        diffar[l]++;
-        if(r<n)
-        diffar[r]--;
+    int n,k;
+    cin>>n>>k;
+    adj.resize(n);
+    for(int i = 0; i < n-1; i++) {
+        int u,x;
+        cin>>u>>x;
+        u--;
+        x--;
+        adj[u].pb(x);
+        adj[x].pb(u);
     }
-    sort all(a);
-    for(int i = 1; i < n; i++) {
-        diffar[i]+=diffar[i-1];
-    }
-    
-    sort(diffar.begin(),diffar.end());
-    int ans = 0;
-    for(int i = n-1; i >=0; i--) {
-        ans+=(diffar[i]*a[i]);
-    }
-    cout<<ans<<endl;
+    d.resize(n);
+    s.resize(n);
+    v.resize(n);
+    d[0]=0;
+    dfs_tree(0,-1);
+
+    sort all(v);
+    int sum = accumulate(v.begin(),v.begin()+k,0LL);
+    cout<<sum<<endl;
+
+
 }
 
 

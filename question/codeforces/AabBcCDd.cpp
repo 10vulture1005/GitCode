@@ -226,31 +226,33 @@ From : IIITL
 
 /* ================= SOLVE ================= */
 void vulture() {
-    int n,q;
-    cin>>n>>q;
-    vector<int> a(n);
-    vin(a,a.size());
-    vector<int> diffar(n);
-    while(q--){
-        int l,r;
-        cin>>l>>r;
-        l--;
-        
-        diffar[l]++;
-        if(r<n)
-        diffar[r]--;
+    int n;
+    cin>>n;
+    string s;
+    cin>>s;
+
+    transform(s.begin(), s.end(), s.begin(), ::tolower);
+    map<char,int> m;
+    for(int i = 0; i < n; i++) {
+        m[s[i]]++;
     }
-    sort all(a);
-    for(int i = 1; i < n; i++) {
-        diffar[i]+=diffar[i-1];
-    }
+
     
-    sort(diffar.begin(),diffar.end());
-    int ans = 0;
-    for(int i = n-1; i >=0; i--) {
-        ans+=(diffar[i]*a[i]);
+    vector<int> fre;
+    for(auto it:m){
+        fre.pb(it.second);
     }
-    cout<<ans<<endl;
+    sort all(fre)
+
+    if(fre.size()>1){
+        cout<<fre.back()+fre[fre.size()-2]<<endl;
+    }else{
+        cout<<fre.back()<<endl;
+    }
+
+
+
+
 }
 
 
@@ -260,6 +262,6 @@ signed main() {
     fastio;
 
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--) vulture();
 }

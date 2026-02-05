@@ -16,7 +16,7 @@ using vll = vector<long long>;
 
 /* ================= CONSTANTS ================= */
 const int MOD = 1000000007;
-const int MAXN = 300000 + 5;
+const int MAXN = 18;
 
 /* ================= MACROS ================= */
 #define pb push_back
@@ -64,11 +64,9 @@ int fact[MAXN], invfact[MAXN];
 void precompute_factorials() {
     fact[0] = 1;
     for (int i = 1; i < MAXN; i++)
-        fact[i] = mulmod(fact[i - 1], i);
+        fact[i] = (fact[i - 1]* i);
 
-    invfact[MAXN - 1] = modinv(fact[MAXN - 1]);
-    for (int i = MAXN - 2; i >= 0; i--)
-        invfact[i] = mulmod(invfact[i + 1], i + 1);
+   
 }
 
 int nCr(int n, int r) {
@@ -221,45 +219,57 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
-
+vector<vector<int>> b(18,vector<int>(64));
 
 
 /* ================= SOLVE ================= */
 void vulture() {
-    int n,q;
-    cin>>n>>q;
-    vector<int> a(n);
-    vin(a,a.size());
-    vector<int> diffar(n);
-    while(q--){
-        int l,r;
-        cin>>l>>r;
-        l--;
-        
-        diffar[l]++;
-        if(r<n)
-        diffar[r]--;
-    }
-    sort all(a);
-    for(int i = 1; i < n; i++) {
-        diffar[i]+=diffar[i-1];
-    }
+    int n;
+    cin>>n;
+
+
+
+    // for(int i = 0; i <18;i++){
+    // cout<<fact[i]<<" ";
+    // }
+    // cout<<endl;
+    int ans = __builtin_popcountll(n);
+    int m = MAXN;
+
     
-    sort(diffar.begin(),diffar.end());
-    int ans = 0;
-    for(int i = n-1; i >=0; i--) {
-        ans+=(diffar[i]*a[i]);
+    for(int j = 1; j < (1<<MAXN); j++) {
+        int sum = 0;
+            int ct = 0;
+        for(int i = 0; i < MAXN; i++) {
+            if(j&(1<<i)){
+                sum+=fact[i];
+                ct++;
+
+            }
+        }
+        if(sum>n){
+            continue;
+        }
+        int rem = n-sum;
+        ct += __builtin_popcountll(rem);
+        ans = min(ans, ct);
     }
     cout<<ans<<endl;
+
+    
+
+    
 }
 
 
 
 /* ================= MAIN ================= */
 signed main() {
+    precompute_factorials();
+    
     fastio;
 
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--) vulture();
 }
