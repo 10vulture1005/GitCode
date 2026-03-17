@@ -227,47 +227,41 @@ From : IIITL
 /* ================= SOLVE ================= */
 void vulture() {
     int n;
-    cin >> n;
+    cin>>n;
+    int m;
+    cin>>m;
+    vector<int> a(n);
+    vin(a,a.size());
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
-    }
-
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
-
-    int maxr = a[0].second;
-    int split = -1;
-
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
+    vector<vector<int>> dp(n,vector<int>(m+2,0));
+    if(a[0]==0){
+        for(int x = 1; x <=m; x++) {
+            dp[0][x]=1;
         }
+    }else{
+        dp[0][a[0]]=1;
     }
 
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
+    for(int i = 1; i < n; i++) {
+        for(int x = 1; x < m+1; x++) {
+            
+
+            if(a[i]!=0 and a[i]!=x){continue;}
+
+                dp[i][x]=(dp[i-1][x-1]+dp[i-1][x+1]+dp[i-1][x])%MOD;
+            
+            
+        }
+        
     }
 
-    map<pair<int,int>, int> d;
+    int ans = 0;
+    for(int i = 1; i <=m; i++) {
+        ans = (ans+dp[n-1][i])%MOD;
+    }
+    cout<<ans<<endl;
 
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
 }
-
 
 
 
@@ -276,6 +270,6 @@ signed main() {
     fastio;
 
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--) vulture();
 }

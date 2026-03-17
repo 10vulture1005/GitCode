@@ -226,48 +226,34 @@ From : IIITL
 
 /* ================= SOLVE ================= */
 void vulture() {
+    
     int n;
-    cin >> n;
+    cin>>n;
+    vector<int> f(n+1);
+    for(int i = 0; i < n; i++) {
+        cin>>f[i];
+    }
+    vector<int> del(n);
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
+    for(int i = 1; i < n; i++) {
+        del[i] = f[i]-f[i-1];
+    }
+    
+    vector<int> a(n);
+    
+    for(int i = 1; i < n-1; i++) {
+        a[i] = (del[i+1]-del[i])/2;
     }
 
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
-
-    int maxr = a[0].second;
-    int split = -1;
-
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
-        }
+    int sum = (f[0]+f[n-1])/(n-1);
+    a[0] = (del[1]+sum)/2;
+    a[n-1]= (sum-del[n-1])/2;
+    for(int i = 0; i <n;i++){
+    cout<<a[i]<<" ";
     }
-
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
-    }
-
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
+    cout<<endl;
+    
 }
-
 
 
 

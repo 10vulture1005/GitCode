@@ -222,52 +222,45 @@ From : IIITL
 ==========================================================
 */
 
+int ceild(int a,int b){
+    return (a+b-1)/b;
+}
 
 
 /* ================= SOLVE ================= */
 void vulture() {
     int n;
-    cin >> n;
+    cin>>n;
+    vector<int> a(n);
+    vin(a,a.size());
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
-    }
-
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
-
-    int maxr = a[0].second;
-    int split = -1;
-
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
+    vector<pair<int,int>> ms;
+    vector<int> dp(n,1e9);
+    for(int i = 0; i < n; i++) {
+        int prev = 0;
+        if(i>0)
+        prev = dp[i-1];
+        while(ms.size() and ms.back().first>=a[i]){
+            prev = min(prev,ms.back().second);
+            ms.pop_back();
         }
+
+        while(ms.size() and ms.back().second>=prev){
+            ms.pop_back();
+        }
+        ms.pb({a[i] , prev});
+
+        for(int j = 0; j < ms.size(); j++) {
+            int div = ceild(a[i],ms[j].first);
+            dp[i] = min(dp[i],div+ms[j].second);
+        }
+        ms.pb({a[i],prev});
+
     }
 
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
-    }
+    cout<<dp[n-1]<<endl;
 
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
 }
-
 
 
 

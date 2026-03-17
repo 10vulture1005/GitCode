@@ -20,7 +20,7 @@ const int MAXN = 300000 + 5;
 
 /* ================= MACROS ================= */
 #define pb push_back
-#define all(x) ((x).begin(), (x).end());
+#define all(x) ((x).begin(), (x).end()-1);
 #define yes cout << "YES\n";
 #define no cout << "NO\n";
 
@@ -227,47 +227,56 @@ From : IIITL
 /* ================= SOLVE ================= */
 void vulture() {
     int n;
-    cin >> n;
+    cin>>n;
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
+    int sum = 0;
+    int tn = n;
+    while(tn>0){
+        sum+=tn%10;
+        tn/=10;
+
+    }
+    if(sum<10){
+        cout<<0<<endl;
+        return ;
     }
 
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
+    vector<int> a;
+     tn = n;
+    while(tn>0){
+        a.pb(tn%10);
+        tn/=10;
 
-    int maxr = a[0].second;
-    int split = -1;
+    }
+    
 
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
+    int m = a.size();
+    a[m-1]--;
+    sort(a.begin(),a.end());
+    int op=0;
+    // for(int i = 0; i <m;i++){
+    // cout<<a[i]<<" ";
+    // }
+    // cout<<endl;
+    // cout<<endl;
+    
+    for(int i = m-1; i >=0; i--) {
+        sum-=a[i];
+        op++;
+        if(sum<10){
             break;
-        }
+        }a[i]=0;
+
     }
 
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
-    }
 
-    map<pair<int,int>, int> d;
+    cout<<op<<endl;
+// 
 
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
 
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
+
+
 }
-
 
 
 

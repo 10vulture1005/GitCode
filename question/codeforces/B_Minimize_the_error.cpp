@@ -20,7 +20,7 @@ const int MAXN = 300000 + 5;
 
 /* ================= MACROS ================= */
 #define pb push_back
-#define all(x) ((x).begin(), (x).end());
+#define all(x) ((x).rbegin(), (x).rend());
 #define yes cout << "YES\n";
 #define no cout << "NO\n";
 
@@ -226,48 +226,47 @@ From : IIITL
 
 /* ================= SOLVE ================= */
 void vulture() {
-    int n;
-    cin >> n;
+    int n,k1,k2;
+    cin>>n>>k1>>k2;
+    vector<int> a(n);
+    vector<int> b(n);
+    vin(a,a.size());
+    vin(b,a.size());
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
+    priority_queue<int> c;
+    for(int i = 0; i < n; i++) {
+        c.push(abs(a[i]-b[i]));
+
     }
+    
+    int k = k1+k2;
 
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
-
-    int maxr = a[0].second;
-    int split = -1;
-
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
+    while(k>0){
+        int tp = c.top();
+        c.pop();
+        
+        if(tp>0){
+            tp--;
+        c.push(tp);
+    }
+        else{
+            tp++;
+            c.push(tp);
         }
+        k--;
+    }
+    
+    int sum = 0;
+    while(!c.empty()) {
+        int val = c.top();
+        c.pop();
+        sum += val * val;
     }
 
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
-    }
-
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
+    cout << sum << endl;
+    
+    
 }
-
 
 
 
@@ -276,6 +275,6 @@ signed main() {
     fastio;
 
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--) vulture();
 }

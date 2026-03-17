@@ -227,47 +227,42 @@ From : IIITL
 /* ================= SOLVE ================= */
 void vulture() {
     int n;
-    cin >> n;
+    cin>>n;
+    
+    vector<int> a(n);
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
-    }
+    vin(a,a.size());
 
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
+    multiset<int> m;
+    int sum = 0;
+    int ans = 0;
+    for(int i = 0; i < n; i++) {
+        
 
-    int maxr = a[0].second;
-    int split = -1;
+        if(a[i]>=0){
+            sum+=a[i];
+            ans++;
+                        m.insert(a[i]);
 
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
+            continue;
         }
+        if(sum+a[i]>=0){
+            sum+=a[i];
+            ans++;
+            m.insert(a[i]);
+        }else{
+            auto it = m.begin();
+            if(a[i]>*it){
+                sum-=*it;
+                m.erase(it);
+                sum+=a[i];
+                m.insert(a[i]);
+            }
+        }
+        
     }
-
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
-    }
-
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
+    cout<<m.size()<<endl;
 }
-
 
 
 
@@ -276,6 +271,6 @@ signed main() {
     fastio;
 
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--) vulture();
 }

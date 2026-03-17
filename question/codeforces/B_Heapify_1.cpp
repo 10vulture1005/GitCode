@@ -227,47 +227,40 @@ From : IIITL
 /* ================= SOLVE ================= */
 void vulture() {
     int n;
-    cin >> n;
-
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
+    cin>>n;
+    vector<int> a(n+1);
+    for(int i = 1; i <=n; i++) {
+        cin>>a[i];
     }
+    vector<bool> vis(n+1);
+    for(int i = 1; i <= n; i++) {
+        if(vis[i]){
+            continue;
+        }
+        vector<int> vec;
+        for(int j = i; j <= n; j*=2) {
+            vis[j]=1;
+            vec.pb(a[j]);
 
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
+        }
+        sort all(vec);
+        int k = 0;
+        for(int j = i; j <= n; j*=2) {
+            if(j<=n and k<vec.size()){
+            a[j] = vec[k];
+            k+=1;
+        }
+        }
 
-    int maxr = a[0].second;
-    int split = -1;
-
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
+    }
+    for(int i = 1; i < n; i++) {
+        if(a[i+1]<a[i]){
+            no
+            return;
         }
     }
-
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
-    }
-
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
+    yes
 }
-
 
 
 

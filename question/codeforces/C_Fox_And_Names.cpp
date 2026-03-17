@@ -227,47 +227,75 @@ From : IIITL
 /* ================= SOLVE ================= */
 void vulture() {
     int n;
-    cin >> n;
+    cin>>n;
+    vector<string> a(n);
+    for(int i = 0; i < n; i++) {
+        cin>>a[i];
+    }
+    
+    vector<vector<int>> adj(26);
+    vector<int> indeg(26, 0);
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
+    for (int i = 0; i < n - 1; i++) {
+        string f= a[i];
+        string s = a[i + 1];
+
+        int len = min(f.size(), s.size());
+        bool br = false;
+
+        for (int j = 0; j < len; j++) {
+            if (f[j] != s[j]) {
+                int u = f[j] - 'a';
+                int v = s[j] - 'a';
+
+                adj[u].pb(v);
+                indeg[v]++;
+                br = true;
+                break;
+            }
+        }
+
+        
+        if (!br && f.size() > s.size()){
+            cout<<"Impossible"<<endl;
+            return;
+        }
+            
     }
 
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
 
-    int maxr = a[0].second;
-    int split = -1;
 
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
+
+    queue<int> q;
+
+    for (int i = 0; i < 26; i++){
+        if (indeg[i] == 0){
+            q.push(i);
+        }
+    }
+            
+
+    string ans="";
+
+    while (!q.empty()) {
+        int u = q.front();
+        q.pop();
+
+        ans += (char)('a' + u);
+
+        for (int v : adj[u]) {
+            indeg[v]--;
+            if (indeg[v] == 0) q.push(v);
         }
     }
 
-    if (split == -1) {
-        cout << -1 << '\n';
+    if (ans.size() != 26){
+        cout<<"Impossible"<<endl;
         return;
     }
 
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
+    cout<<ans<<endl;
 }
-
 
 
 
@@ -276,6 +304,6 @@ signed main() {
     fastio;
 
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--) vulture();
 }

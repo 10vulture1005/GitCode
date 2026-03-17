@@ -223,51 +223,32 @@ From : IIITL
 */
 
 
+int sumdig(int n){
+    int sum = 0;
+    while(n>0){
+        sum+=n%10;
+        n/=10;
 
+    }
+    return sum;
+}
 /* ================= SOLVE ================= */
 void vulture() {
     int n;
-    cin >> n;
+    cin>>n;
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
-    }
-
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
-
-    int maxr = a[0].second;
-    int split = -1;
-
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
-        }
-    }
-
-    if (split == -1) {
-        cout << -1 << '\n';
+    if(n%9!=0){
+        cout<<0<<endl;
         return;
     }
-
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
+    int ct = 0;
+    for(int i = 1; i < 1000; i++) {
+        if(sumdig(i+n)==i){
+            ct++;
+        }
     }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
+    cout<<ct<<endl;
 }
-
 
 
 

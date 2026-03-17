@@ -229,53 +229,33 @@ void vulture() {
     int n;
     cin >> n;
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
-    }
+    vector<int> a(n);
+    for(int i = 0; i < n; i++)
+        cin >> a[i];
 
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
+    map<int,int> m;   
 
-    int maxr = a[0].second;
-    int split = -1;
+    int l = 0;
+    int ans = 0;
 
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
+    for(int r = 0; r < n; r++) {
+
+        if(m.count(a[r])) {
+            l = max(l, m[a[r]] + 1);
         }
+
+        m[a[r]] = r;
+
+        ans = max(ans, r - l + 1);
     }
 
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
-    }
-
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
+    cout << ans << endl;
 }
-
-
-
-
 /* ================= MAIN ================= */
 signed main() {
     fastio;
 
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--) vulture();
 }

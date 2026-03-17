@@ -223,51 +223,62 @@ From : IIITL
 */
 
 
+vector<int> nnode = {0,1,2,3,4,5};
+vector<int> lnode = {0,2,4,-1,-1,-1};
+vector<int> rnode = {0,3,5,-1,-1,-1};
 
-/* ================= SOLVE ================= */
-void vulture() {
-    int n;
-    cin >> n;
+void pre(int node){
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
+    if(node ==-1){
+        return ;
     }
 
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
+    cout<<nnode[node]<<endl;
+    pre(lnode[node]);
+    pre(rnode[node]);
+}
+void in(int node){
 
-    int maxr = a[0].second;
-    int split = -1;
-
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
-        }
+    if(node ==-1){
+        return ;
     }
 
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
+    in(lnode[node]);
+        cout<<nnode[node]<<endl;
+
+    in(rnode[node]);
+}
+void post(int node){
+
+    if(node ==-1){
+        return ;
     }
 
-    map<pair<int,int>, int> d;
+    post(lnode[node]);
+    post(rnode[node]);
+        cout<<nnode[node]<<endl;
 
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
 }
 
+long double check(long double n,long double m){
+
+    long double ans = 1;
+    for(int i = 0; i < m; i++) {
+        ans*=n;
+    }
+    return ans;
+}
+/* ================= SOLVE ================= */
+void vulture() {
+    
+    vector<int> b = {4 ,3 ,4};
+    vector<int> a = {1,2,3};
+    a.append_range(b);
+    for(int i = 0; i <a.size();i++){
+    cout<<a[i]<<" ";
+    }
+    cout<<endl;
+}
 
 
 

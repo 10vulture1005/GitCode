@@ -16,7 +16,7 @@ using vll = vector<long long>;
 
 /* ================= CONSTANTS ================= */
 const int MOD = 1000000007;
-const int MAXN = 300000 + 5;
+const int MAXN = 100000 + 5;
 
 /* ================= MACROS ================= */
 #define pb push_back
@@ -106,12 +106,37 @@ void compute_spf() {
                 if (spf[j] == j) spf[j] = i;
 }
 
-vector<int> factorize(int x) {
+vector<int> factorizespf(int x) {
     vector<int> f;
     while (x > 1) {
         f.pb(spf[x]);
         x /= spf[x];
     }
+    return f;
+}
+vector<int> factorize(int x) {
+    vector<int> f;
+    for (int p : primes) {
+        if ((long long)p * p > x) break;
+        if (x % p == 0) {
+            f.push_back(p);
+            while (x % p == 0) x /= p;
+        }
+    }
+    if (x > 1) f.push_back(x); 
+    return f;
+}
+
+vector<int> factorizesieve(int x) {
+    vector<int> f;
+    for (int p : primes) {
+        if ((long long)p * p > x) break;
+        while (x % p == 0) {
+            f.push_back(p);
+            x /= p;
+        }
+    }
+    if (x > 1) f.push_back(x); // remaining prime
     return f;
 }
 
@@ -227,55 +252,47 @@ From : IIITL
 /* ================= SOLVE ================= */
 void vulture() {
     int n;
-    cin >> n;
+    cin>>n;
+    vector<int> a(n);
+    vin(a,a.size());
+    vector<int> l1(n);
+    vector<int> l2(n);
+    
+    for(int i = 0; i < n; i++) {
+        vector<int> fac = factorize(a[i]);
+        if(fac.size()>=2){
+            int pro = 1;
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
-    }
+            for(auto it:fac){
+                pro*=it;
+            }
+            auto it = fac.back();
+            l1[i]=(pro/it);
+            l2[i]=it;
 
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
-
-    int maxr = a[0].second;
-    int split = -1;
-
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
+        }else{
+            l1[i]=l2[i]=-1;
         }
     }
 
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
+    
+    for(int i = 0; i <n;i++){
+    cout<<l1[i]<<" ";
     }
-
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
+    cout<<endl;
+    for(int i = 0; i <n;i++){
+    cout<<l2[i]<<" ";
     }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
+    cout<<endl;
 }
-
 
 
 
 /* ================= MAIN ================= */
 signed main() {
     fastio;
-
+    sieve(); 
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--) vulture();
 }

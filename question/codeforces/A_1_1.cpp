@@ -228,46 +228,30 @@ From : IIITL
 void vulture() {
     int n;
     cin >> n;
+    string s;
+    cin >> s;
+    int ct = count(s.begin(),s.end(),'1');
+    int mx= 0;
+    int mi = 0;
+    for(int i = 1; i < n-1; i++){
+        if (s[i-1]=='1' and s[i+1]=='1'){
+            if (s[i]=='0'){
+                mx++;
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
-    }
+                s[i]='1';
 
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
-
-    int maxr = a[0].second;
-    int split = -1;
-
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
+            } 
         }
     }
-
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
+    for(int i = 1; i < n-1; i++){
+        if (s[i-1]=='1' and s[i]=='1' and s[i+1]=='1'){
+            mi++;
+            s[i]='0';
+        }
     }
-
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
+    cout << ct+(mx-mi) <<" "<< ct + mx<< endl;
+ 
 }
-
 
 
 

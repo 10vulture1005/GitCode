@@ -223,51 +223,41 @@ From : IIITL
 */
 
 
+vector<int> sq;
+vector<int> fre(3e6);
 
 /* ================= SOLVE ================= */
 void vulture() {
     int n;
-    cin >> n;
-
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
+    cin>>n;
+    vector<int> a(n+1);
+    for(int i = 1; i <= n; i++) {
+        cin>>a[i];
     }
 
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
+    for(int i = 1; i <= n; i++) {
+        a[i]^=a[i-1];
+    }
 
-    int maxr = a[0].second;
-    int split = -1;
-
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
+    fre[0]=1;
+    int ans = 0;
+    for(int i = 1; i <= n; i++) {
+        for(auto it:sq){
+            ans-=fre[it^a[i]];
         }
-    }
 
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
-    }
+        fre[a[i]]++;
 
-    map<pair<int,int>, int> d;
+        
+    }
+    ans+=n*(n+1)/2;
 
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
+    for(int i = 0; i <= n; i++) {
+        fre[a[i]]=0;
     }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
+    cout<<ans<<endl;
 
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
 }
-
 
 
 
@@ -275,6 +265,9 @@ void vulture() {
 signed main() {
     fastio;
 
+    for(int i = 0; i*i < MAXN; i++) {
+        sq.pb(i*i);
+    }
     int t = 1;
     cin >> t;
     while (t--) vulture();

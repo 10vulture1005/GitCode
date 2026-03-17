@@ -1,12 +1,14 @@
 #include <bits/stdc++.h>
-using namespace  std;
+#include <unistd.h>
+using namespace std;
+vector<int> a;
 int main() {
-string a;
-cin>>a;
-int ct = count(a.begin(),a.end()-1,'1');
-if(ct%2==a.back()-'0'){
-    cout<<"vaild"<<endl;
-}else{
-    cout<<"invaild"<<endl;
+
+    fork();
+fork() && fork() || fork();
+fork();
+printf("IIITL\n");
+
+    
+
 }
-}z

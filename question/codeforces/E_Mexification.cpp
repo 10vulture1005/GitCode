@@ -223,51 +223,71 @@ From : IIITL
 */
 
 
+int find_mex(vector<int>& a) {
+    int n = a.size();
+    vector<bool> present(n + 1, false);
+
+    for (int x : a) {
+        if (x >= 0 && x <= n)
+            present[x] = true;
+    }
+
+    for (int i = 0; i <= n; i++) {
+        if (!present[i])
+            return i;
+    }
+
+    return n + 1;
+}
+
+void converter(vector<int> &a){
+    int n = a.size();
+    int m = find_mex(a);
+    map<int,int> mp;
+    for(int it:a){
+        mp[it]++;
+    }
+    vector<int> tmp=a;
+
+    for(int i = 0; i < n; i++) {
+        if(a[i]<m){
+            if(mp[a[i]]==1){
+                continue;
+            }else{
+                a[i]=m;
+            }
+        }else{
+            a[i] = m;
+        }
+    }
+}
 
 /* ================= SOLVE ================= */
 void vulture() {
+    // in to odd and even
+
     int n;
-    cin >> n;
-
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
-    }
-
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
-
-    int maxr = a[0].second;
-    int split = -1;
-
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
-        }
-    }
-
-    if (split == -1) {
-        cout << -1 << '\n';
+    cin>>n;
+    int k;
+    cin>>k;
+    
+    vector<int> a(n);
+    vin(a,a.size());
+    
+    if(k==0){
+        int sum = accumulate(a.begin(),a.end(),0LL);
+        cout<<sum<<endl;
         return;
     }
-
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
+    
+    for(int i = 0; i < min(k,k%2+2); i++) {
+        converter(a);
+        
     }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
+    int sum = accumulate(a.begin(),a.end(),0LL);
+    cout<<sum<<endl;
 
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
 }
-
 
 
 

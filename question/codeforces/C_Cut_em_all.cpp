@@ -147,11 +147,7 @@ vector<int> adj[MAXN];
 bool vis[MAXN];
 
 // DFS: O(N + M)
-void dfs(int u) {
-    vis[u] = true;
-    for (int v : adj[u])
-        if (!vis[v]) dfs(v);
-}
+
 
 // DFS with parent (tree)
 void dfs_tree(int u, int p) {
@@ -222,52 +218,56 @@ From : IIITL
 ==========================================================
 */
 
+vector<int> subtreelen;
+int ans = 0;
+void dfs(int u) {
+    vis[u] = true;
+    
+    for (int v : adj[u]){
+        if (!vis[v]){ 
+            dfs(v);
+            subtreelen[u] += subtreelen[v];
+        }
 
+    }
+
+    subtreelen[u]++;
+    if (u != 1 && subtreelen[u] % 2 == 0)
+        ans++;
+        
+}
 
 /* ================= SOLVE ================= */
 void vulture() {
     int n;
-    cin >> n;
+    cin>>n;
+    
+    
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
+    for (int i = 0; i < n-1; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
     }
 
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
-
-    int maxr = a[0].second;
-    int split = -1;
-
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
-        }
-    }
-
-    if (split == -1) {
-        cout << -1 << '\n';
+    if(n%2==1){
+        cout<<-1<<endl;
         return;
     }
 
-    map<pair<int,int>, int> d;
+    subtreelen.resize(n+1,0);
+    dfs(1);
 
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
+    // for(int i = 1; i <=n;i++){
+    // cout<<subtreelen[i]<<" ";
+    // }
+    // cout<<endl;
+    
+    cout<<ans<<endl;
+    ans = 0;
+    
 }
-
 
 
 
@@ -276,6 +276,6 @@ signed main() {
     fastio;
 
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--) vulture();
 }

@@ -147,10 +147,17 @@ vector<int> adj[MAXN];
 bool vis[MAXN];
 
 // DFS: O(N + M)
-void dfs(int u) {
+int dfs(int u) {
     vis[u] = true;
-    for (int v : adj[u])
-        if (!vis[v]) dfs(v);
+    int s = 1;
+    for (int v : adj[u]){
+        if (!vis[v]){
+            s+=dfs(v);
+        } 
+    }
+
+    return s;
+        
 }
 
 // DFS with parent (tree)
@@ -223,51 +230,58 @@ From : IIITL
 */
 
 
+int powcon(int n,int k){
+    int tot = 1;
+    for(int i = 0; i < k; i++) {
+        tot=(n%MOD*tot%MOD)%MOD;
+    }
+    return tot;
+
+}
 
 /* ================= SOLVE ================= */
 void vulture() {
-    int n;
-    cin >> n;
+    //tot n^k;
+    int n,k;
+    cin>>n>>k;
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
-    }
-
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
-
-    int maxr = a[0].second;
-    int split = -1;
-
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
+    for(int i = 0; i < n-1; i++) {
+        int u,v,c;
+        cin>>u>>v>>c;
+        if(c==0){
+            adj[u].pb(v);
+            adj[v].pb(u);
         }
     }
 
-    if (split == -1) {
-        cout << -1 << '\n';
+    vector<int> com;
+
+    for(int i = 0; i < n; i++) {
+        if(!vis[i+1]){
+            int si = dfs(i+1);
+        com.pb(si);
+        }
+        
+    }
+
+    
+    int ans = 0;
+    int tot = powcon(n,k);
+    int sum = 0;
+    for(auto it:com) {
+        sum=(sum%MOD+powcon(it,k)%MOD)%MOD;
+
+    }
+    ans = tot-sum;
+    if(ans<0){
+        cout<<1000000007+ans<<endl;
         return;
     }
+    cout<<ans<<endl;
+    
 
-    map<pair<int,int>, int> d;
 
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
 }
-
 
 
 
@@ -276,6 +290,6 @@ signed main() {
     fastio;
 
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--) vulture();
 }

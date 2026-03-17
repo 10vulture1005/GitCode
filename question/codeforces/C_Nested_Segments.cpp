@@ -227,47 +227,40 @@ From : IIITL
 /* ================= SOLVE ================= */
 void vulture() {
     int n;
-    cin >> n;
-
+    cin>>n;
     vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
+    map<pair<int,int>,deque<int>> idx;
+    for(int i = 0; i < n; i++) {
+        cin>>a[i].first>>a[i].second;
+        idx[a[i]].pb(i);
+
     }
+    sort(a.begin(), a.end(), [](pair<int,int> &p1, pair<int,int> &p2) {
+        if(p1.first == p2.first){
+            return p1.second > p2.second;
+        }
+        return p1.first < p2.first;
+    });
+    vector<int> r(n);
+    for(int i = 0; i < n; i++) {
+        r[i] = a[i].second;
+    }
+    
+    for(int i = 0; i < n-1; i++) {
+        if(r[i]>=r[i+1]){
+            int idx1 = idx[a[i]][0];
+            idx[a[i]].pop_front();
+            int idx2 = idx[a[i+1]][0];
+            idx[a[i+1]].pop_front();
+            cout<<idx2+1<< ' '<<idx1+1<<endl;
 
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
-
-    int maxr = a[0].second;
-    int split = -1;
-
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
+            return;
         }
     }
+    cout<<-1<<' '<<-1<<endl;
 
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
-    }
-
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
+    
 }
-
 
 
 
@@ -276,6 +269,6 @@ signed main() {
     fastio;
 
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--) vulture();
 }

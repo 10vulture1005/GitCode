@@ -226,48 +226,33 @@ From : IIITL
 
 /* ================= SOLVE ================= */
 void vulture() {
-    int n;
-    cin >> n;
+    int n,k,q;
+    cin>>n>>q>>k;
+    vector<int> a(n);
+    vin(a,a.size());
+    vector<int> pre(n+1);
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
+
+
+    for(int i = 1; i <= n; i++) {
+        pre[i] = pre[i-1]^a[i-1];
+        
     }
 
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
 
-    int maxr = a[0].second;
-    int split = -1;
+    while(q--){
+        int l,r;
+        cin>>l>>r;
+        map<int,int> m;
 
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
+        for(int i = l-1; i < r; i++) {
+            m[pre[i]]++;
         }
+        
     }
 
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
-    }
-
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
+    
 }
-
 
 
 

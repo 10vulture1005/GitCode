@@ -226,48 +226,25 @@ From : IIITL
 
 /* ================= SOLVE ================= */
 void vulture() {
-    int n;
-    cin >> n;
-
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
-    }
-
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
-
-    int maxr = a[0].second;
-    int split = -1;
-
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
+    int n,x,y;
+    cin>>n>>x>>y;
+    vector<int> a(n);
+    vin(a,a.size());
+    sort all(a);
+    int subs = 0;
+    int sum = accumulate(a.begin(),a.end(),0LL);
+    for(int i = 0; i < n; i++) {
+        int d = sum-a[i];
+        if(d<=x){
+            continue;
         }
-    }
+        auto lb=lower_bound(a.begin()+i+1,a.end(),d-y);
+        auto ub = upper_bound(a.begin()+i+1,a.end(),d-x);
+        subs+=ub-lb;
 
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
     }
-
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
+    cout<<subs<<endl;
 }
-
 
 
 

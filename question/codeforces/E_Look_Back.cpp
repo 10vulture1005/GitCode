@@ -224,50 +224,51 @@ From : IIITL
 
 
 
+int powof2(int n){
+    int ans = 0;
+    int p = 1;
+    while(p<n){
+        ans++;
+        p <<=1;
+
+    }
+    return ans;
+
+
+}
 /* ================= SOLVE ================= */
 void vulture() {
     int n;
-    cin >> n;
+    cin>>n;
+    vector<int> a(n);
+    vin(a,a.size());
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
-    }
 
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
 
-    int maxr = a[0].second;
-    int split = -1;
-
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
+    int ans = 0;
+    int prev=0,cur=0;
+    for(int i = 1; i < n; i++) {
+     
+        cur =prev;
+        if(a[i] <= a[i-1]){
+            int tmp = a[i];
+            while(tmp < a[i-1]){
+                cur++;
+                tmp *= 2;
+            }
         }
+        else{
+            int tmp = a[i-1];
+            while(cur>0 and tmp*2 <= a[i]){
+                tmp *= 2;
+                cur--;
+            }
+        }
+        ans+=cur;
+        prev = cur;
     }
-
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
-    }
-
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
+    cout<<ans<<endl;
 }
-
 
 
 

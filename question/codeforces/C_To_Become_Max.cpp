@@ -226,48 +226,58 @@ From : IIITL
 
 /* ================= SOLVE ================= */
 void vulture() {
-    int n;
-    cin >> n;
+    
+    int n,k;
+    cin>>n>>k;
+    vector<int> a(n);
+    vin(a,a.size());
+    int mx = *max_element(a.begin(),a.end());
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
-    }
+    long long lo = mx, hi = k+*max_element(a.begin(),a.end());
+    
+    auto check = [&](long long mid) -> bool {
+        for(int i = 0; i < n; i++) {
+            vector<int> m(n);
+            m[i] = mid;
+            int ct = 0;
+            for(int j = i; j < n; j++) {
+                if(m[j]<=a[j])break;
 
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
 
-    int maxr = a[0].second;
-    int split = -1;
+                if(j>=n-1){
+                    ct=1e9;
+                    break;
+                }
 
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
+                ct += m[j]-a[j];
+                m[j+1] = max(0LL,m[j]-1);
+
+            }
+            if(ct<=k){
+                return 1;              
+            }
+        }
+        return 0;
+
+
+    };
+    
+    
+    long long ans = mx;
+    while (lo <= hi) {
+        long long mid = lo + (hi - lo) / 2;
+    
+        if (check(mid)) {
+            ans = mid;
+            lo = mid + 1;   // go bigger
+        } else {
+            hi = mid - 1;
         }
     }
+    
+    cout << ans << "\n";
 
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
-    }
-
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
 }
-
 
 
 

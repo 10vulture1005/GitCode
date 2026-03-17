@@ -106,12 +106,16 @@ void compute_spf() {
                 if (spf[j] == j) spf[j] = i;
 }
 
-vector<int> factorize(int x) {
+vector<int> factorize(long long n) {
     vector<int> f;
-    while (x > 1) {
-        f.pb(spf[x]);
-        x /= spf[x];
+    for (int p : primes) {
+        if (1LL * p * p > n) break;
+        while (n % p == 0) {
+            f.push_back(p);
+            n /= p;
+        }
     }
+    if (n > 1) f.push_back(n);
     return f;
 }
 
@@ -227,54 +231,21 @@ From : IIITL
 /* ================= SOLVE ================= */
 void vulture() {
     int n;
-    cin >> n;
+    cin>>n;
+    // cout<<3<<endl;
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
-    }
+    cout<<spf[n]<<endl;
 
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
-
-    int maxr = a[0].second;
-    int split = -1;
-
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
-        }
-    }
-
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
-    }
-
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
 }
-
 
 
 
 /* ================= MAIN ================= */
 signed main() {
     fastio;
+    compute_spf();
 
+    sieve();
     int t = 1;
     cin >> t;
     while (t--) vulture();

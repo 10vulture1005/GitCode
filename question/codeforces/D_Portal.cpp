@@ -226,48 +226,82 @@ From : IIITL
 
 /* ================= SOLVE ================= */
 void vulture() {
-    int n;
-    cin >> n;
-
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
+    int n,x,y;
+    cin>>n>>x>>y;
+    vector<int> a(n);
+    vin(a,a.size());
+    y--;
+    vector<int> b;
+    int mi = 1e9;
+    int idx = -1;
+    vector<int> anc;
+    
+    for(int i = x; i <=y; i++) {
+        
+        b.pb(a[i]);
     }
+    for(int i = 0; i < n; i++) {
+        if(i<x or i>y){
+            anc.pb(a[i]);
+        }
+    }
+    
+    for(int i = 0; i < b.size(); i++) {
+        if(b[i] < mi){
+            mi = b[i];
+            idx = i;
+        }
+    }
+    vector<int> tmb(b.size());
+    for(int i = 0; i < b.size(); i++) {
+        tmb[i] = b[(idx + i) % b.size()];
+    }
+    b=tmb;
+    // for(int i = 0; i <b.size();i++){
+    //   cout<<b[i]<<" ";
+    // }
+    // cout<<endl;
 
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
 
-    int maxr = a[0].second;
-    int split = -1;
+    // for(int i = 0; i < anc.size(); i++) {
+    //     cout<<anc[i]<<' ';
+    // }
+    // cout<<endl;
 
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
+    idx =-1;
+    for(int i = 0; i < anc.size(); i++) {
+        if(anc[i]>b[0]){
+            idx =i;
             break;
         }
     }
 
-    if (split == -1) {
-        cout << -1 << '\n';
+    if(idx==-1){
+        for(int i = 0; i < anc.size(); i++) {
+            cout<<anc[i]<<' ';
+        }for(int i = 0; i < b.size(); i++) {
+            cout<<b[i]<<' ';
+        }cout<<endl;
         return;
     }
-
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
+    for(int i = 0; i < anc.size(); i++) {
+        if(i==idx){
+            for(int j = 0;j < b.size(); j++) {
+                cout<<b[j]<<' ';
+            }cout<<anc[i]<<' ';
+        }else{
+            cout<<anc[i]<<' ';
+        }
     }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
+    cout<<endl;
 
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
+
+
+    
+    
+
+
 }
-
 
 
 

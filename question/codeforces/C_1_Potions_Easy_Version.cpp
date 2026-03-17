@@ -5,12 +5,16 @@ using namespace std;
 using namespace __gnu_pbds;
 
 /* ================= FAST IO ================= */
-#define fastio ios::sync_with_stdio(false); cin.tie(nullptr);
+#define fastio                   \
+    ios::sync_with_stdio(false); \
+    cin.tie(nullptr);
 
 /* ================= TYPES ================= */
 #define int long long
-using pii = pair<int,int>;
-#define vin(a,n) for(int i=0;i<n;++i) cin>>a[i];
+using pii = pair<int, int>;
+#define vin(a, n)               \
+    for (int i = 0; i < n; ++i) \
+        cin >> a[i];
 using vi = vector<int>;
 using vll = vector<long long>;
 
@@ -31,8 +35,7 @@ using ordered_set = tree<
     null_type,
     less<T>,
     rb_tree_tag,
-    tree_order_statistics_node_update
->;
+    tree_order_statistics_node_update>;
 
 /* ================= MODULAR ARITHMETIC ================= */
 // Time: O(1)
@@ -42,10 +45,13 @@ int mulmod(int a, int b) { return (a * b) % MOD; }
 
 /* ================= BINARY EXPONENTIATION ================= */
 // Time: O(log b)
-int binexp(int a, int b) {
+int binexp(int a, int b)
+{
     int res = 1;
-    while (b) {
-        if (b & 1) res = mulmod(res, a);
+    while (b)
+    {
+        if (b & 1)
+            res = mulmod(res, a);
         a = mulmod(a, a);
         b >>= 1;
     }
@@ -53,7 +59,8 @@ int binexp(int a, int b) {
 }
 
 // Time: O(log MOD)
-int modinv(int a) {
+int modinv(int a)
+{
     return binexp(a, MOD - 2);
 }
 
@@ -61,7 +68,8 @@ int modinv(int a) {
 // Precompute: O(N), nCr: O(1)
 int fact[MAXN], invfact[MAXN];
 
-void precompute_factorials() {
+void precompute_factorials()
+{
     fact[0] = 1;
     for (int i = 1; i < MAXN; i++)
         fact[i] = mulmod(fact[i - 1], i);
@@ -71,8 +79,10 @@ void precompute_factorials() {
         invfact[i] = mulmod(invfact[i + 1], i + 1);
 }
 
-int nCr(int n, int r) {
-    if (r < 0 || r > n) return 0;
+int nCr(int n, int r)
+{
+    if (r < 0 || r > n)
+        return 0;
     return mulmod(fact[n], mulmod(invfact[r], invfact[n - r]));
 }
 
@@ -81,11 +91,14 @@ int nCr(int n, int r) {
 vector<int> primes;
 bool isprime[MAXN];
 
-void sieve() {
+void sieve()
+{
     fill(isprime, isprime + MAXN, true);
     isprime[0] = isprime[1] = false;
-    for (int i = 2; i < MAXN; i++) {
-        if (isprime[i]) {
+    for (int i = 2; i < MAXN; i++)
+    {
+        if (isprime[i])
+        {
             primes.pb(i);
             if (i * i < MAXN)
                 for (int j = i * i; j < MAXN; j += i)
@@ -98,17 +111,22 @@ void sieve() {
 // Precompute: O(N log log N), Factorize: O(log N)
 int spf[MAXN];
 
-void compute_spf() {
-    for (int i = 1; i < MAXN; i++) spf[i] = i;
+void compute_spf()
+{
+    for (int i = 1; i < MAXN; i++)
+        spf[i] = i;
     for (int i = 2; i * i < MAXN; i++)
         if (spf[i] == i)
             for (int j = i * i; j < MAXN; j += i)
-                if (spf[j] == j) spf[j] = i;
+                if (spf[j] == j)
+                    spf[j] = i;
 }
 
-vector<int> factorize(int x) {
+vector<int> factorize(int x)
+{
     vector<int> f;
-    while (x > 1) {
+    while (x > 1)
+    {
         f.pb(spf[x]);
         x /= spf[x];
     }
@@ -121,21 +139,29 @@ int lcm(int a, int b) { return (a / __gcd(a, b)) * b; }
 
 /* ================= DSU ================= */
 // Amortized: O(alpha(N))
-struct DSU {
+struct DSU
+{
     vector<int> parent, sz;
-    DSU(int n) {
+    DSU(int n)
+    {
         parent.resize(n + 1);
         sz.assign(n + 1, 1);
         iota(parent.begin(), parent.end(), 0);
     }
-    int find(int x) {
-        if (x == parent[x]) return x;
+    int find(int x)
+    {
+        if (x == parent[x])
+            return x;
         return parent[x] = find(parent[x]);
     }
-    void unite(int a, int b) {
-        a = find(a); b = find(b);
-        if (a != b) {
-            if (sz[a] < sz[b]) swap(a, b);
+    void unite(int a, int b)
+    {
+        a = find(a);
+        b = find(b);
+        if (a != b)
+        {
+            if (sz[a] < sz[b])
+                swap(a, b);
             parent[b] = a;
             sz[a] += sz[b];
         }
@@ -147,27 +173,35 @@ vector<int> adj[MAXN];
 bool vis[MAXN];
 
 // DFS: O(N + M)
-void dfs(int u) {
+void dfs(int u)
+{
     vis[u] = true;
     for (int v : adj[u])
-        if (!vis[v]) dfs(v);
+        if (!vis[v])
+            dfs(v);
 }
 
 // DFS with parent (tree)
-void dfs_tree(int u, int p) {
+void dfs_tree(int u, int p)
+{
     for (int v : adj[u])
-        if (v != p) dfs_tree(v, u);
+        if (v != p)
+            dfs_tree(v, u);
 }
 
 // BFS: O(N + M)
-void bfs(int src) {
+void bfs(int src)
+{
     queue<int> q;
     q.push(src);
     vis[src] = true;
-    while (!q.empty()) {
-        int u = q.front(); q.pop();
+    while (!q.empty())
+    {
+        int u = q.front();
+        q.pop();
         for (int v : adj[u])
-            if (!vis[v]) {
+            if (!vis[v])
+            {
                 vis[v] = true;
                 q.push(v);
             }
@@ -222,60 +256,45 @@ From : IIITL
 ==========================================================
 */
 
-
-
 /* ================= SOLVE ================= */
-void vulture() {
+void vulture()
+{
     int n;
     cin >> n;
+    vector<int> a(n);
+    vin(a, a.size());
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
-    }
-
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
-
-    int maxr = a[0].second;
-    int split = -1;
-
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
+    vector<vector<int>> dp(n + 1, vector<int>(n + 1, -1e9));
+    dp[0][0]=0;
+    for (int i = 1; i <= n; i++)
+    {
+        dp[i][0] = 0;
+        for (int j = 1; j <= i; j++)
+        {
+            if (dp[i - 1][j - 1] >= 0)
+                dp[i][j] = max(dp[i - 1][j - 1] + a[i - 1], dp[i - 1][j]);
+            else
+                dp[i][j] = dp[i - 1][j];
         }
     }
+    int ct = 0;
+    for(int i = n; i >=1; i--) {
+        if(dp[n][i]>=0){
+            cout<<i<<endl;
+            return;
+        }
 
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
     }
-
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
+    cout<<0<<endl;
 }
 
-
-
-
 /* ================= MAIN ================= */
-signed main() {
+signed main()
+{
     fastio;
 
     int t = 1;
-    cin >> t;
-    while (t--) vulture();
+    // cin >> t;
+    while (t--)
+        vulture();
 }

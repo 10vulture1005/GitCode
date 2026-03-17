@@ -223,51 +223,53 @@ From : IIITL
 */
 
 
+int mex(vector<int> &a) {
+    int n = a.size();
+    vector<bool> present(n + 1, false);
+
+    for (int x : a) {
+        if (x >= 0 && x <= n)
+            present[x] = true;
+    }
+
+    for (int i = 0; i <= n; i++) {
+        if (!present[i])
+            return i;
+    }
+
+    return n; 
+}
 
 /* ================= SOLVE ================= */
 void vulture() {
-    int n;
-    cin >> n;
+    int n,k;
+    cin>>n>>k;
+    vector<int> a(n);
+    vin(a,a.size());
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
+    a.pb( mex(a));
+
+
+    //rotate k times
+    k = k%(n+1);
+
+    vector<int> ans(n+1);
+    
+    // for(int i = 0; i <=n;i++){
+    // cout<<a[i]<<" ";
+    // }
+    // cout<<endl;
+    for(int i = 0; i <= n; i++) {
+        ans[i] = a[(i - k + n+1) % (n+1)];
     }
-
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
-
-    int maxr = a[0].second;
-    int split = -1;
-
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
-        }
+    for(int i = 0; i <n;i++){
+    cout<<ans[i]<<" ";
     }
+    cout<<endl;
 
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
-    }
 
-    map<pair<int,int>, int> d;
 
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
 }
-
 
 
 

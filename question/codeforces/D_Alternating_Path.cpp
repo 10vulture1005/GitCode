@@ -143,36 +143,36 @@ struct DSU {
 };
 
 /* ================= GRAPH ================= */
-vector<int> adj[MAXN];
+vector<vector<int>> adj(MAXN);
 bool vis[MAXN];
 
-// DFS: O(N + M)
-void dfs(int u) {
-    vis[u] = true;
-    for (int v : adj[u])
-        if (!vis[v]) dfs(v);
-}
+// // DFS: O(N + M)
+// void dfs(int u) {
+//     vis[u] = true;
+//     for (int v : adj[u])
+//         if (!vis[v]) dfs(v);
+// }
 
-// DFS with parent (tree)
-void dfs_tree(int u, int p) {
-    for (int v : adj[u])
-        if (v != p) dfs_tree(v, u);
-}
+// // DFS with parent (tree)
+// void dfs_tree(int u, int p) {
+//     for (int v : adj[u])
+//         if (v != p) dfs_tree(v, u);
+// }
 
-// BFS: O(N + M)
-void bfs(int src) {
-    queue<int> q;
-    q.push(src);
-    vis[src] = true;
-    while (!q.empty()) {
-        int u = q.front(); q.pop();
-        for (int v : adj[u])
-            if (!vis[v]) {
-                vis[v] = true;
-                q.push(v);
-            }
-    }
-}
+// // BFS: O(N + M)
+// void bfs(int src) {
+//     queue<int> q;
+//     q.push(src);
+//     vis[src] = true;
+//     while (!q.empty()) {
+//         int u = q.front(); q.pop();
+//         for (int v : adj[u])
+//             if (!vis[v]) {
+//                 vis[v] = true;
+//                 q.push(v);
+//             }
+//     }
+// }
 
 /*
 ⣿⣿⣿⣿⣿⣿⣿⣿⡿⡫⣁⡴⣈⡼⣟⣭⣷⣿⡿⠿⡽⡟⠍⡙⢕⣢⣿⡟⣱⣿⣿⣿⣿⣿⠟⠋⡕⢼⣣⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⢿⣩⣾⣿⡿⣿⣿⢿⣿⣿⣿⣿⡿⠛⣙⢄⣽⣿⣿⣿⡃⢹⣿⣿⣾⢫⢿⢇⣿⡟⣼⣿⡇⠯⠈⠰⣶⣾⣶⡄⢻⣿⣿⢎⣮⡹⠗⣠⣵⣶⣿⣿⣷⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
@@ -226,48 +226,77 @@ From : IIITL
 
 /* ================= SOLVE ================= */
 void vulture() {
-    int n;
-    cin >> n;
+    int n,m;
+    cin>>n>>m;
 
-    vector<pair<int,int>> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
+    
+
+    adj.resize(n+1);
+    for(int i = 0; i < m; i++) {
+        int u,v;
+        cin>>u>>v;
+        adj[v].pb(u);
+        adj[u].pb(v);
+
     }
 
-    vector<pair<int,int>> tmp = a;
-    sort(a.begin(), a.end());
 
-    int maxr = a[0].second;
-    int split = -1;
 
-    for (int i = 0; i + 1 < n; i++) {
-        maxr = max(maxr, a[i].second);
-        if (maxr < a[i + 1].first) {
-            split = i;
-            break;
+    vector<int> c(n+1,-1);
+
+
+    int ans=0;
+    for(int i = 1; i <= n; i++) {
+
+        
+        if(c[i]!=-1){
+            continue;
         }
+
+
+
+        queue<int> q;
+        q.push(i);
+
+        c[i]=0;
+        int nodes=0;
+
+        int f = 1;
+        vector<int> freq(2, 0);
+        while(!q.empty()){
+
+            
+            int u = q.front();
+            q.pop();
+            freq[c[u]]++;
+            for(int it:adj[u]){
+                if(c[it]==-1){   
+                    c[it]=1-(c[u]);
+                    q.push(it);
+
+                }
+                else if(c[it]==c[u]){
+                    f = 0;
+                    
+                }
+            }
+
+
+
+        }
+        if(f){
+                        // cout<<i<<endl;
+
+            ans+=max(freq[0],freq[1]);
+        }
+
     }
 
-    if (split == -1) {
-        cout << -1 << '\n';
-        return;
-    }
-
-    map<pair<int,int>, int> d;
-
-    for (int i = 0; i <= split; i++){ 
-        d[a[i]] = 1;
-    }
-    for (int i = split + 1; i < n; i++) {
-        d[a[i]] = 2;
-    }
-
-    for (auto it : tmp) {
-        cout << d[it] << ' ';
-    }
-    cout << endl;
+    cout<<ans<<endl;
+    adj.clear();
+    
+    
 }
-
 
 
 
