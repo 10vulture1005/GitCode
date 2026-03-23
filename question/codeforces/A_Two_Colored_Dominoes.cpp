@@ -147,17 +147,10 @@ vector<int> adj[MAXN];
 bool vis[MAXN];
 
 // DFS: O(N + M)
-int dfs(int u) {
+void dfs(int u) {
     vis[u] = true;
-    int s = 1;
-    for (int v : adj[u]){
-        if (!vis[v]){
-            s+=dfs(v);
-        } 
-    }
-
-    return s;
-        
+    for (int v : adj[u])
+        if (!vis[v]) dfs(v);
 }
 
 // DFS with parent (tree)
@@ -229,72 +222,93 @@ From : IIITL
 ==========================================================
 */
 
-int uniquePathsWithObstacles(vector<vector<int>>& g) {
-    for(int i = 0;i<g.size();i++){
-        for(int j = 0;j<g[0].size();j++){
-            if(g[i][j]==1){
-                g[i][j]=-1;
-            }
-        }
-    }
 
-    int n = g.size();
-    int m = g[0].size();
-    vector<vector<int>> a(n,vector<int>(m));
-    
-    
-}
-
-int powcon(int n,int k){
-    int tot = 1;
-    for(int i = 0; i < k; i++) {
-        tot=(n%MOD*tot%MOD)%MOD;
-    }
-    return tot;
-
-}
 
 /* ================= SOLVE ================= */
 void vulture() {
-    //tot n^k;
-    int n,k;
-    cin>>n>>k;
-
-    for(int i = 0; i < n-1; i++) {
-        int u,v,c;
-        cin>>u>>v>>c;
-        if(c==0){
-            adj[u].pb(v);
-            adj[v].pb(u);
-        }
-    }
-
-    vector<int> com;
+    int n,m;
+    cin>>n>>m;
+    vector<string> a(n);
 
     for(int i = 0; i < n; i++) {
-        if(!vis[i+1]){
-            int si = dfs(i+1);
-        com.pb(si);
+        cin>>a[i];
+    }
+
+    //row
+
+    int rct=0;
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            if(a[i][j]=='U' or a[i][j]=='D'){
+                rct++;
+            }
         }
-        
+
+        if(rct%2==0){
+            int half = rct/2;
+            char c = 'W';
+            for(int j = 0; j < m; j++) {
+                if(rct==half){
+                    c = 'B';
+                }
+                if(a[i][j]=='U'){
+
+                    a[i][j]=c;
+                    a[i+1][j]=c=='W'?'B':'W';
+                    rct--;
+                }else if(a[i][j]=='D'){
+                    a[i][j]=c;
+                    a[i-1][j]=c=='W'?'B':'W';
+                    rct--;
+                }
+            }
+        }else{
+            cout<<-1<<endl;
+            return;
+        }
     }
 
-    
-    int ans = 0;
-    int tot = powcon(n,k);
-    int sum = 0;
-    for(auto it:com) {
-        sum=(sum%MOD+powcon(it,k)%MOD)%MOD;
 
-    }
-    ans = tot-sum;
-    if(ans<0){
-        cout<<1000000007+ans<<endl;
-        return;
-    }
-    cout<<ans<<endl;
-    
 
+
+    int cct=0;
+    for(int i = 0; i < m; i++) {
+        for(int j = 0; j < n; j++) {
+            // cout<<a[j][i]<<' ';
+            if(a[j][i]=='L' or a[j][i]=='R'){
+                cct++;
+            }
+        }
+        // cout<<endl;
+
+        if(cct%2==0){
+            int half = cct/2;
+            char c = 'W';
+            for(int j = 0; j < n; j++) {
+                if(cct==half){
+                    c = 'B';
+                }
+                if(a[j][i]=='L'){
+
+                    a[j][i]=c;
+                    a[j][i+1]=c=='W'?'B':'W';
+                    cct--;
+                }else if(a[j][i]=='R'){
+                    a[j][i]=c;
+                    a[j][i-1]=c=='W'?'B':'W';
+                    cct--;
+                }
+            }
+        }else{
+            // cout<<a[i]<<endl;
+            cout<<-1<<endl;
+            return;
+        }
+    }
+
+    for(int i = 0; i < n; i++) {
+        cout<<a[i]<<endl;
+    }
 
 }
 
@@ -305,6 +319,6 @@ signed main() {
     fastio;
 
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--) vulture();
 }

@@ -147,17 +147,10 @@ vector<int> adj[MAXN];
 bool vis[MAXN];
 
 // DFS: O(N + M)
-int dfs(int u) {
+void dfs(int u) {
     vis[u] = true;
-    int s = 1;
-    for (int v : adj[u]){
-        if (!vis[v]){
-            s+=dfs(v);
-        } 
-    }
-
-    return s;
-        
+    for (int v : adj[u])
+        if (!vis[v]) dfs(v);
 }
 
 // DFS with parent (tree)
@@ -229,72 +222,55 @@ From : IIITL
 ==========================================================
 */
 
-int uniquePathsWithObstacles(vector<vector<int>>& g) {
-    for(int i = 0;i<g.size();i++){
-        for(int j = 0;j<g[0].size();j++){
-            if(g[i][j]==1){
-                g[i][j]=-1;
-            }
-        }
-    }
 
-    int n = g.size();
-    int m = g[0].size();
-    vector<vector<int>> a(n,vector<int>(m));
-    
-    
-}
-
-int powcon(int n,int k){
-    int tot = 1;
-    for(int i = 0; i < k; i++) {
-        tot=(n%MOD*tot%MOD)%MOD;
-    }
-    return tot;
-
-}
 
 /* ================= SOLVE ================= */
 void vulture() {
-    //tot n^k;
-    int n,k;
-    cin>>n>>k;
+    int n;
+    cin>>n;
 
-    for(int i = 0; i < n-1; i++) {
-        int u,v,c;
-        cin>>u>>v>>c;
-        if(c==0){
-            adj[u].pb(v);
-            adj[v].pb(u);
-        }
-    }
 
-    vector<int> com;
+    vector<pair<int,int>> a(n);
 
     for(int i = 0; i < n; i++) {
-        if(!vis[i+1]){
-            int si = dfs(i+1);
-        com.pb(si);
-        }
-        
+        cin>>a[i].first>>a[i].second;
     }
+
+    sort all(a);
+int mx=-1;
+    if(n%2)
+     mx = 1;
+    else{
+        mx = a[n/2].first-a[n/2-1].first+1;
+    }
+    
 
     
-    int ans = 0;
-    int tot = powcon(n,k);
-    int sum = 0;
-    for(auto it:com) {
-        sum=(sum%MOD+powcon(it,k)%MOD)%MOD;
+    sort(a.begin(),a.end(),[](pair<int,int> a,pair<int,int> b){
+        return a.second<b.second;
+    });
 
+
+    int my=-1;
+    if(n%2)
+     my = 1;
+    else{
+        my = a[n/2].second-a[n/2-1].second+1;
     }
-    ans = tot-sum;
-    if(ans<0){
-        cout<<1000000007+ans<<endl;
-        return;
-    }
+   
+    int ans = mx*my;
+
+
+
     cout<<ans<<endl;
+
+
+
+
+
     
 
+    
 
 }
 
@@ -305,6 +281,6 @@ signed main() {
     fastio;
 
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--) vulture();
 }

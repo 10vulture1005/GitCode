@@ -147,17 +147,10 @@ vector<int> adj[MAXN];
 bool vis[MAXN];
 
 // DFS: O(N + M)
-int dfs(int u) {
+void dfs(int u) {
     vis[u] = true;
-    int s = 1;
-    for (int v : adj[u]){
-        if (!vis[v]){
-            s+=dfs(v);
-        } 
-    }
-
-    return s;
-        
+    for (int v : adj[u])
+        if (!vis[v]) dfs(v);
 }
 
 // DFS with parent (tree)
@@ -229,73 +222,102 @@ From : IIITL
 ==========================================================
 */
 
-int uniquePathsWithObstacles(vector<vector<int>>& g) {
-    for(int i = 0;i<g.size();i++){
-        for(int j = 0;j<g[0].size();j++){
-            if(g[i][j]==1){
-                g[i][j]=-1;
-            }
-        }
-    }
 
-    int n = g.size();
-    int m = g[0].size();
-    vector<vector<int>> a(n,vector<int>(m));
-    
-    
-}
-
-int powcon(int n,int k){
-    int tot = 1;
-    for(int i = 0; i < k; i++) {
-        tot=(n%MOD*tot%MOD)%MOD;
-    }
-    return tot;
-
-}
 
 /* ================= SOLVE ================= */
 void vulture() {
-    //tot n^k;
-    int n,k;
-    cin>>n>>k;
+    
 
-    for(int i = 0; i < n-1; i++) {
-        int u,v,c;
-        cin>>u>>v>>c;
-        if(c==0){
-            adj[u].pb(v);
-            adj[v].pb(u);
-        }
+    vector<pair<int,int>> a(3);//rgb
+    for(int i = 0; i < 3; i++) {
+        cin>>a[i].first;
+        a[i].second=i;
     }
 
-    vector<int> com;
-
-    for(int i = 0; i < n; i++) {
-        if(!vis[i+1]){
-            int si = dfs(i+1);
-        com.pb(si);
-        }
-        
-    }
+    sort(a.rbegin(), a.rend());
 
     
-    int ans = 0;
-    int tot = powcon(n,k);
-    int sum = 0;
-    for(auto it:com) {
-        sum=(sum%MOD+powcon(it,k)%MOD)%MOD;
 
-    }
-    ans = tot-sum;
-    if(ans<0){
-        cout<<1000000007+ans<<endl;
-        return;
+    if (a[0].first>a[1].first+a[2].first+1) {
+        string ans;
+     
+        
+        for(int i = 0; i < 2*(a[1].first+a[2].first)+1; i++) {
+            if(i%2==0){
+
+                if(a[0].second==0){
+                    ans+='R';
+                }if(a[0].second==1){
+                    ans+='G';
+                }if(a[0].second==2){
+                    ans+='B';
+                }
+            }else{
+                if(a[1].first){
+                    if(a[1].second==0){
+                        ans+='R';
+                    }if(a[1].second==1){
+                        ans+='G';
+                    }if(a[1].second==2){
+                        ans+='B';
+                    }
+                    a[1].first--;
+                }else{
+                    if(a[2].second==0){
+                        ans+='R';
+                    }if(a[2].second==1){
+                        ans+='G';
+                    }if(a[2].second==2){
+                        ans+='B';
+                    }
+                    a[2].first--;
+
+                }
+            }
+        }
+
+        cout << ans << '\n';
+
+}else{
+
+    string ans="";
+    
+    while(1){
+
+        sort all(a);
+        reverse all(a);
+        bool f = 0;
+
+        for(int i = 0; i < 3; i++) {
+            if(a[i].first)
+            char c;
+            if(a[i].second==0){
+                    c='R';
+            }if(a[i].second==1){
+                c='G';
+            }if(a[i].second==2){
+                c='B';
+            }
+            if(ans.size()>=1 and ans[ans.size()-1]==c){
+                continue;
+            }if(ans.size()>=3 and ans[ans.size()-3]==c){
+                continue;
+            }
+
+            f=1;
+            ans+=c;
+            a[i].first--;
+            break;
+            
+        }
+
+        if(!f){
+            break;
+        }
     }
     cout<<ans<<endl;
-    
 
-
+}
 }
 
 
@@ -305,6 +327,6 @@ signed main() {
     fastio;
 
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--) vulture();
 }

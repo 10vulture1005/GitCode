@@ -147,18 +147,7 @@ vector<int> adj[MAXN];
 bool vis[MAXN];
 
 // DFS: O(N + M)
-int dfs(int u) {
-    vis[u] = true;
-    int s = 1;
-    for (int v : adj[u]){
-        if (!vis[v]){
-            s+=dfs(v);
-        } 
-    }
 
-    return s;
-        
-}
 
 // DFS with parent (tree)
 void dfs_tree(int u, int p) {
@@ -229,71 +218,42 @@ From : IIITL
 ==========================================================
 */
 
-int uniquePathsWithObstacles(vector<vector<int>>& g) {
-    for(int i = 0;i<g.size();i++){
-        for(int j = 0;j<g[0].size();j++){
-            if(g[i][j]==1){
-                g[i][j]=-1;
-            }
-        }
+vector<int> subt(2e5+10);
+
+void dfs(int u) {
+    vis[u] = true;
+    for (int v : adj[u])
+    {
+
+        if (!vis[v]){
+            dfs(v);
+            subt[u]+=subt[v];
+        } 
     }
-
-    int n = g.size();
-    int m = g[0].size();
-    vector<vector<int>> a(n,vector<int>(m));
-    
-    
-}
-
-int powcon(int n,int k){
-    int tot = 1;
-    for(int i = 0; i < k; i++) {
-        tot=(n%MOD*tot%MOD)%MOD;
-    }
-    return tot;
-
+    subt[u]++;
+        
 }
 
 /* ================= SOLVE ================= */
 void vulture() {
-    //tot n^k;
-    int n,k;
-    cin>>n>>k;
+    int n;
+    cin>>n;
+    vector<int> a(n-1);
+    vin(a,a.size());
 
-    for(int i = 0; i < n-1; i++) {
-        int u,v,c;
-        cin>>u>>v>>c;
-        if(c==0){
-            adj[u].pb(v);
-            adj[v].pb(u);
-        }
-    }
+    for (int i = 0; i < n-1; i++) {
+        int u = i + 1;
+        int v = a[i] - 1;
 
-    vector<int> com;
-
-    for(int i = 0; i < n; i++) {
-        if(!vis[i+1]){
-            int si = dfs(i+1);
-        com.pb(si);
-        }
         
+        adj[v].push_back(u);
     }
 
-    
-    int ans = 0;
-    int tot = powcon(n,k);
-    int sum = 0;
-    for(auto it:com) {
-        sum=(sum%MOD+powcon(it,k)%MOD)%MOD;
+    dfs(0);
+    for(int i = 0; i < n; i++) {
+        cout<<subt[i]-1<<' ';
+    }
 
-    }
-    ans = tot-sum;
-    if(ans<0){
-        cout<<1000000007+ans<<endl;
-        return;
-    }
-    cout<<ans<<endl;
-    
 
 
 }

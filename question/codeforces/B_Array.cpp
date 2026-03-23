@@ -147,17 +147,10 @@ vector<int> adj[MAXN];
 bool vis[MAXN];
 
 // DFS: O(N + M)
-int dfs(int u) {
+void dfs(int u) {
     vis[u] = true;
-    int s = 1;
-    for (int v : adj[u]){
-        if (!vis[v]){
-            s+=dfs(v);
-        } 
-    }
-
-    return s;
-        
+    for (int v : adj[u])
+        if (!vis[v]) dfs(v);
 }
 
 // DFS with parent (tree)
@@ -229,71 +222,36 @@ From : IIITL
 ==========================================================
 */
 
-int uniquePathsWithObstacles(vector<vector<int>>& g) {
-    for(int i = 0;i<g.size();i++){
-        for(int j = 0;j<g[0].size();j++){
-            if(g[i][j]==1){
-                g[i][j]=-1;
-            }
-        }
-    }
 
-    int n = g.size();
-    int m = g[0].size();
-    vector<vector<int>> a(n,vector<int>(m));
-    
-    
-}
-
-int powcon(int n,int k){
-    int tot = 1;
-    for(int i = 0; i < k; i++) {
-        tot=(n%MOD*tot%MOD)%MOD;
-    }
-    return tot;
-
-}
 
 /* ================= SOLVE ================= */
 void vulture() {
-    //tot n^k;
-    int n,k;
-    cin>>n>>k;
+    int n;
+    cin >> n;
 
-    for(int i = 0; i < n-1; i++) {
-        int u,v,c;
-        cin>>u>>v>>c;
-        if(c==0){
-            adj[u].pb(v);
-            adj[v].pb(u);
+    vector<int> a(n);
+    vin(a,a.size());
+    vector<int> ans(n);
+    
+    for(int i = 0;i<n;i++){
+        int s=0,l=0;
+    for(int j = i+1;j<n;j++){
+    
+        if(a[i]>a[j]){
+            s++;
+        }else if(a[j]>a[i]) {
+            l++;
         }
     }
-
-    vector<int> com;
-
-    for(int i = 0; i < n; i++) {
-        if(!vis[i+1]){
-            int si = dfs(i+1);
-        com.pb(si);
-        }
-        
+    ans[i] = max(s,l);
     }
 
-    
-    int ans = 0;
-    int tot = powcon(n,k);
-    int sum = 0;
-    for(auto it:com) {
-        sum=(sum%MOD+powcon(it,k)%MOD)%MOD;
+    for(int i = 0; i <n;i++){
+    cout<<ans[i]<<" ";
+    }
+    cout<<endl;
 
-    }
-    ans = tot-sum;
-    if(ans<0){
-        cout<<1000000007+ans<<endl;
-        return;
-    }
-    cout<<ans<<endl;
-    
+
 
 
 }
@@ -305,6 +263,6 @@ signed main() {
     fastio;
 
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--) vulture();
 }

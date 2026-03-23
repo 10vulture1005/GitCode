@@ -147,18 +147,7 @@ vector<int> adj[MAXN];
 bool vis[MAXN];
 
 // DFS: O(N + M)
-int dfs(int u) {
-    vis[u] = true;
-    int s = 1;
-    for (int v : adj[u]){
-        if (!vis[v]){
-            s+=dfs(v);
-        } 
-    }
 
-    return s;
-        
-}
 
 // DFS with parent (tree)
 void dfs_tree(int u, int p) {
@@ -228,76 +217,58 @@ Author: Vaidik Saxena
 From : IIITL
 ==========================================================
 */
+int last, md;
 
-int uniquePathsWithObstacles(vector<vector<int>>& g) {
-    for(int i = 0;i<g.size();i++){
-        for(int j = 0;j<g[0].size();j++){
-            if(g[i][j]==1){
-                g[i][j]=-1;
-            }
+void dfs(int u, int d, int parent, vector<int>& dist) {
+    dist[u] = d;
+
+    if(md < d){
+        md = d;
+        last = u;
+    }
+
+    for (int v : adj[u]) {
+        if (v != parent) {
+            dfs(v, d + 1, u, dist);
         }
     }
-
-    int n = g.size();
-    int m = g[0].size();
-    vector<vector<int>> a(n,vector<int>(m));
-    
-    
-}
-
-int powcon(int n,int k){
-    int tot = 1;
-    for(int i = 0; i < k; i++) {
-        tot=(n%MOD*tot%MOD)%MOD;
-    }
-    return tot;
-
 }
 
 /* ================= SOLVE ================= */
 void vulture() {
-    //tot n^k;
-    int n,k;
-    cin>>n>>k;
-
-    for(int i = 0; i < n-1; i++) {
-        int u,v,c;
-        cin>>u>>v>>c;
-        if(c==0){
-            adj[u].pb(v);
-            adj[v].pb(u);
-        }
-    }
-
-    vector<int> com;
-
-    for(int i = 0; i < n; i++) {
-        if(!vis[i+1]){
-            int si = dfs(i+1);
-        com.pb(si);
-        }
-        
-    }
+    int n;
+    cin >> n;
 
     
-    int ans = 0;
-    int tot = powcon(n,k);
-    int sum = 0;
-    for(auto it:com) {
-        sum=(sum%MOD+powcon(it,k)%MOD)%MOD;
+    for (int i = 0; i < n-1; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
 
-    }
-    ans = tot-sum;
-    if(ans<0){
-        cout<<1000000007+ans<<endl;
-        return;
-    }
-    cout<<ans<<endl;
+    vector<int> distA(n+1), distB(n+1);
+
+   
+    md = -1;
+    dfs(1, 0, -1, distA);
+    int A = last;
+
     
+    md = -1;
+    dfs(A, 0, -1, distA);
+    int B = last;
 
+    
+    md = -1;
+    dfs(B, 0, -1, distB);
 
+    
+    for(int i = 1; i <= n; i++) {
+        cout << max(distA[i], distB[i]) << " ";
+    }
+    cout << endl;
 }
-
 
 
 /* ================= MAIN ================= */

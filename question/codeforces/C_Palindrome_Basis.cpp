@@ -80,7 +80,7 @@ int t;
 cin>>t;
 dp[0]=1;
 
-    for(int i = 1; i < 10+1; i++) {
+    for(int i = 1; i < 5e4; i++) {
         string nu = to_string(i);
         string tmp = nu;reverse(nu.begin(),nu.end());
         if(nu ==tmp){
@@ -89,13 +89,13 @@ dp[0]=1;
         }
     }
     for(auto it:nums){
-    for(int i = it; i <= 10; i++) {
+    for(int i = it; i <= 5e4; i++) {
         dp[i] = (dp[i]+dp[i-it])%MOD;
     }
-    for(int i = 0; i <10;i++){
-    cout<<dp[i]<<" ";
-    }
-    cout<<endl;
+    // for(int i = 0; i <10;i++){
+    // cout<<dp[i]<<" ";
+    // }
+    // cout<<endl;
     }
 while(t--){
 vulture();

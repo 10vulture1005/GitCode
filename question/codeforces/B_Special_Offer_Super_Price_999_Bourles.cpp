@@ -147,17 +147,10 @@ vector<int> adj[MAXN];
 bool vis[MAXN];
 
 // DFS: O(N + M)
-int dfs(int u) {
+void dfs(int u) {
     vis[u] = true;
-    int s = 1;
-    for (int v : adj[u]){
-        if (!vis[v]){
-            s+=dfs(v);
-        } 
-    }
-
-    return s;
-        
+    for (int v : adj[u])
+        if (!vis[v]) dfs(v);
 }
 
 // DFS with parent (tree)
@@ -229,73 +222,47 @@ From : IIITL
 ==========================================================
 */
 
-int uniquePathsWithObstacles(vector<vector<int>>& g) {
-    for(int i = 0;i<g.size();i++){
-        for(int j = 0;j<g[0].size();j++){
-            if(g[i][j]==1){
-                g[i][j]=-1;
-            }
-        }
-    }
 
-    int n = g.size();
-    int m = g[0].size();
-    vector<vector<int>> a(n,vector<int>(m));
+int pow10(int n){
+    int a= 1;
     
-    
-}
-
-int powcon(int n,int k){
-    int tot = 1;
-    for(int i = 0; i < k; i++) {
-        tot=(n%MOD*tot%MOD)%MOD;
+    while(n--){
+        a*=10;
     }
-    return tot;
-
+    return a;
 }
 
 /* ================= SOLVE ================= */
 void vulture() {
-    //tot n^k;
-    int n,k;
-    cin>>n>>k;
-
-    for(int i = 0; i < n-1; i++) {
-        int u,v,c;
-        cin>>u>>v>>c;
-        if(c==0){
-            adj[u].pb(v);
-            adj[v].pb(u);
-        }
+    int n;
+    cin>>n;
+    int k;
+    cin>>k;
+    int dig = (int)(log10(n))+1;
+    int ans = n;
+    int tm = n;
+    int ct9=0;
+    while(tm>0){
+        if(tm%10==9)ct9++;
+        else break;
+        tm/=10;
     }
+    // cout<<ct9<<endl;
+    for(int i = ct9+1; i <= dig; i++) {
 
-    vector<int> com;
+        int p = pow10(i);
 
-    for(int i = 0; i < n; i++) {
-        if(!vis[i+1]){
-            int si = dfs(i+1);
-        com.pb(si);
+        int tn = n;
+        int div = (tn/p)*p;
+        if(n-k<=div-1){
+            ans = div-1;
+            
         }
         
-    }
-
-    
-    int ans = 0;
-    int tot = powcon(n,k);
-    int sum = 0;
-    for(auto it:com) {
-        sum=(sum%MOD+powcon(it,k)%MOD)%MOD;
-
-    }
-    ans = tot-sum;
-    if(ans<0){
-        cout<<1000000007+ans<<endl;
-        return;
+        
+        
     }
     cout<<ans<<endl;
-    
-
-
 }
 
 
