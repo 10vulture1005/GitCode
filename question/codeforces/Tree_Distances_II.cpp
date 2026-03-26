@@ -147,17 +147,10 @@ vector<int> adj[MAXN];
 bool vis[MAXN];
 
 // DFS: O(N + M)
-int dfs(int u) {
+void dfs(int u) {
     vis[u] = true;
-    int s = 1;
-    for (int v : adj[u]){
-        if (!vis[v]){
-            s+=dfs(v);
-        } 
-    }
-
-    return s;
-        
+    for (int v : adj[u])
+        if (!vis[v]) dfs(v);
 }
 
 // DFS with parent (tree)
@@ -229,60 +222,87 @@ From : IIITL
 ==========================================================
 */
 
-int powcon(int n,int k){
-    int tot = 1;
-    for(int i = 0; i < k; i++) {
-        tot=(n%MOD*tot%MOD)%MOD;
-    }
-    return tot;
 
-}
 
 /* ================= SOLVE ================= */
 void vulture() {
-    //tot n^k;
-    int n,k;
-    cin>>n>>k;
+    int n;
+    cin >> n;
 
-    for(int i = 0; i < n-1; i++) {
-        int u,v,c;
-        cin>>u>>v>>c;
-        if(c==0){
-            adj[u].pb(v);
-            adj[v].pb(u);
+    vector<vector<int>> adj(n+1);
+
+    for (int i = 0; i < n-1; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    vector<int> parent(n+1, -1), depth(n+1, 0);
+    vector<int> sz(n+1, 1);
+    vector<long long> ans(n+1, 0);
+
+    queue<int> q;
+    q.push(1);   // ✅ root = 1
+
+    // BFS for depth + parent
+    while(!q.empty()){
+        int u = q.front(); q.pop();
+
+        for(auto v : adj[u]){
+            if(v == parent[u]) continue;
+
+            parent[v] = u;
+            depth[v] = depth[u] + 1;
+            q.push(v);
         }
     }
 
-    vector<int> com;
+    // compute ans[1]
+    for(int i = 1; i <= n; i++){
+        ans[1] += depth[i];
+    }
 
-    for(int i = 0; i < n; i++) {
-        if(!vis[i+1]){
-            int si = dfs(i+1);
-        com.pb(si);
+    // BFS order
+    vector<int> order;
+    q.push(1);
+    while(!q.empty()){
+        int u = q.front(); q.pop();
+        order.push_back(u);
+
+        for(auto v : adj[u]){
+            if(v == parent[u]) continue;
+            q.push(v);
         }
-        
     }
 
-    
-    int ans = 0;
-    int tot = powcon(n,k);
-    int sum = 0;
-    for(auto it:com) {
-        sum=(sum%MOD+powcon(it,k)%MOD)%MOD;
-
+    // subtree sizes
+    reverse(order.begin(), order.end());
+    for(auto u : order){
+        for(auto v : adj[u]){
+            if(v == parent[u]) continue;
+            sz[u] += sz[v];
+        }
     }
-    ans = tot-sum;
-    if(ans<0){
-        cout<<1000000007+ans<<endl;
-        return;
+
+    // reroot
+    q.push(1);
+    while(!q.empty()){
+        int u = q.front(); q.pop();
+
+        for(auto v : adj[u]){
+            if(v == parent[u]) continue;
+
+            ans[v] = ans[u] + n - 2 * sz[v];
+            q.push(v);
+        }
     }
-    cout<<ans<<endl;
-    
 
-
+    for(int i = 1; i <= n; i++){
+        cout << ans[i] << " ";
+    }
+    cout << endl;
 }
-
-
 
 /* ================= MAIN ================= */
 signed main() {

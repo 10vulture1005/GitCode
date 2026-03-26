@@ -1,3 +1,4 @@
+
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
@@ -147,17 +148,10 @@ vector<int> adj[MAXN];
 bool vis[MAXN];
 
 // DFS: O(N + M)
-int dfs(int u) {
+void dfs(int u) {
     vis[u] = true;
-    int s = 1;
-    for (int v : adj[u]){
-        if (!vis[v]){
-            s+=dfs(v);
-        } 
-    }
-
-    return s;
-        
+    for (int v : adj[u])
+        if (!vis[v]) dfs(v);
 }
 
 // DFS with parent (tree)
@@ -229,55 +223,83 @@ From : IIITL
 ==========================================================
 */
 
-int powcon(int n,int k){
-    int tot = 1;
-    for(int i = 0; i < k; i++) {
-        tot=(n%MOD*tot%MOD)%MOD;
-    }
-    return tot;
 
-}
 
 /* ================= SOLVE ================= */
 void vulture() {
-    //tot n^k;
-    int n,k;
-    cin>>n>>k;
-
+    int n;
+    cin>>n;
+    vector<int> indeg(n+1);
     for(int i = 0; i < n-1; i++) {
-        int u,v,c;
-        cin>>u>>v>>c;
-        if(c==0){
+        int u,v,x,y;
+        cin>>u>>v>>x>>y;
+        if(x<y){
             adj[u].pb(v);
+            indeg[v]++;
+        }else{
+            indeg[u]++;
             adj[v].pb(u);
         }
     }
 
-    vector<int> com;
 
-    for(int i = 0; i < n; i++) {
-        if(!vis[i+1]){
-            int si = dfs(i+1);
-        com.pb(si);
+
+    queue<int> q;
+
+    
+
+    for(int i = 1; i <= n; i++) {
+        if(indeg[i]==0)
+        q.push(i);
+    }
+
+    // queue<int> qw=q;
+    // for(int i = 0;i<q.size();i++){
+    //     int x = qw.front();
+
+
+    //     cout<<x<<' ';
+    //     qw.pop();
+    // }
+    // cout<<endl;
+
+    vector<int> ans(n+1);
+
+    int ct=1;
+    while(!q.empty()){
+        int node = q.front();
+        q.pop();
+
+        ans[node]=ct++;
+        // cout<<node<<endl;
+
+        for(auto u:adj[node]){
+            indeg[u]--;
+            if(indeg[u]==0){
+                q.push(u);
+            }
         }
-        
-    }
 
-    
-    int ans = 0;
-    int tot = powcon(n,k);
-    int sum = 0;
-    for(auto it:com) {
-        sum=(sum%MOD+powcon(it,k)%MOD)%MOD;
+
+
+
 
     }
-    ans = tot-sum;
-    if(ans<0){
-        cout<<1000000007+ans<<endl;
-        return;
+
+
+    for(int i = 1; i <=n;i++){
+    cout<<ans[i]<<" ";
     }
-    cout<<ans<<endl;
+    cout<<endl;
+
+    for(int i = 1; i <= n; i++) {
+        adj[i].clear();
+    }
     
+
+    
+
+
 
 
 }
@@ -289,6 +311,6 @@ signed main() {
     fastio;
 
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--) vulture();
 }
